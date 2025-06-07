@@ -50,7 +50,7 @@ export const submitReview = async (req, res) => {
 export const updateReview = async (req, res) => {
   const { rating, reviewText, anonymous } = req.body;
   try {
-    const review = await Review.findById(req.params.reviewId);
+    const review = await ManagerReview.findById(req.params.reviewId);
     if (!review) return res.status(404).json({ message: 'Review not found' });
 
     if (review.userId.toString() !== req.user.id) {
@@ -69,12 +69,25 @@ export const updateReview = async (req, res) => {
   }
 };
 
+
 export const flagManager = async (req, res) => {
   try {
-    const userId = req.user._id;
+    const userId = req.user.userId || req.user.id;
     const { managerId } = req.body;
 
-    const review = await ManagerReview.findOne({ userId, managerId });
+    if (!userId || !managerId) {
+      return res.status(400).json({ message: 'Missing userId or managerId' });
+    }
+
+    // Convert IDs to ObjectId
+    const review = await ManagerReview.findOne({
+      userId: new mongoose.Types.ObjectId(userId),
+      managerId: new mongoose.Types.ObjectId(managerId),
+    });
+    console.log('userId:', userId);
+    console.log('managerId:', managerId);    
+    console.log('Review found in flagManager:', review);
+
     if (!review) {
       return res.status(403).json({ message: 'You must submit a review before flagging.' });
     }
@@ -87,7 +100,7 @@ export const flagManager = async (req, res) => {
       return res.status(429).json({ message: 'You can only flag once every 24 hours.' });
     }
 
-    review.flags += 1;
+    review.flags = (review.flags || 0) + 1;
     review.lastFlagTime = now;
     await review.save();
 
@@ -102,18 +115,22 @@ export const flagManager = async (req, res) => {
   }
 };
 
+
 export const getManagerReviews = async (req, res) => {
   try {
     const { managerId } = req.params;
+    if (!managerId) {
+      return res.status(400).json({ message: 'Manager ID is required.' });
+    }
 
     const reviews = await ManagerReview.find({ managerId })
-      .populate('userId', 'name')
-      .sort({ createdAt: -1 });
+      .select('reviewText rating createdAt')
+      .sort({ createdAt: -1 }); // newest first
 
     res.status(200).json(reviews);
   } catch (error) {
-    console.error('Fetch Reviews Error:', error);
-    res.status(500).json({ message: 'Server error while fetching reviews.' });
+    console.error('Error fetching simple reviews:', error);
+    res.status(500).json({ message: 'Server error while fetching simple reviews.' });
   }
 };
 
@@ -167,11 +184,18 @@ export const dislikeReview = async (req, res) => {
 
 export const deleteReview = async (req, res) => {
   try {
-    const userId = req.user._id;
+    const userId = req.user.userId || req.user.id || req.user._id;
+    if (!userId) {
+      return res.status(401).json({ message: 'Unauthorized. User not found.' });
+    }
+    const userIdObj = new mongoose.Types.ObjectId(userId);
     const { reviewId } = req.params;
 
     const review = await ManagerReview.findById(reviewId);
     if (!review) return res.status(404).json({ message: 'Review not found' });
+    console.log('userId:', userId.toString());
+    console.log('review.userId:', review.userId.toString());
+
 
     if (!review.userId.equals(userId)) {
       return res.status(403).json({ message: 'You are not authorized to delete this review.' });
@@ -195,5 +219,17 @@ export const deleteReview = async (req, res) => {
   } catch (error) {
     console.error('Delete Review Error:', error);
     res.status(500).json({ message: 'Server error while deleting review.' });
+    console.log('userId:', userId);
+    console.log('review.userId:', review.userId);
+
   }
+};
+// At top or bottom of managerReviewController.js
+
+export const updateAverageRating = async (managerId) => {
+  const reviews = await ManagerReview.find({ managerId });
+  const avgRating = reviews.length
+    ? reviews.reduce((sum, r) => sum + r.rating, 0) / reviews.length
+    : 0;
+  await Manager.findByIdAndUpdate(managerId, { averageRating: avgRating });
 };

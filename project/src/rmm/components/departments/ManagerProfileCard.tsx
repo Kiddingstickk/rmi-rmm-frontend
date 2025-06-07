@@ -1,5 +1,7 @@
 import React from "react";
-import { Star } from "lucide-react";
+import { Star, Flag } from "lucide-react";
+import api from "../../../lib/api";
+
 
 interface Review {
   _id: string;
@@ -21,6 +23,9 @@ interface ManagerProfileCardProps {
   averageRating: number;
   reviews: Review[];
   userReviewForm: React.ReactNode;
+  currentUserId: string;
+  managerId: string; // pass this from parent component
+  onReviewDeleted?: (deletedReviewId: string) => void;
 }
 
 const getRatingColor = (rating: number) => {
@@ -36,8 +41,55 @@ const ManagerProfileCard: React.FC<ManagerProfileCardProps> = ({
   averageRating,
   reviews,
   userReviewForm,
+  currentUserId,
+  managerId,
+  onReviewDeleted,
 }) => {
   const isValidRating = typeof averageRating === "number";
+  const handleDeleteReview = async (reviewId: string) => {
+    if (!window.confirm("Are you sure you want to delete this review?"))
+      return;
+
+    try {
+      const res = await api.delete(`/manager-reviews/${reviewId}`, {
+        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+      });
+
+      console.log("Delete response:", res.data);
+
+      // Optionally update the UI by calling the callback
+      if (onReviewDeleted) onReviewDeleted(reviewId);
+
+      alert("Review deleted successfully.");
+    } catch (err: any) {
+      console.error("Delete error:", err.response?.data || err.message);
+      alert("Failed to delete review. Please try again.");
+    }
+  };
+
+
+  const handleFlagManager = async () => {
+    if (!window.confirm("Do you really want to flag this manager?")) return;
+    try {
+      const res = await api.post(
+        `/manager-reviews/flag/${managerId}`,
+        {}, // no body
+        {
+          headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+        }
+      );
+    
+      console.log("Flag response:", res.data);
+      alert("Manager flagged successfully.");
+    } catch (err: any) {
+      console.error("Flag error:", err.response?.data || err.message);
+      const msg =
+        err.response?.data?.message || "Failed to flag manager. Please try again.";
+      alert(msg);
+    }
+  };
+
+
 
   return (
     <div className="bg-white rounded-xl shadow-lg p-6 w-full max-w-3xl mx-auto">
@@ -54,6 +106,16 @@ const ManagerProfileCard: React.FC<ManagerProfileCardProps> = ({
           {isValidRating ? `${averageRating.toFixed(1)} / 5` : "No rating yet"}
         </span>
       </div>
+
+      {/* Flag Button */}
+      <button
+        className="flex items-center gap-1 px-3 py-1 text-xs text-red-500 border border-red-500 rounded hover:bg-red-50 mb-4"
+        onClick={handleFlagManager}
+      >
+        <Flag className="w-4 h-4" /> Flag Manager
+      </button>
+
+
 
       <div className="mb-6">
         <h3 className="font-semibold text-lg mb-2 text-gray-700">Your Review</h3>

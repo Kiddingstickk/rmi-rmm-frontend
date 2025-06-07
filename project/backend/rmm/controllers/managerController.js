@@ -14,13 +14,23 @@ export const getAllManagers = async (req, res) => {
 // Get a manager by ID
 export const getManagerById = async (req, res) => {
   try {
-    const manager = await Manager.findById(req.params.id).populate('department');
+    const manager = await Manager.findById(req.params.id)
+      .populate('department')
+      .populate({
+        path: 'reviews',
+        populate: {
+          path: 'userId',
+          select: 'name' // only get user name
+        }
+      });
+
     if (!manager) return res.status(404).json({ message: 'Manager not found' });
     res.json(manager);
   } catch (err) {
     res.status(500).json({ error: 'Server error' });
   }
 };
+
 
 
 // Update a manager by ID
