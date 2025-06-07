@@ -1,6 +1,6 @@
 // /screens/Register.tsx
 import { useState } from 'react';
-import axios from 'axios';
+import api from "../../../lib/api";
 import { useNavigate } from 'react-router-dom';
 
 const Register = () => {
@@ -13,7 +13,7 @@ const Register = () => {
     e.preventDefault();
 
     try {
-      await axios.post('http://localhost:5000/api/auth/rmi/register', { name, email, password });
+      await api.post('/auth/rmi/register', { name, email, password });
       
       alert('OTP sent to your email. Please verify.');
       

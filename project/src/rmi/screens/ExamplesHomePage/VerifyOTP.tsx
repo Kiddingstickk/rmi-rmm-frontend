@@ -1,6 +1,6 @@
 // /screens/VerifyOTP.tsx
 import { useState } from 'react';
-import axios from 'axios';
+import api from "../../../lib/api";
 import { useNavigate } from 'react-router-dom';
 
 const VerifyOTP = () => {
@@ -12,7 +12,7 @@ const VerifyOTP = () => {
     e.preventDefault();
 
     try {
-      const response = await axios.post('http://localhost:5000/api/auth/rmi/verify-otp', { email, otp });
+      const response = await api.post('/auth/rmi/verify-otp', { email, otp });
       alert(response.data.message);
       navigate('/signin');
     } catch (error) {

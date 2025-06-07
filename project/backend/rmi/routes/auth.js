@@ -252,8 +252,10 @@ router.post('/interviewers/:id/rating', auth, async (req, res) => {
     const interviewer = await Interviewer.findById(id);
     if (!interviewer) return res.status(404).json({ message: 'Interviewer not found' });
 
-    const userId = req.user.userId;
+    const userId = req.user.id; // correct key based on auth.js
+    console.log('Authenticated userId:', userId);
     const existingReview = interviewer.ratings.find(r => r.userId?.toString() === userId);
+    
 
     if (existingReview) {
       existingReview.rating = rating;

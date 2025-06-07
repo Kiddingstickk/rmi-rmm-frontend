@@ -22,7 +22,7 @@ router.put('/:reviewId', auth, updateReview);
 router.delete('/:reviewId', auth, deleteReview);
 
 // Get all reviews for a specific manager
-router.get('/manager/:managerId', getManagerReviews);
+router.get('/manager/:managerId/reviews', getManagerReviews);
 
 // Like/dislike/flag review
 router.post('/like/:reviewId', auth, likeReview);

@@ -1,6 +1,6 @@
 // /screens/SignIn.tsx
 import { useState , useEffect } from 'react';
-import axios from 'axios';
+import api from "../../../lib/api";
 import { useNavigate , Link } from 'react-router-dom' ; 
 
 const SignIn = () => {
@@ -22,11 +22,21 @@ const SignIn = () => {
     e.preventDefault();
 
     try {
-      const response = await axios.post('http://localhost:5000/api/auth/rmi/login', { email, password });
+      const response = await api.post('/auth/rmi/login', { email, password });
+      console.log("Login response:", response.data);
       const token = response.data.token;
+      const userId = response.data.user?.id;
+      console.log('Extracted userId:', userId);
+      if (userId) {
+        localStorage.setItem('userId', userId);
+      } else {
+        console.error('Failed to extract userId from response', response.data);
+      }
+
 
       // Store the token in localStorage
       localStorage.setItem('token', token);
+      localStorage.setItem('userId', userId);
       alert('Login successful');
       
       // Redirect to InterviewerProfile (or homepage) after successful login

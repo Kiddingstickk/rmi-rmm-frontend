@@ -1,5 +1,6 @@
 import express from 'express';
 import Interviewer from '../models/interviewer.js';
+import mongoose from 'mongoose';
 
 import User from '../models/user.js';
 import bcrypt from 'bcryptjs';
@@ -110,6 +111,11 @@ router.post('/:id/rating', auth , async (req, res) => {
     const userId = req.user.userId;
     console.log('userId from token:', userId);
 
+
+    if (!userId) {
+      return res.status(401).json({ message: 'User ID missing in token' });
+    }
+
     // Check if user has already submitted a review
     const existingReview = interviewer.ratings.find(r => r.userId && r.userId.toString() === userId);
     
@@ -125,13 +131,16 @@ router.post('/:id/rating', auth , async (req, res) => {
       interviewer.ratings.push({
         rating,
         review,
-        userId,
+        userId : new mongoose.Types.ObjectId(userId),
         date: new Date(),
       });
     }
 
     // Recalculate average rating using sigmoid
     interviewer.rating = sigmoidAverage(interviewer.ratings);
+    console.log('Ratings before save:', interviewer.ratings);
+    console.log('About to save interviewer:', interviewer);
+    
 
     await interviewer.save();
 
