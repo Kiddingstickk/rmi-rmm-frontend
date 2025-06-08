@@ -30,8 +30,8 @@ const SearchResults = () => {
       setError(null);
       try {
         const [searchRes, savedRes] = await Promise.all([
-          axios.get(`http://localhost:5000/api/interviewers/search/${query}`),
-          fetch('http://localhost:5000/api/user/saved', {
+          axios.get(`${import.meta.env.VITE_API_URL}/api/interviewers/search/${query}`),
+          fetch(`${import.meta.env.VITE_API_URL}/api/user/saved`, {
             headers: {
               Authorization: `Bearer ${localStorage.getItem('token')}`,
             },
@@ -71,7 +71,7 @@ const SearchResults = () => {
       setLoading(true);
       setError(null);
       try {
-        const response = await axios.get(`http://localhost:5000/api/interviewers/search/${query}`);
+        const response = await axios.get(`${import.meta.env.VITE_API_URL}/api/interviewers/search/${query}`);
         setResults(response.data);
       } catch (err) {
         setError('Something went wrong. Please try again later.');
@@ -92,7 +92,7 @@ const SearchResults = () => {
   const handleSave = async (interviewer: any) => {
     try {
       const token = localStorage.getItem('token'); // get JWT from localStorage
-      const response = await fetch(`http://localhost:5000/api/user/toggle-save/${interviewer._id}`, {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/user/toggle-save/${interviewer._id}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

@@ -131,7 +131,7 @@ const InterviewerProfile = () => {
   useEffect(() => {
     const fetchInterviewer = async () => {
       try {
-        const response = await axios.get(`http://localhost:5000/api/interviewers/${id}`);
+        const response = await axios.get(`${import.meta.env.VITE_API_URL}/api/interviewers/${id}`);
         setInterviewer(response.data);
 
         const token = localStorage.getItem('token');
@@ -218,12 +218,12 @@ const InterviewerProfile = () => {
     }
     try {
       await axios.post(
-        `http://localhost:5000/api/interviewers/${id}/rating`,
+        `${import.meta.env.VITE_API_URL}/api/interviewers/${id}/rating`,
         { rating, review, customAnswers, interviewStatus },
         { headers: { Authorization: `Bearer ${token}` } }
       );
       alert('Thank you for your feedback!');
-      const refreshed = await axios.get(`http://localhost:5000/api/interviewers/${id}`);
+      const refreshed = await axios.get(`${import.meta.env.VITE_API_URL}/api/interviewers/${id}`);
       setInterviewer(refreshed.data);
       setRating(0); setReview(''); setInterviewStatus(''); setCustomAnswers([]);
     } catch (err) {
@@ -235,7 +235,7 @@ const InterviewerProfile = () => {
 
   const handleLike = async (reviewId: string) => {
     try {
-      const res = await fetch(`http://localhost:5000/api/interviewers/${interviewer._id}/reviews/${reviewId}/like`, {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/interviewers/${interviewer._id}/reviews/${reviewId}/like`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -258,7 +258,7 @@ const InterviewerProfile = () => {
   
   const handleDislike = async (reviewId: string) => {
     try {
-      const res = await fetch(`http://localhost:5000/api/interviewers/${interviewer._id}/reviews/${reviewId}/dislike`, {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/interviewers/${interviewer._id}/reviews/${reviewId}/dislike`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -288,7 +288,7 @@ const InterviewerProfile = () => {
     try {
       console.log("Token being sent:", token);
 
-      const response = await fetch('http://localhost:5000/api/replies', {
+      const response = await fetch('${import.meta.env.VITE_API_URL}/api/replies', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -327,7 +327,7 @@ const InterviewerProfile = () => {
 
   const fetchReplies = async (reviewId: string) => {
     try {
-      const response = await fetch(`http://localhost:5000/api/replies/${reviewId}`);
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/replies/${reviewId}`);
       const data = await response.json();
 
       console.log("Replies fetched:", data);
@@ -349,12 +349,12 @@ const InterviewerProfile = () => {
     if (!token) { alert('You must be logged in to edit your review.'); return; }
     try {
       await axios.post(
-        `http://localhost:5000/api/interviewers/${id}/rating`,
+        `${import.meta.env.VITE_API_URL}/api/interviewers/${id}/rating`,
         { rating, review, customAnswers, interviewStatus },
         { headers: { Authorization: `Bearer ${token}` } }
       );
       alert('Your review has been updated!');
-      const refreshed = await axios.get(`http://localhost:5000/api/interviewers/${id}`);
+      const refreshed = await axios.get(`${import.meta.env.VITE_API_URL}/api/interviewers/${id}`);
       setInterviewer(refreshed.data); setRating(0); setReview(''); setCustomAnswers([]);
     } catch (err) {
       console.error('Error editing rating:', err);
