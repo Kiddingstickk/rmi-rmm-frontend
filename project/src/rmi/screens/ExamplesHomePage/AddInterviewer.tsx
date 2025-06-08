@@ -27,7 +27,7 @@ const AddInterviewer = () => {
 
     try {
       await axios.post(
-        'http://localhost:5000/api/interviewers',
+        '${import.meta.env.VITE_API_URL}/api/interviewers',
         {
           name,
           company,
