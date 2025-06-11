@@ -288,7 +288,7 @@ const InterviewerProfile = () => {
     try {
       console.log("Token being sent:", token);
 
-      const response = await fetch('${import.meta.env.VITE_API_URL}/api/replies', {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/replies`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

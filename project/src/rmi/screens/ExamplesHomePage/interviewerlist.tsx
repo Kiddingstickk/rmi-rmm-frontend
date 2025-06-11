@@ -20,7 +20,7 @@ const InterviewerList: React.FC = () => {
   useEffect(() => {
     const fetchInterviewers = async () => {
       try {
-        const response = await axios.get('${import.meta.env.VITE_API_URL}/api/interviewers');
+        const response = await axios.get(`${import.meta.env.VITE_API_URL}/api/interviewers`);
         setInterviewers(response.data);
       } catch (error) {
         console.error('Error fetching interviewers:', error);
