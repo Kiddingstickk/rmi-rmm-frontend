@@ -85,7 +85,7 @@ const ManagerProfile = () => {
 
   const handleLike = async (reviewId: string) => {
     try {
-      await api.post(`${import.meta.env.VITE_API_URL}/manager-reviews/like/${reviewId}`, {}, {
+      await api.post(`${import.meta.env.VITE_API_URL}/api/manager-reviews/like/${reviewId}`, {}, {
         headers: { Authorization: `Bearer ${token}` }
       });
       fetchManager();
@@ -98,7 +98,7 @@ const ManagerProfile = () => {
 
   const handleDislike = async (reviewId: string) => {
     try {
-      await api.post(`${import.meta.env.VITE_API_URL}/manager-reviews/dislike/${reviewId}`, {}, {
+      await api.post(`${import.meta.env.VITE_API_URL}/api/manager-reviews/dislike/${reviewId}`, {}, {
         headers: { Authorization: `Bearer ${token}` }
       });
       fetchManager();
