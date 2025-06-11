@@ -51,7 +51,7 @@ const ReviewForm: React.FC<ReviewFormProps> = ({ managerId, onSuccess,  existing
     try {
       const token = localStorage.getItem("token");
       const res = await fetch(
-        `http://localhost:5000/api/manager-reviews/${existingReview._id}`,
+        `${import.meta.env.VITE_API_URL}/api/manager-reviews/${existingReview._id}`,
         {
           method: "DELETE",
           headers: {
@@ -85,8 +85,8 @@ const ReviewForm: React.FC<ReviewFormProps> = ({ managerId, onSuccess,  existing
     try {
       const token = localStorage.getItem("token");
       const url = existingReview
-      ? `http://localhost:5000/api/manager-reviews/${existingReview._id}`
-      : "http://localhost:5000/api/manager-reviews/submit";
+      ? `${import.meta.env.VITE_API_URL}/api/manager-reviews/${existingReview._id}`
+      : "${import.meta.env.VITE_API_URL}/api/manager-reviews/submit";
       const method = existingReview ? "PUT" : "POST";
 
       const res = await fetch(url, {
