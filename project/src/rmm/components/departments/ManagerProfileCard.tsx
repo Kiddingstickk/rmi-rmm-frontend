@@ -51,7 +51,7 @@ const ManagerProfileCard: React.FC<ManagerProfileCardProps> = ({
       return;
 
     try {
-      const res = await api.delete(`/manager-reviews/${reviewId}`, {
+      const res = await api.delete(`${import.meta.env.VITE_API_URL}/manager-reviews/${reviewId}`, {
         headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
       });
 
@@ -72,7 +72,7 @@ const ManagerProfileCard: React.FC<ManagerProfileCardProps> = ({
     if (!window.confirm("Do you really want to flag this manager?")) return;
     try {
       const res = await api.post(
-        `/manager-reviews/flag/${managerId}`,
+        `${import.meta.env.VITE_API_URL}/manager-reviews/flag/${managerId}`,
         {}, // no body
         {
           headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },

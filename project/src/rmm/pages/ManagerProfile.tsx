@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import ReviewForm from "../components/departments/ReviewForm";
 //import auth  from "../../../backend/shared/middleware/auth.js";
+import { AxiosError } from "axios";
 
 import api from "../../lib/api";
 
@@ -66,7 +67,7 @@ const ManagerProfile = () => {
 
   const fetchManager = async () => {
     try {
-      const res = await fetch(`/api/rmm/managers/${id}`);
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/rmm/managers/${id}`);
       const data = await res.json();
 
       // Convert likes/dislikes arrays to counts
@@ -84,7 +85,7 @@ const ManagerProfile = () => {
 
   const handleLike = async (reviewId: string) => {
     try {
-      await axios.post(`/api/manager-reviews/like/${reviewId}`, {}, {
+      await api.post(`${import.meta.env.VITE_API_URL}/manager-reviews/like/${reviewId}`, {}, {
         headers: { Authorization: `Bearer ${token}` }
       });
       fetchManager();
@@ -92,18 +93,20 @@ const ManagerProfile = () => {
       const error = err as AxiosError;
       console.error('Error liking review:', error.response?.data || error.message);
     }
+    
   };
 
   const handleDislike = async (reviewId: string) => {
     try {
-      await axios.post(`/api/manager-reviews/dislike/${reviewId}`, {}, {
+      await api.post(`${import.meta.env.VITE_API_URL}/manager-reviews/dislike/${reviewId}`, {}, {
         headers: { Authorization: `Bearer ${token}` }
       });
       fetchManager();
     } catch (err) {
       const error = err as AxiosError;
-      console.error('Error disliking review:', error.response?.data || error.message);
+      console.error('Error liking review:', error.response?.data || error.message);
     }
+    
   };
 
 
