@@ -13,7 +13,7 @@ const ContactPage = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      await axios.post('${import.meta.env.VITE_API_URL}/api/contact', formData);
+      await axios.post(`${import.meta.env.VITE_API_URL}/api/contact`, formData);
       setSuccessMessage('Message sent successfully!');
       setFormData({ name: '', email: '', subject: '', message: '' });
     } catch (error) {
