@@ -78,7 +78,8 @@ const SearchResults = () => {
                   name={manager.name}
                   department={manager.department.name}
                   position={manager.position}
-                  averageRating={manager.averageRating}
+                  averageRating={typeof manager.averageRating === "number" ? manager.averageRating : 0}
+
                 />
               </Link>
             ))}

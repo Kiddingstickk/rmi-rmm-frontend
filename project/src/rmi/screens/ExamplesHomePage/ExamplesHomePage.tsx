@@ -86,33 +86,38 @@ const ExampleHomePage = (): JSX.Element => {
                 className="w-full bg-transparent text-[#f8f8ff] border border-[#f8f8ff] px-4 py-2 rounded placeholder-[#f8f8ff] focus:outline-none focus:ring-2 focus:ring-[#f8f8ff]"
               />
 
-              <Button
-                onClick={toggleSearchMode}
-                className="mt-2 mx-auto block bg-gray-200 text-[#1e1e1e] rounded-lg"
-              >
-                Switch to {searchMode === 'name' ? 'Company' : 'Name'}
-              </Button>
+                <Button
+                  onClick={toggleSearchMode}
+                  className="mt-2 mx-auto block bg-gray-200 text-[#1e1e1e] rounded-lg"
+                >
+                  Switch to {searchMode === 'name' ? 'Company' : 'Name'}
+                </Button>
 
-              {searchQuery && (
-                <div className="absolute top-full mt-2 w-full bg-white rounded-lg shadow-lg z-50 max-h-60 overflow-auto">
-                  {isSearching ? (
-                    <div className="p-4 text-center">Loading...</div>
-                  ) : results.length > 0 ? (
-                    results.map((i, idx) => (
-                      <div
-                        key={idx}
-                        className="px-4 py-3 hover:bg-gray-100 cursor-pointer border-b last:border-none"
-                        onClick={() => navigate(`/interviewers/${i._id}`)}
-                      >
-                        <p className="font-semibold text-gray-800">{i.Name || i.name}</p>
-                        <p className="text-sm text-gray-600">{i.Company || i.company}</p>
+                {searchQuery && (
+                  <div className="absolute top-full mt-2 w-full bg-white rounded-lg shadow-lg z-50 max-h-60 overflow-auto">
+                    {isSearching ? (
+                      <div className="p-4 text-center">
+                        <div className="text-gray-800 font-medium">Loading...</div>
+                        <div className="mt-2 text-sm text-yellow-600 font-semibold">
+                          ⚠️ Our backend is hosted on a free tier and may take up to 60 seconds to wake up. Thank you for your patience!
+                        </div>
                       </div>
-                    ))
-                  ) : (
-                    <div className="p-3 text-gray-500">No matches found</div>
-                  )}
-                </div>
-              )}
+                    ) : results.length > 0 ? (
+                      results.map((i, idx) => (
+                        <div
+                          key={idx}
+                          className="px-4 py-3 hover:bg-gray-100 cursor-pointer border-b last:border-none"
+                          onClick={() => navigate(`/interviewers/${i._id}`)}
+                        >
+                          <p className="font-semibold text-gray-800">{i.Name || i.name}</p>
+                          <p className="text-sm text-gray-600">{i.Company || i.company}</p>
+                        </div>
+                      ))
+                    ) : (
+                      <div className="p-3 text-gray-500">No matches found</div>
+                    )}
+                  </div>
+                )}
             </form>
           </div>
         </div>
