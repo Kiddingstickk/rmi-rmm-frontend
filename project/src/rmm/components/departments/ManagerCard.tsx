@@ -22,7 +22,8 @@ const ManagerCard: React.FC<ManagerCardProps> = ({
   averageRating,
   onClick,
 }) => {
-  const isValidRating = typeof averageRating === "number";
+  const isValidRating = Number.isFinite(averageRating);
+
   return (
     <div
       className="bg-white rounded-lg shadow-md p-5 cursor-pointer hover:shadow-lg transition"
