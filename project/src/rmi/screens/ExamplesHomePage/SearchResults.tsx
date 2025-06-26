@@ -85,19 +85,19 @@ const SearchResults = () => {
     currentPage * RESULTS_PER_PAGE
   );
 
-  if (loading) return <div className="text-center py-10 text-lg">Loading...</div>;
-  if (error) return <div className="text-center text-red-500 py-10">{error}</div>;
+  if (loading) return <div className="text-center py-10 text-lg text-white">Loading...</div>;
+  if (error) return <div className="text-center text-red-300 py-10">{error}</div>;
   if (results.length === 0) {
     return (
-      <div className="text-center py-10">
+      <div className="text-center py-10 text-white">
         <h2 className="text-2xl font-bold mb-4">No results found for “{query}”</h2>
-        <img src="/no-results.png" alt="No results" className="mx-auto w-64 opacity-50" />
+        <img src="/no-results.png" alt="No results" className="mx-auto w-64 opacity-60" />
       </div>
     );
   }
 
   return (
-    <div className="bg-neutralCanvas min-h-screen px-4 sm:px-6 py-12">
+    <div className="min-h-screen px-4 sm:px-6 py-12 bg-gradient-to-br from-[#a18cd1] via-[#fbc2eb] to-[#f2f2f2] relative">
       <h1 className="text-3xl sm:text-4xl font-semibold text-center text-deepGray mb-10">
         Search Results for “{query}”
       </h1>
@@ -105,46 +105,45 @@ const SearchResults = () => {
       <div className="grid gap-8 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 max-w-6xl mx-auto">
         {pageResults.map((interviewer, index) => (
           <div
-          key={index}
-          className="relative group cursor-pointer bg-white rounded-2xl p-6 border border-gray-200 shadow-sm transition duration-300 transform hover:scale-[1.03] hover:shadow-xl hover:ring-2 hover:ring-blue-500/20"
-          onClick={() => {
-            setSelectedInterviewer(interviewer);
-            setShowReviewPrompt(true);
-          }}
-          style={{ animationDelay: `${index * 0.05}s`, animationFillMode: 'both' }}
-        >
-          <h3 className="text-lg font-bold text-deepGray mb-1 group-hover:text-professionalBlue transition">
-            {interviewer.name}
-          </h3>
-          <p className="text-sm text-mutedGray">
-            🏢 <strong>Company:</strong> {interviewer.company}
-          </p>
-          <p className="text-sm text-mutedGray">
-            👔 <strong>Position:</strong> {interviewer.position || 'N/A'}
-          </p>
-          <p className="text-sm text-mutedGray">
-            📖 <strong>Experience:</strong> {interviewer.experience || 'N/A'}
-          </p>
-          <div className="mt-3 flex justify-between items-center">
-            <span className="inline-block px-3 py-1 rounded-full text-xs font-medium bg-neutralCanvas text-deepGray">
-              ⭐ {calculateWeightedRating(interviewer.ratings)} / 5
-            </span>
-            <button
-              onClick={(e) => {
-                e.stopPropagation();
-                handleSave(interviewer);
-              }}
-              className={`px-3 py-1 rounded-full text-xs font-medium shadow-sm ${
-                savedIds.includes(interviewer._id)
-                  ? 'bg-red-500 text-white'
-                  : 'bg-green-500 text-white'
-              }`}
-            >
-              {savedIds.includes(interviewer._id) ? 'Unsave' : 'Save'}
-            </button>
+            key={index}
+            className="relative group cursor-pointer rounded-2xl p-6 bg-white/90 backdrop-blur-sm border border-gray-200 shadow-sm transition-transform duration-300 hover:scale-[1.03] hover:shadow-xl hover:ring-2 hover:ring-blue-500/20"
+            onClick={() => {
+              setSelectedInterviewer(interviewer);
+              setShowReviewPrompt(true);
+            }}
+            style={{ animationDelay: `${index * 0.05}s`, animationFillMode: 'both' }}
+          >
+            <h3 className="text-lg font-bold text-deepGray mb-1 group-hover:text-professionalBlue transition">
+              {interviewer.name}
+            </h3>
+            <p className="text-sm text-mutedGray">
+              🏢 <strong>Company:</strong> {interviewer.company}
+            </p>
+            <p className="text-sm text-mutedGray">
+              👔 <strong>Position:</strong> {interviewer.position || 'N/A'}
+            </p>
+            <p className="text-sm text-mutedGray">
+              📖 <strong>Experience:</strong> {interviewer.experience || 'N/A'}
+            </p>
+            <div className="mt-3 flex justify-between items-center">
+              <span className="inline-block px-3 py-1 rounded-full text-xs font-medium bg-neutralCanvas text-deepGray">
+                ⭐ {calculateWeightedRating(interviewer.ratings)} / 5
+              </span>
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleSave(interviewer);
+                }}
+                className={`px-3 py-1 rounded-full text-xs font-medium shadow-sm ${
+                  savedIds.includes(interviewer._id)
+                    ? 'bg-red-500 text-white'
+                    : 'bg-green-500 text-white'
+                }`}
+              >
+                {savedIds.includes(interviewer._id) ? 'Unsave' : 'Save'}
+              </button>
+            </div>
           </div>
-        </div>
-        
         ))}
       </div>
       {/* Pagination */}
