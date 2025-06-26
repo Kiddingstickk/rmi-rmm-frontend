@@ -105,37 +105,46 @@ const SearchResults = () => {
       <div className="grid gap-8 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 max-w-6xl mx-auto">
         {pageResults.map((interviewer, index) => (
           <div
-            key={index}
-            className="relative cursor-pointer animate-fade-up bg-white rounded-2xl p-6 shadow-sm hover:shadow-md transition duration-300 border hover:outline hover:outline-2 hover:outline-blue-500/20"
-            onClick={() => {
-              setSelectedInterviewer(interviewer);
-              setShowReviewPrompt(true);
-            }}
-            style={{ animationDelay: `${index * 0.05}s`, animationFillMode: 'both' }}
-          >
-            <h3 className="text-lg font-bold text-deepGray mb-1">{interviewer.name}</h3>
-            <p className="text-sm text-mutedGray">🏢 <strong>Company:</strong> {interviewer.company}</p>
-            <p className="text-sm text-mutedGray">👔 <strong>Position:</strong> {interviewer.position || 'N/A'}</p>
-            <p className="text-sm text-mutedGray">📖 <strong>Experience:</strong> {interviewer.experience || 'N/A'}</p>
-            <div className="mt-3 flex justify-between items-center">
-              <span className="inline-block px-3 py-1 rounded-full text-xs font-medium bg-neutralCanvas text-deepGray">
-                ⭐ {calculateWeightedRating(interviewer.ratings)} / 5
-              </span>
-              <button
-                onClick={(e) => {
-                  e.stopPropagation();
-                  handleSave(interviewer);
-                }}
-                className={`px-3 py-1 rounded-full text-xs font-medium shadow-sm ${
-                  savedIds.includes(interviewer._id)
-                    ? 'bg-red-500 text-white'
-                    : 'bg-green-500 text-white'
-                }`}
-              >
-                {savedIds.includes(interviewer._id) ? 'Unsave' : 'Save'}
-              </button>
-            </div>
+          key={index}
+          className="relative group cursor-pointer bg-white rounded-2xl p-6 border border-gray-200 shadow-sm transition duration-300 transform hover:scale-[1.03] hover:shadow-xl hover:ring-2 hover:ring-blue-500/20"
+          onClick={() => {
+            setSelectedInterviewer(interviewer);
+            setShowReviewPrompt(true);
+          }}
+          style={{ animationDelay: `${index * 0.05}s`, animationFillMode: 'both' }}
+        >
+          <h3 className="text-lg font-bold text-deepGray mb-1 group-hover:text-professionalBlue transition">
+            {interviewer.name}
+          </h3>
+          <p className="text-sm text-mutedGray">
+            🏢 <strong>Company:</strong> {interviewer.company}
+          </p>
+          <p className="text-sm text-mutedGray">
+            👔 <strong>Position:</strong> {interviewer.position || 'N/A'}
+          </p>
+          <p className="text-sm text-mutedGray">
+            📖 <strong>Experience:</strong> {interviewer.experience || 'N/A'}
+          </p>
+          <div className="mt-3 flex justify-between items-center">
+            <span className="inline-block px-3 py-1 rounded-full text-xs font-medium bg-neutralCanvas text-deepGray">
+              ⭐ {calculateWeightedRating(interviewer.ratings)} / 5
+            </span>
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                handleSave(interviewer);
+              }}
+              className={`px-3 py-1 rounded-full text-xs font-medium shadow-sm ${
+                savedIds.includes(interviewer._id)
+                  ? 'bg-red-500 text-white'
+                  : 'bg-green-500 text-white'
+              }`}
+            >
+              {savedIds.includes(interviewer._id) ? 'Unsave' : 'Save'}
+            </button>
           </div>
+        </div>
+        
         ))}
       </div>
       {/* Pagination */}
