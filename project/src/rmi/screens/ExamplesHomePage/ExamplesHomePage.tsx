@@ -56,46 +56,45 @@ const ExampleHomePage = (): JSX.Element => {
 
   return (
     <MainLayout isLoggedIn={isLoggedIn} onLogout={handleLogout}>
-      {/* Hero Section */}
-      <section className="relative w-full h-[650px] bg-neutralCanvas overflow-hidden">
+      {/* Hero */}
+      <section className="relative w-full min-h-[600px] bg-neutralCanvas overflow-hidden px-4 sm:px-6">
         {/* Blobs */}
         <div className="blob top-[-80px] left-[-60px]"></div>
         <div className="blob top-[60%] left-[80%]"></div>
 
-        <div className="relative z-10 h-full flex flex-col justify-center items-center text-center px-6">
-          <h1 className="text-5xl md:text-6xl font-bold text-deepGray animate-fade-up">
+        <div className="relative z-10 flex flex-col justify-center items-center text-center h-full pt-24 pb-16 sm:py-32">
+          <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold text-deepGray animate-fade-up">
             Rate My Interviewer
           </h1>
-          <div className="typing-container text-lg md:text-xl text-mutedGray mt-3 max-w-xl">
+          <div className="typing-container text-base sm:text-lg text-mutedGray mt-3 max-w-md">
             Honest, AI-driven feedback for your career growth
           </div>
 
-          {/* Search Form */}
           <form
             onSubmit={handleSearchSubmit}
-            className="mt-10 w-full max-w-md relative space-y-3"
+            className="mt-10 w-full max-w-md space-y-3"
           >
             <input
               type="text"
               value={searchQuery}
               onChange={handleSearchChange}
               placeholder={`Search by ${searchMode}...`}
-              className="w-full bg-white text-deepGray border border-professionalBlue px-4 py-3 rounded-lg placeholder:text-mutedGray shadow focus:outline-none focus:ring-2 focus:ring-professionalBlue"
+              className="w-full bg-white text-deepGray border border-professionalBlue px-4 py-3 rounded-lg placeholder:text-mutedGray shadow focus:outline-none focus:ring-2 focus:ring-professionalBlue text-sm sm:text-base"
             />
             <Button
               onClick={toggleSearchMode}
-              className="w-full bg-professionalBlue text-white hover:bg-blue-700 rounded-md"
+              className="w-full bg-professionalBlue text-white hover:bg-blue-700 rounded-md text-sm sm:text-base"
             >
               Switch to {searchMode === 'name' ? 'Company' : 'Name'}
             </Button>
 
             {searchQuery && (
-              <div className="absolute top-full mt-2 w-full bg-white rounded-lg shadow-lg z-50 max-h-60 overflow-auto">
+              <div className="absolute top-full mt-2 w-full bg-white rounded-lg shadow-lg z-50 max-h-60 overflow-auto text-left text-sm">
                 {isSearching ? (
                   <div className="p-4 text-center text-mutedGray">
                     <p className="font-medium">Loading...</p>
-                    <p className="text-sm text-yellow-600 mt-2">
-                      ⚠️ Our backend may take a moment to respond.
+                    <p className="text-xs text-yellow-600 mt-1">
+                      ⚠️ Backend may need a few seconds to wake up.
                     </p>
                   </div>
                 ) : results.length > 0 ? (
@@ -105,7 +104,7 @@ const ExampleHomePage = (): JSX.Element => {
                       onClick={() => navigate(`/interviewers/${i._id}`)}
                       className="px-4 py-3 hover:bg-blue-100/30 cursor-pointer border-b text-deepGray"
                     >
-                      <p className="font-semibold">{i.Name || i.name}</p>
+                      <p className="font-medium">{i.Name || i.name}</p>
                       <p className="text-sm text-mutedGray">
                         {i.Company || i.company}
                       </p>
@@ -121,15 +120,15 @@ const ExampleHomePage = (): JSX.Element => {
       </section>
 
       {/* Join Section */}
-      <section className="bg-neutralCanvas py-20">
-        <div className="max-w-6xl mx-auto px-6 text-center">
-          <h2 className="text-4xl font-bold text-deepGray mb-3 animate-fade-up">
+      <section className="bg-neutralCanvas py-16 px-4 sm:px-6">
+        <div className="max-w-6xl mx-auto text-center">
+          <h2 className="text-3xl sm:text-4xl font-bold text-deepGray mb-2">
             Join the RMI Community
           </h2>
-          <p className="text-mutedGray mb-10 text-lg">
-            Help others and grow your own confidence through shared experience.
+          <p className="text-mutedGray mb-10 text-base sm:text-lg">
+            Empower others. Shape better interviews.
           </p>
-          <div className="grid md:grid-cols-3 gap-10">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
             {[
               {
                 label: 'Manage your reviews',
@@ -146,15 +145,16 @@ const ExampleHomePage = (): JSX.Element => {
             ].map((item, i) => (
               <div
                 key={i}
-                className="bg-white p-6 rounded-lg shadow transition hover:outline hover:outline-2 hover:outline-professionalBlue/30 animate-fade-up"
-                style={{ animationDelay: `${i * 0.2}s` }}
+                className="bg-white p-6 rounded-lg shadow hover:shadow-md hover:outline hover:outline-1 hover:outline-professionalBlue/30 transition"
               >
                 <img
                   src={item.icon}
                   alt={item.label}
-                  className="w-20 h-20 mx-auto mb-4"
+                  className="w-16 h-16 sm:w-20 sm:h-20 mx-auto mb-4"
                 />
-                <p className="text-lg font-semibold text-deepGray">{item.label}</p>
+                <p className="text-base sm:text-lg font-semibold text-deepGray">
+                  {item.label}
+                </p>
               </div>
             ))}
           </div>
@@ -162,7 +162,7 @@ const ExampleHomePage = (): JSX.Element => {
           <div className="mt-10">
             <Button
               onClick={() => navigate('/signin')}
-              className="bg-actionYellow text-deepGray hover:bg-yellow-400 rounded-lg font-semibold"
+              className="bg-actionYellow text-deepGray hover:bg-yellow-400 rounded-lg font-semibold px-6 py-3 text-sm sm:text-base"
             >
               Sign In to Get Started
             </Button>
@@ -171,19 +171,19 @@ const ExampleHomePage = (): JSX.Element => {
       </section>
 
       {/* Footer */}
-      <footer className="bg-deepGray text-neutralCanvas py-6 px-8 flex flex-col md:flex-row items-center justify-between">
-        <span className="font-semibold text-xl tracking-wide">
+      <footer className="bg-deepGray text-neutralCanvas py-6 px-4 sm:px-8 flex flex-col sm:flex-row gap-4 items-center justify-between">
+        <span className="font-semibold text-lg tracking-wide text-center sm:text-left">
           Rate My Interviewer
         </span>
-        <div className="flex space-x-6 mt-4 md:mt-0">
-          <a href="/contact" className="hover:text-actionYellow">
+        <div className="flex gap-6 justify-center sm:justify-start">
+          <a href="/contact" className="hover:text-actionYellow text-sm">
             Contact Us
           </a>
-          <a href="/team" className="hover:text-actionYellow">
+          <a href="/team" className="hover:text-actionYellow text-sm">
             Our Team
           </a>
         </div>
-        <div className="flex gap-4 mt-4 md:mt-0">
+        <div className="flex gap-4 justify-center sm:justify-end">
           <img className="w-5 h-5" src="/logo-instagram.svg" alt="Instagram" />
           <img className="w-5 h-5" src="/logo-twitter.svg" alt="Twitter" />
         </div>
