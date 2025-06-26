@@ -1,12 +1,18 @@
+@tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 @layer components {
-  .all-\[unset\] {
+  .all-
+
+\[unset\]
+
+ {
     all: unset;
   }
 }
 
+/* 🌿 Root Theme Variables */
 :root {
   --body-base-font-family: "Inter", Helvetica;
   --body-base-font-size: 16px;
@@ -14,36 +20,30 @@
   --body-base-font-weight: 400;
   --body-base-letter-spacing: 0px;
   --body-base-line-height: 140%;
+
   --body-strong-font-family: "Inter", Helvetica;
   --body-strong-font-size: 16px;
   --body-strong-font-style: normal;
   --body-strong-font-weight: 600;
   --body-strong-letter-spacing: 0px;
   --body-strong-line-height: 140%;
+
   --image-placeholder: rgba(227, 227, 227, 1);
-  --single-line-body-base-font-family: "Inter", Helvetica;
-  --single-line-body-base-font-size: 16px;
-  --single-line-body-base-font-style: normal;
-  --single-line-body-base-font-weight: 400;
-  --single-line-body-base-letter-spacing: 0px;
-  --single-line-body-base-line-height: 100%;
+
   --subtitle-font-family: "Inter", Helvetica;
   --subtitle-font-size: 32px;
   --subtitle-font-style: normal;
   --subtitle-font-weight: 400;
   --subtitle-letter-spacing: 0px;
-  --subtitle-line-height: 120.00000762939453%;
+  --subtitle-line-height: 120%;
+
   --title-hero-font-family: "Inter", Helvetica;
   --title-hero-font-size: 72px;
   --title-hero-font-style: normal;
   --title-hero-font-weight: 700;
   --title-hero-letter-spacing: -2.16px;
-  --title-hero-line-height: 120.00000762939453%;
+  --title-hero-line-height: 120%;
 }
-
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
 
 @layer base {
   :root {
@@ -75,14 +75,12 @@
     --destructive-foreground: 210 40% 98%;
 
     --ring: 215 20.2% 65.1%;
-
     --radius: 0.5rem;
   }
 
   .dark {
     --background: 224 71% 4%;
     --foreground: 213 31% 91%;
-
     --muted: 223 47% 11%;
     --muted-foreground: 215.4 16.3% 56.9%;
 
@@ -108,39 +106,45 @@
     --destructive-foreground: 210 40% 98%;
 
     --ring: 216 34% 17%;
-
     --radius: 0.5rem;
-  }
-}
-
-@layer base {
-  * {
-    @apply border-border;
   }
 
   body {
-    @apply bg-background text-foreground;
+    background-color: hsl(var(--background));
+    color: hsl(var(--foreground));
     font-feature-settings: "rlig" 1, "calt" 1;
   }
 }
 
-@keyframes blob {
-  0%, 100% {
-    transform: translate(0px, 0px) scale(1);
-  }
-  50% {
-    transform: translate(50px, -30px) scale(1.1);
-  }
+/* 🔮 Animated Blobs */
+.blob {
+  @apply absolute w-80 h-80 rounded-full blur-3xl opacity-30 mix-blend-multiply pointer-events-none z-0;
+  background: radial-gradient(circle at 50% 50%, #f582ae, #8bd3dd);
+  animation: float 10s ease-in-out infinite alternate;
 }
 
-.animate-blob {
-  animation: blob 20s infinite ease-in-out;
+/* 🖋 Typing Text Effect */
+.typing-container {
+  font-family: monospace;
+  white-space: nowrap;
+  overflow: hidden;
+  border-right: 2px solid currentColor;
+  animation: typing 3s steps(30, end) forwards, blink 1s step-end infinite;
 }
 
-.move-slow-1 {
-  animation-delay: 0s;
+/* ✨ Shimmer Card/CTA */
+.shimmer-box {
+  position: relative;
+  overflow: hidden;
 }
-.move-slow-2 {
-  animation-delay: 10s;
+.shimmer-box::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(120deg, transparent, rgba(255,255,255,0.3), transparent);
+  animation: shimmer 1.5s linear infinite;
 }
 

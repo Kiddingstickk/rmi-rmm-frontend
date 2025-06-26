@@ -88,7 +88,8 @@ export const createManager = async (req, res) => {
       name,
       department: department._id,
       position,
-      bio
+      bio,
+      averageRating: 0
     });
 
     await manager.save();
