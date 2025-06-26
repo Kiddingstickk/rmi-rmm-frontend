@@ -67,7 +67,7 @@ const ExampleHomePage = (): JSX.Element => {
             Rate My Interviewer
           </h1>
           <div className="typing-container text-base sm:text-lg text-mutedGray mt-3 max-w-md">
-            Honest, AI-driven feedback for your career growth
+            Honest, AI-driven feedback 
           </div>
 
           <form
