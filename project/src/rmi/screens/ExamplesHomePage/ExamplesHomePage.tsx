@@ -63,9 +63,11 @@ const ExampleHomePage = (): JSX.Element => {
           <h1 className="text-3xl sm:text-5xl font-bold text-deepGray animate-fade-up">
             Rate My Interviewer
           </h1>
-          <p className="typing-container text-sm sm:text-lg text-mutedGray mt-3 max-w-md">
-            Honest, AI-driven feedback for your career growth
+          <p className="typing-container text-sm sm:text-lg text-mutedGray mt-3 max-w-full sm:max-w-xl mx-auto text-center">
+            <span className="inline-block">Honest, AI-driven feedback for your career growth</span>
+            <span className="blinking-cursor" />
           </p>
+
 
           <form
             onSubmit={handleSearchSubmit}
