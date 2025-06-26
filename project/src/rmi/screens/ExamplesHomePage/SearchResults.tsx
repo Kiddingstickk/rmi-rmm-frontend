@@ -97,7 +97,7 @@ const SearchResults = () => {
   }
 
   return (
-    <div className="min-h-screen px-4 sm:px-6 py-12 bg-gradient-to-br from-[#a18cd1] via-[#fbc2eb] to-[#f2f2f2] relative">
+    <div className="min-h-screen px-4 sm:px-6 py-12 bg-gradient-to-br from-[#fef6ec] via-[#f9e7d9] to-[#f6eee7] relative">
       <h1 className="text-3xl sm:text-4xl font-semibold text-center text-deepGray mb-10">
         Search Results for “{query}”
       </h1>
