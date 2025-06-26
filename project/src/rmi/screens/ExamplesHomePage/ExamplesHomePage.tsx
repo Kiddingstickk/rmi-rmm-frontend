@@ -1,5 +1,3 @@
-// ExampleHomePage.tsx
-
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import MainLayout from '../../components/ui/MainLayout';
@@ -57,78 +55,79 @@ const ExampleHomePage = (): JSX.Element => {
   return (
     <MainLayout isLoggedIn={isLoggedIn} onLogout={handleLogout}>
       {/* Hero */}
-      <section className="relative w-full min-h-[600px] bg-neutralCanvas overflow-hidden px-4 sm:px-6">
-        {/* Blobs */}
-        <div className="blob top-[-80px] left-[-60px]"></div>
-        <div className="blob top-[60%] left-[80%]"></div>
+      <section className="relative w-full bg-neutralCanvas overflow-hidden px-4 sm:px-6">
+        <div className="blob top-[-80px] left-[-60px]" />
+        <div className="blob top-[60%] left-[80%]" />
 
-        <div className="relative z-10 flex flex-col justify-center items-center text-center h-full pt-24 pb-16 sm:py-32">
-          <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold text-deepGray animate-fade-up">
+        <div className="relative z-10 max-w-4xl mx-auto flex flex-col justify-center items-center text-center pt-20 sm:pt-28 pb-16">
+          <h1 className="text-3xl sm:text-5xl font-bold text-deepGray animate-fade-up">
             Rate My Interviewer
           </h1>
-          <div className="typing-container text-base sm:text-lg text-mutedGray mt-3 max-w-md">
-            Honest, AI-driven feedback 
-          </div>
+          <p className="typing-container text-sm sm:text-lg text-mutedGray mt-3 max-w-md">
+            Honest, AI-driven feedback for your career growth
+          </p>
 
           <form
             onSubmit={handleSearchSubmit}
             className="mt-10 w-full max-w-md space-y-3"
           >
-            <input
-              type="text"
-              value={searchQuery}
-              onChange={handleSearchChange}
-              placeholder={`Search by ${searchMode}...`}
-              className="w-full bg-white text-deepGray border border-professionalBlue px-4 py-3 rounded-lg placeholder:text-mutedGray shadow focus:outline-none focus:ring-2 focus:ring-professionalBlue text-sm sm:text-base"
-            />
+            <div className="relative">
+              <input
+                type="text"
+                value={searchQuery}
+                onChange={handleSearchChange}
+                placeholder={`Search by ${searchMode}...`}
+                className="w-full bg-white text-deepGray border border-professionalBlue px-4 py-3 rounded-lg placeholder:text-mutedGray shadow focus:outline-none focus:ring-2 focus:ring-professionalBlue text-sm sm:text-base"
+              />
+              {searchQuery && (
+                <div className="absolute top-full left-0 right-0 mt-2 bg-white rounded-lg shadow-lg z-50 max-h-60 overflow-auto text-left text-sm">
+                  {isSearching ? (
+                    <div className="p-4 text-center text-mutedGray">
+                      <p className="font-medium">Loading...</p>
+                      <p className="text-xs text-yellow-600 mt-1">
+                        ⚠️ Backend might take a few seconds.
+                      </p>
+                    </div>
+                  ) : results.length > 0 ? (
+                    results.map((i, idx) => (
+                      <div
+                        key={idx}
+                        onClick={() => navigate(`/interviewers/${i._id}`)}
+                        className="px-4 py-3 hover:bg-blue-100/30 cursor-pointer border-b text-deepGray"
+                      >
+                        <p className="font-medium">{i.Name || i.name}</p>
+                        <p className="text-sm text-mutedGray">
+                          {i.Company || i.company}
+                        </p>
+                      </div>
+                    ))
+                  ) : (
+                    <div className="p-3 text-mutedGray">No matches found</div>
+                  )}
+                </div>
+              )}
+            </div>
+
             <Button
               onClick={toggleSearchMode}
               className="w-full bg-professionalBlue text-white hover:bg-blue-700 rounded-md text-sm sm:text-base"
             >
               Switch to {searchMode === 'name' ? 'Company' : 'Name'}
             </Button>
-
-            {searchQuery && (
-              <div className="absolute top-full mt-2 w-full bg-white rounded-lg shadow-lg z-50 max-h-60 overflow-auto text-left text-sm">
-                {isSearching ? (
-                  <div className="p-4 text-center text-mutedGray">
-                    <p className="font-medium">Loading...</p>
-                    <p className="text-xs text-yellow-600 mt-1">
-                      ⚠️ Backend may need a few seconds to wake up.
-                    </p>
-                  </div>
-                ) : results.length > 0 ? (
-                  results.map((i, idx) => (
-                    <div
-                      key={idx}
-                      onClick={() => navigate(`/interviewers/${i._id}`)}
-                      className="px-4 py-3 hover:bg-blue-100/30 cursor-pointer border-b text-deepGray"
-                    >
-                      <p className="font-medium">{i.Name || i.name}</p>
-                      <p className="text-sm text-mutedGray">
-                        {i.Company || i.company}
-                      </p>
-                    </div>
-                  ))
-                ) : (
-                  <div className="p-3 text-mutedGray">No matches found</div>
-                )}
-              </div>
-            )}
           </form>
         </div>
       </section>
 
-      {/* Join Section */}
+      {/* Join */}
       <section className="bg-neutralCanvas py-16 px-4 sm:px-6">
         <div className="max-w-6xl mx-auto text-center">
           <h2 className="text-3xl sm:text-4xl font-bold text-deepGray mb-2">
             Join the RMI Community
           </h2>
-          <p className="text-mutedGray mb-10 text-base sm:text-lg">
+          <p className="text-mutedGray mb-10 text-sm sm:text-lg">
             Empower others. Shape better interviews.
           </p>
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 max-w-5xl mx-auto">
             {[
               {
                 label: 'Manage your reviews',
@@ -171,15 +170,15 @@ const ExampleHomePage = (): JSX.Element => {
       </section>
 
       {/* Footer */}
-      <footer className="bg-deepGray text-neutralCanvas py-6 px-4 sm:px-8 flex flex-col sm:flex-row gap-4 items-center justify-between">
-        <span className="font-semibold text-lg tracking-wide text-center sm:text-left">
+      <footer className="bg-deepGray text-neutralCanvas py-6 px-4 sm:px-8 flex flex-col sm:flex-row gap-4 items-center justify-between text-sm">
+        <span className="font-semibold text-center sm:text-left">
           Rate My Interviewer
         </span>
         <div className="flex gap-6 justify-center sm:justify-start">
-          <a href="/contact" className="hover:text-actionYellow text-sm">
+          <a href="/contact" className="hover:text-actionYellow">
             Contact Us
           </a>
-          <a href="/team" className="hover:text-actionYellow text-sm">
+          <a href="/team" className="hover:text-actionYellow">
             Our Team
           </a>
         </div>
