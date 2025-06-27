@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import MainLayout from '../../components/ui/MainLayout';
 import { getInterviewers } from '../../lib/api';
 import { Button } from '../../components/ui/button';
+import MinimalLoader from "../../components/ui/AnimatedLoader";
 
 const ExampleHomePage = (): JSX.Element => {
   const [searchQuery, setSearchQuery] = useState('');
@@ -10,6 +11,7 @@ const ExampleHomePage = (): JSX.Element => {
   const [results, setResults] = useState<any[]>([]);
   const [searchMode, setSearchMode] = useState<'name' | 'company'>('name');
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isLoading, setIsLoading] = useState(false); // ✅ New state
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -49,7 +51,11 @@ const ExampleHomePage = (): JSX.Element => {
 
   const handleSearchSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (searchQuery.trim()) navigate(`/search/${searchQuery}`);
+    if (!searchQuery.trim()) return;
+    setIsLoading(true); // ✅ Show loader
+    setTimeout(() => {
+      navigate(`/search/${searchQuery}`);
+    }, 1200); // ✅ Short delay for smooth transition
   };
 
   return (
@@ -189,6 +195,7 @@ const ExampleHomePage = (): JSX.Element => {
           <img className="w-5 h-5" src="/logo-twitter.svg" alt="Twitter" />
         </div>
       </footer>
+      {isLoading && <MinimalLoader />}
     </MainLayout>
   );
 };
