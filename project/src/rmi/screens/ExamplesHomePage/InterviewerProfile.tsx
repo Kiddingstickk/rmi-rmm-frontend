@@ -333,10 +333,16 @@ const InterviewerProfile = () => {
   {/* Profile Header */}
   <div className="flex items-center mb-8">
           <div className="w-24 h-24 bg-gray-300 rounded-full mr-6 flex items-center justify-center text-3xl text-white font-bold bg-gradient-to-br from-blue-400 to-purple-500">{interviewer.name.charAt(0)}</div>
-          <div>
-            <h1 className="text-4xl font-bold text-gray-800">{interviewer.name}</h1>
-            <p className="text-lg text-gray-600"><strong>Company:</strong> {interviewer.company}</p>
-            <p className="text-lg text-gray-600"><strong>Position:</strong> {interviewer.position}</p>
+           <div>
+            <h1 className="text-4xl font-bold text-gray-800 dark:text-white">
+              {interviewer.name}
+            </h1>
+            <p className="text-lg text-gray-600 dark:text-gray-300">
+              <strong className="dark:text-gray-400">Company:</strong> {interviewer.company}
+            </p>
+            <p className="text-lg text-gray-600 dark:text-gray-300">
+              <strong className="dark:text-gray-400">Position:</strong> {interviewer.position}
+            </p>
           </div>
         </div>
 
