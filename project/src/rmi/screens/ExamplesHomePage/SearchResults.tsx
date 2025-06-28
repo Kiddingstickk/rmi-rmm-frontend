@@ -85,20 +85,23 @@ const SearchResults = () => {
     currentPage * RESULTS_PER_PAGE
   );
 
-  if (loading) return <div className="text-center py-10 text-lg text-white">Loading...</div>;
-  if (error) return <div className="text-center text-red-300 py-10">{error}</div>;
+  if (loading)
+    return <div className="text-center py-10 text-lg text-gray-800 dark:text-gray-100">Loading...</div>;
+
+  if (error)
+    return <div className="text-center text-red-600 dark:text-red-400 py-10">{error}</div>;
+
   if (results.length === 0) {
     return (
-      <div className="text-center py-10 text-white">
+      <div className="text-center py-10 text-gray-800 dark:text-gray-100">
         <h2 className="text-2xl font-bold mb-4">No results found for “{query}”</h2>
         <img src="/no-results.png" alt="No results" className="mx-auto w-64 opacity-60" />
       </div>
     );
   }
-
   return (
-    <div className="min-h-screen px-4 sm:px-6 py-12 bg-gradient-to-br from-[#fef6ec] via-[#f9e7d9] to-[#f6eee7] relative">
-      <h1 className="text-3xl sm:text-4xl font-semibold text-center text-deepGray mb-10">
+    <div className="min-h-screen px-4 sm:px-6 py-12 bg-gradient-to-br from-[#fef6ec] via-[#f9e7d9] to-[#f6eee7] dark:from-gray-950 dark:via-gray-900 dark:to-gray-950 relative">
+      <h1 className="text-3xl sm:text-4xl font-semibold text-center text-deepGray dark:text-white mb-10">
         Search Results for “{query}”
       </h1>
 
@@ -106,27 +109,27 @@ const SearchResults = () => {
         {pageResults.map((interviewer, index) => (
           <div
             key={index}
-            className="relative group cursor-pointer rounded-2xl p-6 bg-white/90 backdrop-blur-sm border border-gray-200 shadow-sm transition-transform duration-300 hover:scale-[1.03] hover:shadow-xl hover:ring-2 hover:ring-blue-500/20"
+            className="relative group cursor-pointer rounded-2xl p-6 bg-white/90 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 shadow-sm transition-transform duration-300 hover:scale-[1.03] hover:shadow-xl hover:ring-2 hover:ring-blue-500/20"
             onClick={() => {
               setSelectedInterviewer(interviewer);
               setShowReviewPrompt(true);
             }}
             style={{ animationDelay: `${index * 0.05}s`, animationFillMode: 'both' }}
           >
-            <h3 className="text-lg font-bold text-deepGray mb-1 group-hover:text-professionalBlue transition">
+            <h3 className="text-lg font-bold text-deepGray dark:text-white mb-1 group-hover:text-professionalBlue transition">
               {interviewer.name}
             </h3>
-            <p className="text-sm text-mutedGray">
+            <p className="text-sm text-mutedGray dark:text-gray-300">
               🏢 <strong>Company:</strong> {interviewer.company}
             </p>
-            <p className="text-sm text-mutedGray">
+            <p className="text-sm text-mutedGray dark:text-gray-300">
               👔 <strong>Position:</strong> {interviewer.position || 'N/A'}
             </p>
-            <p className="text-sm text-mutedGray">
+            <p className="text-sm text-mutedGray dark:text-gray-300">
               📖 <strong>Experience:</strong> {interviewer.experience || 'N/A'}
             </p>
             <div className="mt-3 flex justify-between items-center">
-              <span className="inline-block px-3 py-1 rounded-full text-xs font-medium bg-neutralCanvas text-deepGray">
+              <span className="inline-block px-3 py-1 rounded-full text-xs font-medium bg-neutralCanvas dark:bg-gray-700 text-deepGray dark:text-white">
                 ⭐ {calculateWeightedRating(interviewer.ratings)} / 5
               </span>
               <button
@@ -146,13 +149,13 @@ const SearchResults = () => {
           </div>
         ))}
       </div>
-      {/* Pagination */}
+
       {totalPages > 1 && (
         <div className="mt-12 flex justify-center items-center space-x-2 text-sm">
           <button
-            onClick={() => setCurrentPage(p => Math.max(1, p - 1))}
+            onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
             disabled={currentPage === 1}
-            className="px-3 py-1 rounded bg-white hover:bg-gray-100 text-deepGray border shadow-sm disabled:opacity-50"
+            className="px-3 py-1 rounded bg-white dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700 text-deepGray dark:text-white border border-gray-300 dark:border-gray-600 shadow-sm disabled:opacity-50"
           >
             Prev
           </button>
@@ -163,93 +166,95 @@ const SearchResults = () => {
               className={`px-3 py-1 rounded font-medium ${
                 currentPage === i + 1
                   ? 'bg-professionalBlue text-white'
-                  : 'bg-white hover:bg-gray-100 text-deepGray border'
+                  : 'bg-white dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700 text-deepGray dark:text-white border border-gray-300 dark:border-gray-600'
               }`}
             >
               {i + 1}
             </button>
           ))}
           <button
-            onClick={() => setCurrentPage(p => Math.min(totalPages, p + 1))}
+            onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
             disabled={currentPage === totalPages}
-            className="px-3 py-1 rounded bg-white hover:bg-gray-100 text-deepGray border shadow-sm disabled:opacity-50"
+            className="px-3 py-1 rounded bg-white dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700 text-deepGray dark:text-white border border-gray-300 dark:border-gray-600 shadow-sm disabled:opacity-50"
           >
             Next
           </button>
         </div>
       )}
 
-      {/* Call to Action */}
       <div className="flex justify-center mt-12">
         <button
           onClick={() => navigate('/add-interviewer')}
-          className="bg-actionYellow hover:bg-yellow-400 text-deepGray font-medium py-2 px-6 rounded-lg transition"
+          className="bg-actionYellow hover:bg-yellow-400 text-deepGray font-medium py-2 px-6 rounded-lg transition dark:bg-yellow-500 dark:text-black dark:hover:bg-yellow-400"
         >
           Add Interviewer
         </button>
       </div>
 
-      {/* Modal 1: Review or View */}
-      {showReviewPrompt && selectedInterviewer && (
-        <div className="fixed inset-0 bg-black bg-opacity-60 flex justify-center items-center z-50">
-          <div className="bg-white rounded-2xl shadow-2xl w-11/12 max-w-md p-8 animate-fade-up">
-            <h2 className="text-2xl font-semibold text-deepGray mb-6 text-center">
-              What would you like to do?
-            </h2>
-            <div className="flex flex-col space-y-4">
-              <button
-                onClick={() => {
-                  setShowReviewPrompt(false);
-                  setShowStatusPrompt(true);
-                }}
-                className="w-full py-3 bg-gray-100 text-deepGray rounded-lg hover:bg-professionalBlue hover:text-white transition"
-              >
-                Submit a Review
-              </button>
-              <button
-                onClick={() => {
-                  setShowReviewPrompt(false);
-                  navigate(`/interviewers/${selectedInterviewer._id}`);
-                }}
-                className="w-full py-3 bg-gray-100 text-deepGray rounded-lg hover:bg-professionalBlue hover:text-white transition"
-              >
-                Just View
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* Modal 2: Select Status */}
-      {showStatusPrompt && selectedInterviewer && (
-        <div className="fixed inset-0 bg-black bg-opacity-60 flex justify-center items-center z-50">
-          <div className="bg-white rounded-2xl shadow-2xl w-11/12 max-w-md p-8 animate-fade-up">
-            <h2 className="text-2xl font-semibold text-deepGray mb-6 text-center">
-              What's your interview status?
-            </h2>
-            <div className="grid grid-cols-1 gap-3">
-              {['cleared', 'not-cleared', 'waiting', 'did-not-happen'].map((status) => {
-                const hoverStyles = {
-                  cleared: 'hover:bg-green-500',
-                  'not-cleared': 'hover:bg-red-500',
-                  waiting: 'hover:bg-yellow-400',
-                  'did-not-happen': 'hover:bg-mutedGray',
-                }[status];
-
-                return (
+      {/* Modals */}
+      {(showReviewPrompt || showStatusPrompt) && (
+        <div className="fixed inset-0 bg-black/60 flex justify-center items-center z-50">
+          <div className="bg-white dark:bg-gray-900 rounded-2xl shadow-2xl w-11/12 max-w-md p-8 animate-fade-up">
+            {showReviewPrompt && selectedInterviewer && (
+              <>
+                <h2 className="text-2xl font-semibold text-deepGray dark:text-white mb-6 text-center">
+                  What would you like to do?
+                </h2>
+                <div className="flex flex-col space-y-4">
                   <button
-                    key={status}
                     onClick={() => {
-                      setShowStatusPrompt(false);
-                      navigate(`/interviewers/${selectedInterviewer._id}?review=true&status=${status}`);
+                      setShowReviewPrompt(false);
+                      setShowStatusPrompt(true);
                     }}
-                    className={`w-full py-3 bg-gray-100 text-deepGray rounded-lg transition-colors ${hoverStyles} hover:text-white`}
+                    className="w-full py-3 bg-gray-100 dark:bg-gray-700 text-deepGray dark:text-white rounded-lg hover:bg-professionalBlue dark:hover:bg-indigo-600 hover:text-white transition"
                   >
-                    {status.replace(/-/g, ' ').replace(/\b\w/g, (l) => l.toUpperCase())}
+                    Submit a Review
                   </button>
-                );
-              })}
-            </div>
+                  <button
+                    onClick={() => {
+                      setShowReviewPrompt(false);
+                      navigate(`/interviewers/${selectedInterviewer._id}`);
+                    }}
+                    className="w-full py-3 bg-gray-100 dark:bg-gray-700 text-deepGray dark:text-white rounded-lg hover:bg-professionalBlue dark:hover:bg-indigo-600 hover:text-white transition"
+                  >
+                    Just View
+                  </button>
+                </div>
+              </>
+            )}
+
+            {showStatusPrompt && selectedInterviewer && (
+              <>
+                <h2 className="text-2xl font-semibold text-deepGray dark:text-white mb-6 text-center">
+                  What’s your interview status?
+                </h2>
+                <div className="grid grid-cols-1 gap-3">
+                  {['cleared', 'not-cleared', 'waiting', 'did-not-happen'].map((status) => {
+                    const hoverStyles = {
+                      cleared: 'hover:bg-green-500',
+                      'not-cleared': 'hover:bg-red-500',
+                      waiting: 'hover:bg-yellow-400',
+                      'did-not-happen': 'hover:bg-mutedGray dark:hover:bg-gray-600',
+                    }[status];
+
+                    return (
+                      <button
+                        key={status}
+                        onClick={() => {
+                          setShowStatusPrompt(false);
+                          navigate(
+                            `/interviewers/${selectedInterviewer._id}?review=true&status=${status}`
+                          );
+                        }}
+                        className={`w-full py-3 bg-gray-100 dark:bg-gray-700 text-deepGray dark:text-white rounded-lg transition-colors ${hoverStyles} hover:text-white`}
+                      >
+                        {status.replace(/-/g, ' ').replace(/\b\w/g, (l) => l.toUpperCase())}
+                      </button>
+                    );
+                  })}
+                </div>
+              </>
+            )}
           </div>
         </div>
       )}
@@ -257,7 +262,6 @@ const SearchResults = () => {
   );
 };
 
-// ⭐ Weighted Rating Calculation
 const calculateWeightedRating = (ratings: { rating: number }[] = []) => {
   if (ratings.length === 0) return '0.00';
   const sigmoid = (x: number) => 1 / (1 + Math.exp(-x));
