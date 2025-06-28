@@ -374,7 +374,7 @@ const InterviewerProfile = () => {
                 <div key={i}>
                   <label className="block text-sm font-medium mb-1">{q}</label>
                   <textarea
-                    className="w-full p-2 border border-gray-300 rounded-md"
+                    className="w-full p-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-100 placeholder:text-gray-500 dark:placeholder:text-gray-400"
                     rows={2}
                     value={customAnswers[i] || ''}
                     onChange={(e) => handleAnswerChange(i, e.target.value)}
@@ -410,21 +410,21 @@ const InterviewerProfile = () => {
 
     {/* Rating */}
     <div>
-      <label className="block text-sm font-medium text-gray-700">Rating (1-5)</label>
+      <label className="block text-sm font-medium text-gray-700 dark:text-gray-100">Rating (1-5)</label>
       <input
         type="number"
         min="1"
         max="5"
         value={rating}
         onChange={(e) => setRating(Number(e.target.value))}
-        className="mt-1 block w-full border border-gray-300 rounded-md p-2"
+        className="border border-gray-300 dark:border-gray-600 rounded-md p-2 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 placeholder:text-gray-500 dark:placeholder:text-gray-400"
         required
       />
     </div>
 
     {/* Interview Status */}
     <div>
-      <label className="block text-sm font-medium text-gray-700">Interview Status</label>
+      <label className="block text-sm font-medium text-gray-700 dark:text-gray-100">Interview Status</label>
       <select
         value={interviewStatus}
         onChange={(e) => setInterviewStatus(e.target.value)}
@@ -440,7 +440,7 @@ const InterviewerProfile = () => {
 
     {/* Review Text */}
     <div>
-      <label className="block text-sm font-medium text-gray-700">Your Review</label>
+      <label className="block text-sm font-medium text-gray-700 dark:text-gray-100">Your Review</label>
       <textarea
         value={review}
         onChange={(e) => setReview(e.target.value)}
@@ -454,7 +454,7 @@ const InterviewerProfile = () => {
     {/* Custom Answers */}
     {customAnswers.map((answer, index) => (
       <div key={index}>
-        <label className="block text-sm font-medium text-gray-700">
+        <label className="block text-sm font-medium text-gray-700 dark:text-gray-100">
           Answer {index + 1}
         </label>
         <input
@@ -465,7 +465,7 @@ const InterviewerProfile = () => {
             updatedAnswers[index] = e.target.value;
             setCustomAnswers(updatedAnswers);
                 }}
-                className="mt-1 block w-full border border-gray-300 rounded-md p-2"
+                className="border border-gray-300 dark:border-gray-600 rounded-md p-2 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 placeholder:text-gray-500 dark:placeholder:text-gray-400"
               />
             </div>
           ))}
@@ -558,7 +558,7 @@ const InterviewerProfile = () => {
             onClick={() =>
               setShowReplyInput((prev) => ({ ...prev, [entry._id]: false }))
             }
-            className="text-gray-500 hover:text-gray-700"
+           className="text-gray-500 dark:text-gray-300 hover:text-gray-700 dark:hover:text-white"
           >
             Cancel
           </button>
