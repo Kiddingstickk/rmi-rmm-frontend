@@ -10,7 +10,7 @@ const renderStars = (rating: number) => {
     stars.push(
       i <= rating
         ? <AiFillStar key={i} className="text-yellow-500" />
-        : <AiOutlineStar key={i} className="text-gray-300" />
+        : <AiOutlineStar key={i} className="text-gray-300 dark:text-gray-600" />
     );
   }
   return <div className="flex items-center">{stars}</div>;
@@ -42,10 +42,7 @@ export interface InterviewerType {
   position: string;
   company: string;
   ratings: RatingType[];
-  // add any other fields like profileImage, bio, etc.
 }
-
-
 
 const calculateWeightedRating = (ratings: { rating: number }[]) => {
   if (!ratings || ratings.length === 0) return 0;
@@ -58,12 +55,11 @@ const calculateWeightedRating = (ratings: { rating: number }[]) => {
 };
 
 const getReviewCardColor = (rating: number) => {
-  if (rating <= 2) return 'bg-red-50 border-red-300';
-  if (rating === 3) return 'bg-yellow-50 border-yellow-300';
-  return 'bg-green-50 border-green-300';
+  if (rating <= 2) return 'bg-red-50 border-red-300 dark:bg-red-900/30 dark:border-red-600';
+  if (rating === 3) return 'bg-yellow-50 border-yellow-300 dark:bg-yellow-900/30 dark:border-yellow-500';
+  return 'bg-green-50 border-green-300 dark:bg-green-900/30 dark:border-green-600';
 };
 
-// Map interview status to question sets
 const statusQuestions = (status: string): string[] => {
   switch (status) {
     case 'cleared':
@@ -99,7 +95,7 @@ const InterviewerProfile = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const location = useLocation();
-  const [replyTexts ,setReplyTexts] = useState<{ [key: string]: string }>({});
+  const [replyTexts, setReplyTexts] = useState<{ [key: string]: string }>({});
   const [interviewer, setInterviewer] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [rating, setRating] = useState(0);
@@ -108,25 +104,14 @@ const InterviewerProfile = () => {
   const [existingUserReview, setExistingUserReview] = useState<any>(null);
   const [showReplyInput, setShowReplyInput] = useState<{ [reviewId: string]: boolean }>({});
   const [repliesByReviewId, setRepliesByReviewId] = useState<{ [key: string]: any[] }>({});
-
-
-  
-
-
-  // Read query params
   const queryParams = new URLSearchParams(location.search);
   const isReviewFlow = queryParams.get('review') === 'true';
   const statusParam = queryParams.get('status') || '';
 
-  // State for interview status and questions
   const [interviewStatus, setInterviewStatus] = useState<string>(statusParam);
   const [customQuestions, setCustomQuestions] = useState<string[]>([]);
   const [customAnswers, setCustomAnswers] = useState<string[]>([]);
-  const token = localStorage.getItem("token"); // adjust key as per your setup
-
-  
-
-
+  const token = localStorage.getItem("token");
 
   useEffect(() => {
     const fetchInterviewer = async () => {
@@ -155,8 +140,6 @@ const InterviewerProfile = () => {
     fetchInterviewer();
   }, [id]);
 
-
-  // Pre-fill form when editing
   useEffect(() => {
     if (existingUserReview) {
       setRating(existingUserReview.rating);
@@ -166,7 +149,6 @@ const InterviewerProfile = () => {
     }
   }, [existingUserReview]);
 
-  // Initialize review flow from modal selection
   useEffect(() => {
     if (isReviewFlow) {
       if (statusParam === 'did-not-happen') {
@@ -178,7 +160,6 @@ const InterviewerProfile = () => {
     }
   }, [isReviewFlow, statusParam]);
 
-  // Update questions/answers when status changes
   useEffect(() => {
     if (interviewStatus) {
       const qs = statusQuestions(interviewStatus);
@@ -207,7 +188,7 @@ const InterviewerProfile = () => {
   const handleRatingSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const token = localStorage.getItem('token');
-    if (!token) { alert('You must be logged in to submit a review.'); return; }
+    if (!token) return alert('You must be logged in to submit a review.');
     if (!rating || !review || !interviewStatus) {
       alert('Please fill in all required fields.');
       return;
@@ -225,14 +206,15 @@ const InterviewerProfile = () => {
       alert('Thank you for your feedback!');
       const refreshed = await axios.get(`${import.meta.env.VITE_API_URL}/api/interviewers/${id}`);
       setInterviewer(refreshed.data);
-      setRating(0); setReview(''); setInterviewStatus(''); setCustomAnswers([]);
+      setRating(0);
+      setReview('');
+      setInterviewStatus('');
+      setCustomAnswers([]);
     } catch (err) {
       console.error(err);
       alert('Failed to submit review.');
     }
   };
-
-
   const handleLike = async (reviewId: string) => {
     try {
       const res = await fetch(`${import.meta.env.VITE_API_URL}/api/interviewers/${interviewer._id}/reviews/${reviewId}/like`, {
@@ -240,11 +222,9 @@ const InterviewerProfile = () => {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`
-          //Replace with actual token from your auth state
         },
       });
       const data = await res.json();
-      // Update UI based on response
       setInterviewer((prev: any) => ({
         ...prev,
         ratings: prev.ratings.map((r: any) =>
@@ -255,7 +235,7 @@ const InterviewerProfile = () => {
       console.error("Like failed", err);
     }
   };
-  
+
   const handleDislike = async (reviewId: string) => {
     try {
       const res = await fetch(`${import.meta.env.VITE_API_URL}/api/interviewers/${interviewer._id}/reviews/${reviewId}/dislike`, {
@@ -263,11 +243,9 @@ const InterviewerProfile = () => {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`
-
         },
       });
       const data = await res.json();
-      // Update UI based on response
       setInterviewer((prev: any) => ({
         ...prev,
         ratings: prev.ratings.map((r: any) =>
@@ -278,69 +256,53 @@ const InterviewerProfile = () => {
       console.error("Dislike failed", err);
     }
   };
-  
 
-  const handleReplySubmit = async(e: React.FormEvent, reviewId: string) => {
+  const handleReplySubmit = async (e: React.FormEvent, reviewId: string) => {
     e.preventDefault();
     if (!replyTexts[reviewId]?.trim()) return;
- // Don't submit if empty
-  
     try {
-      console.log("Token being sent:", token);
-
       const response = await fetch(`${import.meta.env.VITE_API_URL}/api/replies`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`, // Assuming you have a token
+          Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({ reviewId, text: replyTexts[reviewId] }),
       });
-  
       const data = await response.json();
       const text = replyTexts[reviewId];
 
-  
       if (data.reply) {
-        // Reset and refetch replies
         setReplyTexts((prev) => ({
           ...prev,
-          [reviewId]: '', // Clear just this one field
+          [reviewId]: '',
         }));
         setShowReplyInput((prev) => ({
           ...prev,
-          [reviewId]: true , // or false, depending on what you want
+          [reviewId]: true,
         }));
-        
-        fetchReplies(reviewId); // Refetch replies for the review
-      } else {
-        console.log('Failed to add reply');
+        setRepliesByReviewId((prev) => ({
+          ...prev,
+          [reviewId]: [...(prev[reviewId] || []), { replyText: text, createdAt: new Date().toISOString() }]
+        }));
       }
-    } catch (err) {
-      console.error(err);
+    } catch (error) {
+      console.error('Failed to submit reply:', error);
     }
   };
-  
-  
-  
-
 
   const fetchReplies = async (reviewId: string) => {
     try {
       const response = await fetch(`${import.meta.env.VITE_API_URL}/api/replies/${reviewId}`);
       const data = await response.json();
-
-      console.log("Replies fetched:", data);
-  
       setRepliesByReviewId((prev) => ({
         ...prev,
-        [reviewId]: data,
+        [reviewId]: data.replies || []
       }));
-    }catch (err) {
-      console.error('Error fetching replies:',err);
+    } catch (err) {
+      console.error('Failed to fetch replies:', err);
     }
   };
-  
 
 
   const handleReviewEdit = async (e: React.FormEvent) => {
@@ -362,14 +324,14 @@ const InterviewerProfile = () => {
     }
   };
 
-  if (loading) return <div className="p-6">Loading...</div>;
-  if (!interviewer) return <div className="p-6">Interviewer not found.</div>;
+  if (loading) return <div className="p-6 text-gray-800 dark:text-gray-100">Loading...</div>;
+  if (!interviewer) return <div className="p-6 text-red-600 dark:text-red-400">Interviewer not found.</div>;
 
   return (
-    <div className="min-h-screen bg-cover bg-center bg-no-repeat" style={{ backgroundImage: "url(https://images.unsplash.com/photo-1541336032412-2048a678540d?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D)" }}>
-      <div className="max-w-3xl mx-auto bg-white bg-opacity-80 rounded-3xl shadow-xl p-8">
-        {/* Profile Header */}
-        <div className="flex items-center mb-8">
+    <div className="min-h-screen bg-cover bg-center bg-no-repeat dark:bg-gray-950" style={{ backgroundImage: "url(https://images.unsplash.com/photo-1541336032412-2048a678540d?q=80&w=1974&auto=format&fit=crop)" }}>
+      <div className="max-w-3xl mx-auto bg-white dark:bg-gray-900 bg-opacity-80 dark:bg-opacity-80 rounded-3xl shadow-xl p-8 text-gray-800 dark:text-gray-100">
+  {/* Profile Header */}
+  <div className="flex items-center mb-8">
           <div className="w-24 h-24 bg-gray-300 rounded-full mr-6 flex items-center justify-center text-3xl text-white font-bold bg-gradient-to-br from-blue-400 to-purple-500">{interviewer.name.charAt(0)}</div>
           <div>
             <h1 className="text-4xl font-bold text-gray-800">{interviewer.name}</h1>
