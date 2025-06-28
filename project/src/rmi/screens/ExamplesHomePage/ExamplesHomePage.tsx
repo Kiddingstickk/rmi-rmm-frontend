@@ -11,7 +11,7 @@ const ExampleHomePage = (): JSX.Element => {
   const [results, setResults] = useState<any[]>([]);
   const [searchMode, setSearchMode] = useState<'name' | 'company'>('name');
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [isLoading, setIsLoading] = useState(false); // ✅ New state
+  const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -52,28 +52,26 @@ const ExampleHomePage = (): JSX.Element => {
   const handleSearchSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!searchQuery.trim()) return;
-    setIsLoading(true); // ✅ Show loader
+    setIsLoading(true);
     setTimeout(() => {
       navigate(`/search/${searchQuery}`);
-    }, 1200); // ✅ Short delay for smooth transition
+    }, 1200);
   };
 
   return (
     <MainLayout isLoggedIn={isLoggedIn} onLogout={handleLogout}>
-      {/* Hero */}
-      <section className="relative w-full bg-neutralCanvas overflow-hidden px-4 sm:px-6">
-        <div className="blob top-[-80px] left-[-60px]" />
-        <div className="blob top-[60%] left-[80%]" />
+      <section className="relative w-full bg-neutralCanvas dark:bg-gray-900 overflow-hidden px-4 sm:px-6">
+        <div className="blob top-[-80px] left-[-60px] hidden sm:block" />
+        <div className="blob top-[60%] left-[80%] hidden sm:block" />
 
         <div className="relative z-10 max-w-4xl mx-auto flex flex-col justify-center items-center text-center pt-20 sm:pt-28 pb-16">
-          <h1 className="text-3xl sm:text-5xl font-bold text-deepGray animate-fade-up">
+          <h1 className="text-3xl sm:text-5xl font-bold text-deepGray dark:text-white animate-fade-up">
             Rate My Interviewer
           </h1>
-          <p className="typing-container text-sm sm:text-lg text-mutedGray mt-3 max-w-full sm:max-w-xl mx-auto text-center">
+          <p className="typing-container text-sm sm:text-lg text-mutedGray dark:text-gray-300 mt-3 max-w-full sm:max-w-xl mx-auto text-center">
             <span className="inline-block">Honest, AI-driven feedback for your career growth</span>
             <span className="blinking-cursor" />
           </p>
-
 
           <form
             onSubmit={handleSearchSubmit}
@@ -85,32 +83,30 @@ const ExampleHomePage = (): JSX.Element => {
                 value={searchQuery}
                 onChange={handleSearchChange}
                 placeholder={`Search by ${searchMode}...`}
-                className="w-full bg-white text-deepGray border border-professionalBlue px-4 py-3 rounded-lg placeholder:text-mutedGray shadow focus:outline-none focus:ring-2 focus:ring-professionalBlue text-sm sm:text-base"
+                className="w-full bg-white dark:bg-gray-800 text-deepGray dark:text-white border border-professionalBlue dark:border-gray-600 px-4 py-3 rounded-lg placeholder:text-mutedGray dark:placeholder:text-gray-400 shadow focus:outline-none focus:ring-2 focus:ring-professionalBlue dark:focus:ring-indigo-400 text-sm sm:text-base"
               />
               {searchQuery && (
-                <div className="absolute top-full left-0 right-0 mt-2 bg-white rounded-lg shadow-lg z-50 max-h-60 overflow-auto text-left text-sm">
+                <div className="absolute top-full left-0 right-0 mt-2 bg-white dark:bg-gray-800 rounded-lg shadow-lg z-50 max-h-60 overflow-auto text-left text-sm">
                   {isSearching ? (
-                    <div className="p-4 text-center text-mutedGray">
+                    <div className="p-4 text-center text-mutedGray dark:text-gray-300">
                       <p className="font-medium">Loading...</p>
-                      <p className="text-xs text-yellow-600 mt-1">
-                        ⚠️ Backend might take a few seconds.
-                      </p>
+                      <p className="text-xs text-yellow-600 mt-1">⚠️ Backend might take a few seconds.</p>
                     </div>
                   ) : results.length > 0 ? (
                     results.map((i, idx) => (
                       <div
                         key={idx}
                         onClick={() => navigate(`/interviewers/${i._id}`)}
-                        className="px-4 py-3 hover:bg-blue-100/30 cursor-pointer border-b text-deepGray"
+                        className="px-4 py-3 hover:bg-blue-100/30 dark:hover:bg-blue-500/20 cursor-pointer border-b border-gray-200 dark:border-gray-700 text-deepGray dark:text-white"
                       >
                         <p className="font-medium">{i.Name || i.name}</p>
-                        <p className="text-sm text-mutedGray">
+                        <p className="text-sm text-mutedGray dark:text-gray-400">
                           {i.Company || i.company}
                         </p>
                       </div>
                     ))
                   ) : (
-                    <div className="p-3 text-mutedGray">No matches found</div>
+                    <div className="p-3 text-mutedGray dark:text-gray-300">No matches found</div>
                   )}
                 </div>
               )}
@@ -118,7 +114,7 @@ const ExampleHomePage = (): JSX.Element => {
 
             <Button
               onClick={toggleSearchMode}
-              className="w-full bg-professionalBlue text-white hover:bg-blue-700 rounded-md text-sm sm:text-base"
+              className="w-full bg-professionalBlue dark:bg-indigo-600 text-white hover:bg-blue-700 dark:hover:bg-indigo-500 rounded-md text-sm sm:text-base"
             >
               Switch to {searchMode === 'name' ? 'Company' : 'Name'}
             </Button>
@@ -126,13 +122,12 @@ const ExampleHomePage = (): JSX.Element => {
         </div>
       </section>
 
-      {/* Join */}
-      <section className="bg-neutralCanvas py-16 px-4 sm:px-6">
+      <section className="bg-neutralCanvas dark:bg-gray-900 py-16 px-4 sm:px-6">
         <div className="max-w-6xl mx-auto text-center">
-          <h2 className="text-3xl sm:text-4xl font-bold text-deepGray mb-2">
+          <h2 className="text-3xl sm:text-4xl font-bold text-deepGray dark:text-white mb-2">
             Join the RMI Community
           </h2>
-          <p className="text-mutedGray mb-10 text-sm sm:text-lg">
+          <p className="text-mutedGray dark:text-gray-300 mb-10 text-sm sm:text-lg">
             Empower others. Shape better interviews.
           </p>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 max-w-5xl mx-auto">
@@ -152,14 +147,14 @@ const ExampleHomePage = (): JSX.Element => {
             ].map((item, i) => (
               <div
                 key={i}
-                className="bg-white p-6 rounded-lg shadow hover:shadow-md hover:outline hover:outline-1 hover:outline-professionalBlue/30 transition"
+                className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow hover:shadow-md hover:outline hover:outline-1 hover:outline-professionalBlue/30 transition"
               >
                 <img
                   src={item.icon}
                   alt={item.label}
-                  className="w-16 h-16 sm:w-20 sm:h-20 mx-auto mb-4"
+                  className="w-16 h-16 sm:w-20 sm:h-20 mx-auto mb-4 dark:invert"
                 />
-                <p className="text-base sm:text-lg font-semibold text-deepGray">
+                <p className="text-base sm:text-lg font-semibold text-deepGray dark:text-white">
                   {item.label}
                 </p>
               </div>
@@ -169,7 +164,7 @@ const ExampleHomePage = (): JSX.Element => {
           <div className="mt-10">
             <Button
               onClick={() => navigate('/signin')}
-              className="bg-actionYellow text-deepGray hover:bg-yellow-400 rounded-lg font-semibold px-6 py-3 text-sm sm:text-base"
+              className="bg-actionYellow dark:bg-yellow-500 text-deepGray dark:text-black hover:bg-yellow-400 rounded-lg font-semibold px-6 py-3 text-sm sm:text-base"
             >
               Sign In to Get Started
             </Button>
@@ -177,27 +172,27 @@ const ExampleHomePage = (): JSX.Element => {
         </div>
       </section>
 
-      {/* Footer */}
-      <footer className="bg-deepGray text-neutralCanvas py-6 px-4 sm:px-8 flex flex-col sm:flex-row gap-4 items-center justify-between text-sm">
+      <footer className="bg-deepGray dark:bg-gray-950 text-neutralCanvas dark:text-gray-200 py-6 px-4 sm:px-8 flex flex-col sm:flex-row gap-4 items-center justify-between text-sm">
         <span className="font-semibold text-center sm:text-left">
           Rate My Interviewer
         </span>
         <div className="flex gap-6 justify-center sm:justify-start">
-          <a href="/contact" className="hover:text-actionYellow">
+          <a href="/contact" className="hover:text-actionYellow dark:hover:text-yellow-400">
             Contact Us
           </a>
-          <a href="/team" className="hover:text-actionYellow">
+          <a href="/team" className="hover:text-actionYellow dark:hover:text-yellow-400">
             Our Team
           </a>
         </div>
         <div className="flex gap-4 justify-center sm:justify-end">
-          <img className="w-5 h-5" src="/logo-instagram.svg" alt="Instagram" />
-          <img className="w-5 h-5" src="/logo-twitter.svg" alt="Twitter" />
+          <img className="w-5 h-5 dark:invert" src="/logo-instagram.svg" alt="Instagram" />
+          <img className="w-5 h-5 dark:invert" src="/logo-twitter.svg" alt="Twitter" />
         </div>
       </footer>
+
       {isLoading && <MinimalLoader />}
     </MainLayout>
   );
 };
 
-export default ExampleHomePage;
+export default ExampleHomePage
