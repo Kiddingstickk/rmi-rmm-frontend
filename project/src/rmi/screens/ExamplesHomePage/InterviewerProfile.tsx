@@ -347,60 +347,85 @@ const InterviewerProfile = () => {
           <p className="text-lg"><strong>Experience:</strong> {interviewer.experience || 'N/A'}</p>
         </div>
 
-        {/* Review Section */}
         {userId && !existingUserReview && (
-          <div className="mb-10">
-            <h3 className="text-2xl font-semibold text-gray-700 mb-4">Leave a Rating & Review</h3>
-            <form onSubmit={handleRatingSubmit} className="space-y-4">
-              <div>
-                <label className="block text-sm font-medium mb-1">Interview Status</label>
-                <select
-                  value={interviewStatus}
-                  onChange={(e) => setInterviewStatus(e.target.value)}
-                  className="w-full p-2 border border-gray-300 rounded-md"
-                  required
-                >
-                  <option value="">Select status</option>
-                  <option value="cleared">Cleared</option>
-                  <option value="not-cleared">Not Cleared</option>
-                  <option value="waiting">Waiting for Result</option>
-                  <option value="did-not-happen">Did Not Have Interview</option>
-                </select>
-              </div>
+  <div className="mb-10">
+    <h3 className="text-2xl font-semibold text-gray-700 dark:text-white mb-4">
+      Leave a Rating & Review
+    </h3>
+    <form onSubmit={handleRatingSubmit} className="space-y-4">
+      <div>
+        <label className="block text-sm font-medium text-gray-700 dark:text-gray-100 mb-1">
+          Interview Status
+        </label>
+        <select
+          value={interviewStatus}
+          onChange={(e) => setInterviewStatus(e.target.value)}
+          className="w-full p-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100"
+          required
+        >
+          <option value="">Select status</option>
+          <option value="cleared">Cleared</option>
+          <option value="not-cleared">Not Cleared</option>
+          <option value="waiting">Waiting for Result</option>
+          <option value="did-not-happen">Did Not Have Interview</option>
+        </select>
+      </div>
 
-              {interviewStatus === 'did-not-happen' && <p className="text-red-500 text-sm">You must attend the interview to leave a review.</p>}
+      {interviewStatus === 'did-not-happen' && (
+        <p className="text-red-500 text-sm">
+          You must attend the interview to leave a review.
+        </p>
+      )}
 
-              {customQuestions.map((q, i) => (
-                <div key={i}>
-                  <label className="block text-sm font-medium mb-1">{q}</label>
-                  <textarea
-                    className="w-full p-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-100 placeholder:text-gray-500 dark:placeholder:text-gray-400"
-                    rows={2}
-                    value={customAnswers[i] || ''}
-                    onChange={(e) => handleAnswerChange(i, e.target.value)}
-                  ></textarea>
-                </div>
-              ))}
+      {customQuestions.map((q, i) => (
+        <div key={i}>
+          <label className="block text-sm font-medium text-gray-700 dark:text-gray-100 mb-1">
+            {q}
+          </label>
+          <textarea
+            className="w-full p-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-100 placeholder:text-gray-500 dark:placeholder:text-gray-400"
+            rows={2}
+            value={customAnswers[i] || ''}
+            onChange={(e) => handleAnswerChange(i, e.target.value)}
+          ></textarea>
+        </div>
+      ))}
 
-              <div className="flex items-center">
-                {[1,2,3,4,5].map(star => (
-                  <span key={star} onClick={() => setRating(star)} className={`cursor-pointer ${rating >= star ? 'text-yellow-500':'text-gray-300'}`}><AiFillStar /></span>
-                ))}
-              </div>
+      <div className="flex items-center">
+        {[1, 2, 3, 4, 5].map((star) => (
+          <span
+            key={star}
+            onClick={() => setRating(star)}
+            className={`cursor-pointer ${
+              rating >= star
+                ? 'text-yellow-500'
+                : 'text-gray-300 dark:text-gray-600'
+            }`}
+          >
+            <AiFillStar />
+          </span>
+        ))}
+      </div>
 
-              <textarea
-                value={review}
-                onChange={e => setReview(e.target.value)}
-                rows={4}
-                className="w-full p-2 border border-gray-300 rounded-md"
-                placeholder="Write your experience here..."
-                required
-              ></textarea>
+      <textarea
+        value={review}
+        onChange={(e) => setReview(e.target.value)}
+        rows={4}
+        className="w-full p-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-100 placeholder:text-gray-500 dark:placeholder:text-gray-400"
+        placeholder="Write your experience here..."
+        required
+      ></textarea>
 
-              <button type="submit" className="bg-green-500 hover:bg-green-600 text-white font-semibold py-2 px-4 rounded-md" disabled={interviewStatus==='did-not-happen'}>Submit Review</button>
-            </form>
-          </div>
-        )}
+      <button
+        type="submit"
+        disabled={interviewStatus === 'did-not-happen'}
+        className="bg-green-500 hover:bg-green-600 text-white font-semibold py-2 px-4 rounded-md"
+      >
+        Submit Review
+      </button>
+    </form>
+  </div>
+)}
 
 
 {/* Edit Review */}
