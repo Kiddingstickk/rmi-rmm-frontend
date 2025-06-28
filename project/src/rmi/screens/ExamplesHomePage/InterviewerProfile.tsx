@@ -348,7 +348,7 @@ const InterviewerProfile = () => {
 
         {/* Details Section */}
         <div className="mb-8">
-          <h2 className="text-2xl font-semibold text-gray-700 mb-2">Details</h2>
+          <h2 className="text-2xl font-semibold text-gray-700 dark:text-white mb-2">Details</h2>
           <div className="text-lg"><strong>Rating:</strong> <div className="flex items-center">{renderStars(calculateWeightedRating(interviewer.ratings))}</div></div>
           <p className="text-lg"><strong>Experience:</strong> {interviewer.experience || 'N/A'}</p>
         </div>
@@ -515,27 +515,27 @@ const InterviewerProfile = () => {
         {/* Display Reviews */}
         {interviewer.ratings?.length > 0 && (
   <div className="mt-8">
-    <h3 className="text-2xl font-semibold text-gray-700 mb-4">Reviews</h3>
+    <h3 className="text-2xl font-semibold text-gray-700 dark:text-white mb-4">Reviews</h3>
     <div className="space-y-6">
     {interviewer.ratings.map((entry:any) => (
   <div key={entry._id} className={`p-4 rounded-xl border shadow-md ${getReviewCardColor(entry.rating)}`}>
-    <div className="font-semibold text-lg">
+    <div className="font-semibold text-lg text-gray-800 dark:text-white">
       Rating:
       <div className="flex items-center">{renderStars(entry.rating)}</div>
     </div>
-    <p className="text-gray-800 italic my-1">"{entry.review}"</p>
-    <p className="text-sm text-gray-600">Submitted on {new Date(entry.date).toLocaleDateString()}</p>
+    <p className="text-gray-800 dark:text-gray-100 italic my-1">"{entry.review}"</p>
+    <p className="text-sm text-gray-600 dark:text-gray-400">Submitted on {new Date(entry.date).toLocaleDateString()}</p>
 
     <div className="flex gap-4 mt-2">
       <button
         onClick={() => handleLike(entry._id)}
-        className="text-green-600 font-medium hover:scale-105 transition"
+        className="text-green-600 dark:text-green-400 font-medium hover:scale-105 transition"
       >
         👍 {entry.likes?.length || 0}
       </button>
       <button
         onClick={() => handleDislike(entry._id)}
-        className="text-red-600 font-medium hover:scale-105 transition"
+        className="text-red-600 dark:text-red-400 font-medium hover:scale-105 transition"
       >
         👎 {entry.dislikes?.length || 0}
       </button>
