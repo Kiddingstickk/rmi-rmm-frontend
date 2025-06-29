@@ -436,30 +436,39 @@ const InterviewerProfile = () => {
 
 {/* Edit Review */}
 {userId && existingUserReview && (
-  <form onSubmit={handleReviewEdit} className="space-y-4 p-4 border rounded-lg shadow-md bg-white mt-6">
-    <h3 className="text-xl font-semibold">Edit Your Review</h3>
+  <form
+    onSubmit={handleReviewEdit}
+    className="space-y-4 p-4 border border-gray-300 dark:border-gray-600 rounded-lg shadow-md bg-white dark:bg-gray-900 text-gray-800 dark:text-gray-100 mt-6"
+  >
+    <h3 className="text-xl font-semibold text-gray-800 dark:text-white">
+      Edit Your Review
+    </h3>
 
     {/* Rating */}
     <div>
-      <label className="block text-sm font-medium text-gray-700 dark:text-gray-100">Rating (1-5)</label>
+      <label className="block text-sm font-medium text-gray-700 dark:text-gray-100 mb-1">
+        Rating (1-5)
+      </label>
       <input
         type="number"
         min="1"
         max="5"
         value={rating}
         onChange={(e) => setRating(Number(e.target.value))}
-        className="border border-gray-300 dark:border-gray-600 rounded-md p-2 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 placeholder:text-gray-500 dark:placeholder:text-gray-400"
+        className="w-full border border-gray-300 dark:border-gray-600 rounded-md p-2 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 placeholder:text-gray-500 dark:placeholder:text-gray-400"
         required
       />
     </div>
 
     {/* Interview Status */}
     <div>
-      <label className="block text-sm font-medium text-gray-700 dark:text-gray-100">Interview Status</label>
+      <label className="block text-sm font-medium text-gray-700 dark:text-gray-100 mb-1">
+        Interview Status
+      </label>
       <select
         value={interviewStatus}
         onChange={(e) => setInterviewStatus(e.target.value)}
-        className="mt-1 block w-full border border-gray-300 rounded-md p-2"
+        className="mt-1 block w-full border border-gray-300 dark:border-gray-600 rounded-md p-2 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100"
         required
       >
         <option value="cleared">Cleared</option>
@@ -471,12 +480,14 @@ const InterviewerProfile = () => {
 
     {/* Review Text */}
     <div>
-      <label className="block text-sm font-medium text-gray-700 dark:text-gray-100">Your Review</label>
+      <label className="block text-sm font-medium text-gray-700 dark:text-gray-100 mb-1">
+        Your Review
+      </label>
       <textarea
         value={review}
         onChange={(e) => setReview(e.target.value)}
         rows={4}
-        className="mt-1 block w-full border border-gray-300 rounded-md p-2"
+        className="mt-1 block w-full border border-gray-300 dark:border-gray-600 rounded-md p-2 bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-100 placeholder:text-gray-500 dark:placeholder:text-gray-400"
         placeholder="Describe your experience"
         required
       />
@@ -485,7 +496,7 @@ const InterviewerProfile = () => {
     {/* Custom Answers */}
     {customAnswers.map((answer, index) => (
       <div key={index}>
-        <label className="block text-sm font-medium text-gray-700 dark:text-gray-100">
+        <label className="block text-sm font-medium text-gray-700 dark:text-gray-100 mb-1">
           Answer {index + 1}
         </label>
         <input
@@ -495,21 +506,20 @@ const InterviewerProfile = () => {
             const updatedAnswers = [...customAnswers];
             updatedAnswers[index] = e.target.value;
             setCustomAnswers(updatedAnswers);
-                }}
-                className="border border-gray-300 dark:border-gray-600 rounded-md p-2 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 placeholder:text-gray-500 dark:placeholder:text-gray-400"
-              />
-            </div>
-          ))}
+          }}
+          className="w-full border border-gray-300 dark:border-gray-600 rounded-md p-2 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 placeholder:text-gray-500 dark:placeholder:text-gray-400"
+        />
+      </div>
+    ))}
 
-          <button
-            type="submit"
-            className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition"
-          >
-            Save Changes
-          </button>
-        </form>
-      )}
-
+    <button
+      type="submit"
+      className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md transition"
+    >
+      Save Changes
+    </button>
+  </form>
+)}
 
 
         {/* Display Reviews */}
