@@ -440,7 +440,7 @@ const InterviewerProfile = () => {
     onSubmit={handleReviewEdit}
     className="space-y-4 p-4 border border-gray-300 dark:border-gray-600 rounded-lg shadow-md bg-white dark:bg-gray-900 text-gray-800 dark:text-gray-100 mt-6"
   >
-    <h3 className="text-xl font-semibold text-gray-800 dark:text-white">
+    <h3 className="text-2xl font-semibold text-gray-700 dark:text-white mb-4">
       Edit Your Review
     </h3>
 
