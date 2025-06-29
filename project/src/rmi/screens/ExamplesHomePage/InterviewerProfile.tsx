@@ -329,7 +329,7 @@ const InterviewerProfile = () => {
 
   return (
     <div className="min-h-screen bg-cover bg-center bg-no-repeat dark:bg-gray-950" style={{ backgroundImage: "url(https://images.unsplash.com/photo-1541336032412-2048a678540d?q=80&w=1974&auto=format&fit=crop)" }}>
-      <div className="max-w-3xl mx-auto bg-white dark:bg-gray-900 bg-opacity-80 dark:bg-opacity-80 rounded-3xl shadow-xl p-8 text-gray-800 dark:text-gray-100">
+      <div className="max-w-3xl mx-auto bg-white dark:bg-gray-900 rounded-3xl shadow-xl p-8 text-gray-800 dark:text-gray-100">
   {/* Profile Header */}
   <div className="flex items-center mb-8">
           <div className="w-24 h-24 bg-gray-300 rounded-full mr-6 flex items-center justify-center text-3xl text-white font-bold bg-gradient-to-br from-blue-400 to-purple-500">{interviewer.name.charAt(0)}</div>
