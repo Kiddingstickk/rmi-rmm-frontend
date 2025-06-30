@@ -43,10 +43,14 @@ const ManagerCard: React.FC<ManagerCardProps> = ({
           fill={isValidRating ? "currentColor" : "none"}
         />
         
-
-        <span className={`font-semibold ${isValidRating ? getRatingColor(averageRating) : "text-gray-400"}`}>
-          {isValidRating ? `${averageRating.toFixed(1)} / 5` : "No rating"}
-        </span>
+        {isValidRating ? (
+          <span className={`font-semibold ${getRatingColor(averageRating)}`}>
+            {averageRating.toFixed(1)} / 5
+          </span>
+        ) : (
+          <span className="text-gray-400 font-semibold">No rating</span>
+        )}
+        
       </div>
     </div>
   );
