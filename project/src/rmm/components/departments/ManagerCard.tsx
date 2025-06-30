@@ -27,6 +27,18 @@ const ManagerCard: React.FC<ManagerCardProps> = ({
   const safeDepartment = department || "Unknown";
 
 
+  console.log("ManagerCard props:", {
+    name,
+    department,
+    position,
+    averageRating,
+    parsedRating: Number(averageRating),
+    isFinite: Number.isFinite(Number(averageRating)),
+    type: typeof averageRating,
+  });
+  
+
+
 
   return (
     <div
