@@ -81,7 +81,11 @@ const SearchResults = () => {
                   name={manager.name}
                   department={manager.department.name}
                   position={manager.position}
-                  averageRating={typeof manager.averageRating === "number" ? manager.averageRating : 0}
+                  averageRating={
+                    typeof manager.averageRating === "number" && isFinite(manager.averageRating)
+                      ? manager.averageRating
+                      : 0
+                  }
 
                 />
               </Link>
