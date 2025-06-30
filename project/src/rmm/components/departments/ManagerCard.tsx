@@ -22,8 +22,8 @@ const ManagerCard: React.FC<ManagerCardProps> = ({
   averageRating,
   onClick,
 }) => {
-  const isValidRating = Number.isFinite(averageRating);
-
+  const parsedRating = Number(averageRating);
+  const isValidRating = Number.isFinite(parsedRating);
   const safeDepartment = department || "Unknown";
 
 
@@ -50,19 +50,17 @@ const ManagerCard: React.FC<ManagerCardProps> = ({
       <p className="text-sm text-gray-400 mb-3">{safeDepartment}</p>
 
       <div className="flex items-center gap-1">
-        <Star
-          className={`w-5 h-5 ${isValidRating ? getRatingColor(averageRating) : "text-gray-300"}`}
+      <Star
+          className={`w-5 h-5 ${isValidRating ? getRatingColor(parsedRating) : "text-gray-300"}`}
           fill={isValidRating ? "currentColor" : "none"}
         />
-        
         {isValidRating ? (
-          <span className={`font-semibold ${getRatingColor(averageRating)}`}>
-            {averageRating.toFixed(1)} / 5
+          <span className={`font-semibold ${getRatingColor(parsedRating)}`}>
+            {parsedRating.toFixed(1)} / 5
           </span>
         ) : (
           <span className="text-gray-400 font-semibold">No rating</span>
         )}
-        
       </div>
     </div>
   );
