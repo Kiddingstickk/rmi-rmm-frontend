@@ -88,7 +88,7 @@ export const deleteManager = async (req, res) => {
 
 // Create a new manager (admin-only)
 export const createManager = async (req, res) => {
-  const { name, departmentId, position, bio } = req.body;
+  const { name, departmentId, position, bio ,branch} = req.body;
 
   try {
     const department = await Department.findById(departmentId);
