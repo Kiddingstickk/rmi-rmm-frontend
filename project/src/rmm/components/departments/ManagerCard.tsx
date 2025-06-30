@@ -27,6 +27,7 @@ const ManagerCard: React.FC<ManagerCardProps> = ({
   const safeDepartment = department || "Unknown";
 
 
+
   return (
     <div
       className="bg-white rounded-lg shadow-md p-5 cursor-pointer hover:shadow-lg transition"
@@ -41,6 +42,8 @@ const ManagerCard: React.FC<ManagerCardProps> = ({
           className={`w-5 h-5 ${isValidRating ? getRatingColor(averageRating) : "text-gray-300"}`}
           fill={isValidRating ? "currentColor" : "none"}
         />
+        
+
         <span className={`font-semibold ${isValidRating ? getRatingColor(averageRating) : "text-gray-400"}`}>
           {isValidRating ? `${averageRating.toFixed(1)} / 5` : "No rating"}
         </span>

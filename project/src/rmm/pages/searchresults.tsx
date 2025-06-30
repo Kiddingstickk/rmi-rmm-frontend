@@ -47,9 +47,12 @@ const SearchResults = () => {
     }
   }, [query]);
 
+  console.log("Managers for", query, managerResults);
+
   return (
     <div className="p-4">
       <h2 className="text-2xl font-bold mb-4">Search Results for "{query}"</h2>
+      
 
       {departmentResults.length > 0 && (
         <div className="mb-6">
