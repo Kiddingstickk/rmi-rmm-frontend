@@ -46,7 +46,14 @@ const managerSchema = new mongoose.Schema({
   createdAt: {
     type: Date,
     default: Date.now
+  },
+  branch: {
+    type: String,
+    required: false,
+    trim: true,
+    default: "Head Office" // Or use "Unknown" if you'd prefer ambiguity
   }
+  
 });
 
 const Manager = mongoose.model('Manager', managerSchema);

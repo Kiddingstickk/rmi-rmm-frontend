@@ -99,10 +99,17 @@ export const createManager = async (req, res) => {
       department: department._id,
       position,
       bio,
+      branch,
       averageRating: 0
     });
 
     await manager.save();
+
+    await Department.findByIdAndUpdate(
+      departmentId,
+      { $addToSet: { managers: manager._id } } // ensures no duplicates
+    );
+
     res.status(201).json(manager);
   } catch (err) {
     console.error('Error creating manager:', err);
