@@ -24,6 +24,9 @@ const ManagerCard: React.FC<ManagerCardProps> = ({
 }) => {
   const isValidRating = Number.isFinite(averageRating);
 
+  const safeDepartment = department || "Unknown";
+
+
   return (
     <div
       className="bg-white rounded-lg shadow-md p-5 cursor-pointer hover:shadow-lg transition"
@@ -31,7 +34,7 @@ const ManagerCard: React.FC<ManagerCardProps> = ({
     >
       <h2 className="text-xl font-bold text-gray-800">{name}</h2>
       <p className="text-gray-500">{position}</p>
-      <p className="text-sm text-gray-400 mb-3">{department}</p>
+      <p className="text-sm text-gray-400 mb-3">{safeDepartment}</p>
 
       <div className="flex items-center gap-1">
         <Star

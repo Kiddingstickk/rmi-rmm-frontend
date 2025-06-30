@@ -4,12 +4,22 @@ import Department from '../models/Department.js';
 // Get all managers
 export const getAllManagers = async (req, res) => {
   try {
-    const managers = await Manager.find().populate('department');
+    const { search } = req.query;
+
+    let query = {};
+    if (search && search.trim() !== '') {
+      const regex = new RegExp(search.trim(), 'i'); // case-insensitive match
+      query.name = { $regex: regex };
+    }
+
+    const managers = await Manager.find(query).populate('department');
     res.json(managers);
   } catch (err) {
+    console.error('Error fetching managers:', err);
     res.status(500).json({ error: 'Server error' });
   }
 };
+
 
 // Get a manager by ID
 export const getManagerById = async (req, res) => {
