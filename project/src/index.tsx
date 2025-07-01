@@ -16,6 +16,8 @@ import MyReviews from './rmi/screens/ExamplesHomePage/MyReviews';
 import ContactPage from './rmi/screens/ExamplesHomePage/ContactPage';
 import AccountSettings from './rmi/screens/ExamplesHomePage/AccountsSettingPage';
 import SavedInterviewers from "./rmi/screens/ExamplesHomePage/SavedInterviewers";
+import SearchInterviewer from './rmi/screens/ExamplesHomePage/SearchInterviewer'; // adjust path if needed
+
 
 
 
@@ -57,6 +59,8 @@ const App = () => {
         <Route path="/add-interviewer" element={<AddInterviewer />} />
         {/* Search Results Page Route (Dynamic route) */}
         <Route path="/search/:query" element={<SearchResults />} />
+        <Route path="/search-interviewers" element={<SearchInterviewer />} />
+
 
         {/* RMM Routes */}
         <Route path="/rmm" element={<RmmLanding />} />
