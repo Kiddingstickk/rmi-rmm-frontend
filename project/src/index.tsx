@@ -27,6 +27,7 @@ import ManagementHome from './rmm/pages/ManagementHome';
 import DepartmentPage from './rmm/pages/DepartmentPage';
 import ManagerProfile from './rmm/pages/ManagerProfile';
 import RmmSearchResults from './rmm/pages/searchresults';
+import SearchManager from './rmm/pages/SearchManager';
 
 
 // Tailwind CSS import (No need to change this)
@@ -68,7 +69,7 @@ const App = () => {
         <Route path="/rmm/management/departments/:name" element={<DepartmentPage />} />
         <Route path="/rmm/management/managers/:id" element={<ManagerProfile />} />
         <Route path="/rmm/searchresults" element={<RmmSearchResults />} />
-
+        <Route path="/rmm/search-managers" element={<SearchManager />} />
 
 
       </Routes>
