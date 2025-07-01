@@ -1,5 +1,8 @@
 const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
+console.log('📦 BASE_URL from env:', import.meta.env.VITE_API_BASE_URL);
+
+
 export const getDepartments = async (query?: string) => {
     const url = query
       ? `${BASE_URL}/api/departments?search=${encodeURIComponent(query)}`
