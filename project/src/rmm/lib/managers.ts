@@ -36,3 +36,53 @@ export const getManagers = async (
     return [];
   }
 };
+
+
+
+// rmm/api/managers.ts
+
+
+export const createManager = async (data: {
+    name: string;
+    position: string;
+    branch?: string;
+    departmentId: string;
+    bio?: string;
+  }) =>  {
+  const res = await fetch(`${BASE_URL}/api/rmm/managers`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${localStorage.getItem('token')}`,
+    },
+    body: JSON.stringify(data),
+  });
+  if (!res.ok) throw new Error('Manager creation failed');
+  return res.json();
+};
+
+
+
+export const submitManagerReview = async ({
+    managerId,
+    rating,
+    reviewText,
+    anonymous,
+  }: {
+    managerId: string;
+    rating: number;
+    reviewText: string;
+    anonymous: boolean;
+  }) => {
+    const res = await fetch(`${BASE_URL}/api/manager-reviews`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${localStorage.getItem('token')}`,
+      },
+      body: JSON.stringify({ managerId, rating, reviewText, anonymous }),
+    });
+  
+    if (!res.ok) throw new Error('Failed to submit review');
+    return res.json();
+  };
