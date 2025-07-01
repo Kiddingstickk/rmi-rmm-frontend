@@ -17,7 +17,7 @@ export const getManagers = async (
   mode: 'name' | 'company'
 ): Promise<Manager[]> => {
   try {
-    const url = `${BASE_URL}/api/managers/search/${encodeURIComponent(query)}?searchMode=${mode}`;
+    const url = `${BASE_URL}/api/rmm/managers/search/${encodeURIComponent(query)}?searchMode=${mode}`;
 
     const res = await fetch(url, {
       headers: { 'Content-Type': 'application/json' },
