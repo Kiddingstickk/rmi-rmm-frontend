@@ -1,70 +1,110 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import ResponsiveNavbar from '../components/Navbar/navbar';
 import { useAuth } from '../../rmi/lib/useAuth';
-import { getManagers } from '../lib/managers';
 import { createManager } from '../lib/managers';
-import { getDepartments} from '../lib/department';
+import { getDepartments, createDepartment } from '../lib/department';
 import { submitManagerReview } from '../lib/managers';
 
-
-
 const RateManager = () => {
-  const { isLoggedIn, logout,} = useAuth();
+  const { isLoggedIn, logout } = useAuth();
   const navigate = useNavigate();
 
   const [name, setName] = useState('');
   const [position, setPosition] = useState('');
   const [branch, setBranch] = useState('');
-  const [bio, setBio] = useState('');
+  const [departmentName, setDepartmentName] = useState('');
   const [departmentId, setDepartmentId] = useState('');
-  const [departments, setDepartments] = useState([]);
+  const [departmentSuggestions, setDepartmentSuggestions] = useState([]);
   const [rating, setRating] = useState(0);
   const [reviewText, setReviewText] = useState('');
-  const [anonymous, setAnonymous] = useState(false);
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState('');
 
+  const debounceTimer = useRef<NodeJS.Timeout | null>(null);
+
   useEffect(() => {
-    (async () => {
-      const data = await getDepartments();
-      setDepartments(data);
-    })();
-  }, []);
+    if (!departmentName.trim()) return setDepartmentSuggestions([]);
+    if (debounceTimer.current) clearTimeout(debounceTimer.current);
+
+    debounceTimer.current = setTimeout(async () => {
+      try {
+        const results = await getDepartments(departmentName);
+        setDepartmentSuggestions(results || []);
+      } catch (err) {
+        console.error('Failed to fetch departments:', err);
+      }
+    }, 300);
+  }, [departmentName]);
+
+  const handleDepartmentSelect = (dept: any) => {
+    setDepartmentName(dept.name);
+    setDepartmentId(dept._id);
+    setDepartmentSuggestions([]);
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
     if (!isLoggedIn) return setMessage('You must be logged in to submit.');
 
-    if (!name || !position || !departmentId || !reviewText || rating < 1) {
-        setMessage('Please complete all required fields and provide a rating.');
-        return;
-      }
+    if (!name || !position || !departmentName || !reviewText || rating < 1) {
+      setMessage('Please complete all required fields and provide a rating.');
+      return;
+    }
 
     try {
       setLoading(true);
-      const manager = await createManager({ name, position, branch, departmentId, bio });
+
+      let deptId = departmentId;
+      if (!deptId) {
+        const newDept = await createDepartment({ name: departmentName });
+        deptId = newDept._id;
+      }
+
+      const manager = await createManager({
+        name,
+        position,
+        branch,
+        departmentId: deptId,
+      });
+
       await submitManagerReview({
         managerId: manager._id,
         rating,
         reviewText,
-        anonymous,
+        anonymous: true,
       });
-      setMessage('✅ Manager submitted and review posted!');
+
+      setMessage('✅ Submitted successfully!');
       navigate(`/managers/${manager._id}`);
     } catch (err) {
       console.error(err);
-      setMessage('❌ Failed to submit. Try again.');
+      setMessage('❌ Submission failed. Try again.');
     } finally {
       setLoading(false);
     }
   };
 
+  const StarRating = () => (
+    <div className="flex gap-1">
+      {[1, 2, 3, 4, 5].map((star) => (
+        <button
+          key={star}
+          type="button"
+          onClick={() => setRating(star)}
+          className={`text-2xl ${star <= rating ? 'text-yellow-400' : 'text-gray-300'}`}
+        >
+          ★
+        </button>
+      ))}
+    </div>
+  );
+
   return (
     <div className="min-h-screen bg-white flex flex-col">
       <ResponsiveNavbar isLoggedIn={isLoggedIn} onLogout={logout} />
 
-      {/* Hero */}
       <section
         className="relative bg-cover bg-center text-white mt-[64px] py-24"
         style={{
@@ -74,19 +114,15 @@ const RateManager = () => {
       >
         <div className="absolute inset-0 bg-black/50 z-0" />
         <div className="relative z-10 flex flex-col items-center text-center px-6">
-          <h1 className="text-3xl sm:text-4xl font-bold text-blue-500 mb-4">
+          <h1 className="text-3xl sm:text-4xl font-bold text-blue-500 mb-2">
             RATE A MANAGER
           </h1>
-          <p className="text-white text-sm">Didn't find your manager? Add and rate them here.</p>
+          <p className="text-white text-sm">Couldn’t find your manager? Add and rate them below.</p>
         </div>
       </section>
 
-      {/* Form */}
       <main className="flex justify-center px-4 py-12 bg-gray-50">
-        <form
-          onSubmit={handleSubmit}
-          className="w-full max-w-2xl bg-white p-8 rounded-lg shadow-md space-y-6"
-        >
+        <form onSubmit={handleSubmit} className="w-full max-w-2xl bg-white p-8 rounded-lg shadow-md space-y-6">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <input
               type="text"
@@ -96,7 +132,6 @@ const RateManager = () => {
               required
               className="input"
             />
-
             <input
               type="text"
               placeholder="Position"
@@ -105,7 +140,6 @@ const RateManager = () => {
               required
               className="input"
             />
-
             <input
               type="text"
               placeholder="Branch / Office"
@@ -113,40 +147,38 @@ const RateManager = () => {
               onChange={(e) => setBranch(e.target.value)}
               className="input"
             />
-
-            <select
-              value={departmentId}
-              onChange={(e) => setDepartmentId(e.target.value)}
-              required
-              className="input"
-            >
-              <option value="">Select Department</option>
-              {departments.map((dept: any) => (
-                <option key={dept._id} value={dept._id}>
-                  {dept.name}
-                </option>
-              ))}
-            </select>
+            <div className="relative">
+              <input
+                type="text"
+                placeholder="Department"
+                value={departmentName}
+                onChange={(e) => {
+                  setDepartmentName(e.target.value);
+                  setDepartmentId('');
+                }}
+                required
+                className="input"
+              />
+              {departmentSuggestions.length > 0 && (
+                <ul className="absolute z-10 w-full bg-white border rounded-md shadow-md mt-1 max-h-40 overflow-y-auto">
+                  {departmentSuggestions.map((dept: any) => (
+                    <li
+                      key={dept._id}
+                      onClick={() => handleDepartmentSelect(dept)}
+                      className="px-4 py-2 hover:bg-blue-100 cursor-pointer text-sm"
+                    >
+                      {dept.name}
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </div>
           </div>
 
-          <textarea
-            placeholder="Short Bio (optional)"
-            value={bio}
-            onChange={(e) => setBio(e.target.value)}
-            rows={3}
-            className="input"
-          />
-
           <div className="flex flex-col gap-2">
-            <label className="font-semibold text-gray-700">Rating (1 to 5)</label>
-            <input
-              type="range"
-              min={1}
-              max={5}
-              value={rating}
-              onChange={(e) => setRating(parseInt(e.target.value))}
-            />
-            <span>{rating} ⭐</span>
+            <label className="font-semibold text-gray-700">Rating</label>
+            <StarRating />
+            <span className="text-blue-600">{rating > 0 && `${rating} stars`}</span>
           </div>
 
           <textarea
@@ -157,15 +189,6 @@ const RateManager = () => {
             rows={4}
             className="input"
           />
-
-          <label className="flex items-center gap-2">
-            <input
-              type="checkbox"
-              checked={anonymous}
-              onChange={() => setAnonymous(!anonymous)}
-            />
-            Post anonymously
-          </label>
 
           {message && <p className="text-sm text-center text-blue-600">{message}</p>}
 
@@ -179,7 +202,9 @@ const RateManager = () => {
         </form>
       </main>
 
-      <footer className="text-center text-gray-500 text-sm py-6">Built with trust 💙</footer>
+      <footer className="text-center text-gray-500 text-sm py-6">
+        Anonymous by default — built for honesty 💙
+      </footer>
     </div>
   );
 };
