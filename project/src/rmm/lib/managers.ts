@@ -74,7 +74,7 @@ export const submitManagerReview = async ({
     reviewText: string;
     anonymous: boolean;
   }) => {
-    const res = await fetch(`${BASE_URL}/api/manager-reviews`, {
+    const res = await fetch(`${BASE_URL}/api/manager-reviews/submit`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
