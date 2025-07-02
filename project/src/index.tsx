@@ -16,7 +16,9 @@ import MyReviews from './rmi/screens/ExamplesHomePage/MyReviews';
 import ContactPage from './rmi/screens/ExamplesHomePage/ContactPage';
 import AccountSettings from './rmi/screens/ExamplesHomePage/AccountsSettingPage';
 import SavedInterviewers from "./rmi/screens/ExamplesHomePage/SavedInterviewers";
-import SearchInterviewer from './rmi/screens/ExamplesHomePage/SearchInterviewer'; // adjust path if needed
+import SearchInterviewer from './rmi/screens/ExamplesHomePage/SearchInterviewer'; 
+import RateInterviewer from './rmi/screens/ExamplesHomePage/RateInterviewer';
+
 
 
 
@@ -29,6 +31,7 @@ import ManagerProfile from './rmm/pages/ManagerProfile';
 import RmmSearchResults from './rmm/pages/searchresults';
 import SearchManager from './rmm/pages/SearchManager';
 import RateManager from './rmm/pages/RateManager';
+
 
 
 // Tailwind CSS import (No need to change this)
@@ -54,6 +57,7 @@ const App = () => {
         <Route path="/account-settings" element={<AccountSettings />} />
         <Route path="/saved" element = {<SavedInterviewers />}/>
 
+
         
 
         {/* Interviewer List Page Route */}
@@ -62,6 +66,8 @@ const App = () => {
         {/* Search Results Page Route (Dynamic route) */}
         <Route path="/search/:query" element={<SearchResults />} />
         <Route path="/search-interviewers" element={<SearchInterviewer />} />
+        <Route path="/rate-interviewer" element={<RateInterviewer />} />
+
 
 
         {/* RMM Routes */}
