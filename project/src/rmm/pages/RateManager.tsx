@@ -2,9 +2,8 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import ResponsiveNavbar from '../components/Navbar/navbar';
 import { useAuth } from '../../rmi/lib/useAuth';
-import { createManager } from '../lib/managers';
+import { createManager, submitManagerReview } from '../lib/managers';
 import { getDepartments, createDepartment } from '../lib/department';
-import { submitManagerReview } from '../lib/managers';
 
 const RateManager = () => {
   const { isLoggedIn, logout } = useAuth();
@@ -45,7 +44,6 @@ const RateManager = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-
     if (!isLoggedIn) return setMessage('You must be logged in to submit.');
 
     if (!name || !position || !departmentName || !reviewText || rating < 1) {
@@ -87,13 +85,13 @@ const RateManager = () => {
   };
 
   const StarRating = () => (
-    <div className="flex gap-1">
+    <div className="flex gap-2 text-3xl mt-2">
       {[1, 2, 3, 4, 5].map((star) => (
         <button
           key={star}
           type="button"
           onClick={() => setRating(star)}
-          className={`text-2xl ${star <= rating ? 'text-yellow-400' : 'text-gray-300'}`}
+          className={star <= rating ? 'text-yellow-500' : 'text-gray-300'}
         >
           ★
         </button>
@@ -102,50 +100,44 @@ const RateManager = () => {
   );
 
   return (
-    <div className="min-h-screen bg-white flex flex-col">
+    <div className="min-h-screen bg-gray-100 flex flex-col">
       <ResponsiveNavbar isLoggedIn={isLoggedIn} onLogout={logout} />
 
-      <section
-        className="relative bg-cover bg-center text-white mt-[64px] py-24"
-        style={{
-          backgroundImage: "url('/rmmformbg.jpeg')",
-          filter: 'grayscale(20%) brightness(0.85) saturate(70%)',
-        }}
-      >
-        <div className="absolute inset-0 bg-black/50 z-0" />
-        <div className="relative z-10 flex flex-col items-center text-center px-6">
-          <h1 className="text-3xl sm:text-4xl font-bold text-blue-500 mb-2">
-            RATE A MANAGER
-          </h1>
-          <p className="text-white text-sm">Couldn’t find your manager? Add and rate them below.</p>
-        </div>
-      </section>
+      {/* Yellow Header */}
+      <div className="mt-[64px] bg-yellow-400 py-6 px-10 shadow-md flex justify-between items-center">
+        <img src="/rmm-logo.png" alt="RMM Logo" className="w-12 h-12 rounded-full" />
+        <h1 className="text-2xl font-bold text-gray-900 text-right">
+          INPUT YOUR RATING:
+        </h1>
+      </div>
 
-      <main className="flex justify-center px-4 py-12 bg-gray-50">
-        <form onSubmit={handleSubmit} className="w-full max-w-2xl bg-white p-8 rounded-lg shadow-md space-y-6">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+      {/* Form Section */}
+      <main className="flex justify-center p-8">
+        <form onSubmit={handleSubmit} className="w-full max-w-5xl grid grid-cols-1 md:grid-cols-3 gap-8 bg-white p-8 rounded-xl shadow-lg">
+          {/* Left Column: Form Fields */}
+          <div className="space-y-5 md:col-span-2">
             <input
               type="text"
               placeholder="Manager Name"
               value={name}
               onChange={(e) => setName(e.target.value)}
+              className="w-full border border-gray-300 rounded-md px-4 py-3 focus:outline-none focus:ring-2 focus:ring-yellow-400"
               required
-              className="input"
             />
             <input
               type="text"
               placeholder="Position"
               value={position}
               onChange={(e) => setPosition(e.target.value)}
+              className="w-full border border-gray-300 rounded-md px-4 py-3 focus:outline-none focus:ring-2 focus:ring-yellow-400"
               required
-              className="input"
             />
             <input
               type="text"
               placeholder="Branch / Office"
               value={branch}
               onChange={(e) => setBranch(e.target.value)}
-              className="input"
+              className="w-full border border-gray-300 rounded-md px-4 py-3 focus:outline-none focus:ring-2 focus:ring-yellow-400"
             />
             <div className="relative">
               <input
@@ -156,8 +148,8 @@ const RateManager = () => {
                   setDepartmentName(e.target.value);
                   setDepartmentId('');
                 }}
+                className="w-full border border-gray-300 rounded-md px-4 py-3 focus:outline-none focus:ring-2 focus:ring-yellow-400"
                 required
-                className="input"
               />
               {departmentSuggestions.length > 0 && (
                 <ul className="absolute z-10 w-full bg-white border rounded-md shadow-md mt-1 max-h-40 overflow-y-auto">
@@ -165,7 +157,7 @@ const RateManager = () => {
                     <li
                       key={dept._id}
                       onClick={() => handleDepartmentSelect(dept)}
-                      className="px-4 py-2 hover:bg-blue-100 cursor-pointer text-sm"
+                      className="px-4 py-2 hover:bg-yellow-100 cursor-pointer text-sm"
                     >
                       {dept.name}
                     </li>
@@ -175,35 +167,59 @@ const RateManager = () => {
             </div>
           </div>
 
-          <div className="flex flex-col gap-2">
-            <label className="font-semibold text-gray-700">Rating</label>
-            <StarRating />
-            <span className="text-blue-600">{rating > 0 && `${rating} stars`}</span>
+          {/* Right Column: Avatar */}
+          <div className="flex justify-center items-start">
+            <div className="w-32 h-32 rounded-full bg-gray-200 flex items-center justify-center text-5xl text-gray-500 shadow-inner">
+              👨‍💼
+            </div>
           </div>
 
-          <textarea
-            placeholder="Write your review"
-            value={reviewText}
-            onChange={(e) => setReviewText(e.target.value)}
-            required
-            rows={4}
-            className="input"
-          />
+          {/* Star Rating */}
+          <div className="md:col-span-3">
+            <label className="block text-gray-700 font-semibold mb-2">
+              Overall Rating
+            </label>
+            <StarRating />
+            <span className="text-yellow-600 text-sm">{rating > 0 && `${rating} stars`}</span>
+          </div>
 
-          {message && <p className="text-sm text-center text-blue-600">{message}</p>}
+          {/* Review Box */}
+          <div className="md:col-span-3">
+            <label className="block text-gray-700 font-semibold mb-2">
+              Your Review
+            </label>
+            <textarea
+              value={reviewText}
+              onChange={(e) => setReviewText(e.target.value)}
+              rows={5}
+              placeholder="Write your feedback about the manager..."
+              className="w-full border border-gray-300 rounded-md px-4 py-3 focus:outline-none focus:ring-2 focus:ring-yellow-400"
+              required
+            />
+          </div>
 
-          <button
-            type="submit"
-            disabled={loading}
-            className="bg-blue-500 text-white px-6 py-2 rounded-md hover:bg-blue-600"
-          >
-            {loading ? 'Submitting...' : 'Submit Manager & Review'}
-          </button>
+          {/* Message Feedback */}
+          {message && (
+            <div className="md:col-span-3 text-center text-sm text-blue-700">
+              {message}
+            </div>
+          )}
+
+          {/* Submit Button */}
+          <div className="md:col-span-3 flex justify-center">
+            <button
+              type="submit"
+              disabled={loading}
+              className="bg-yellow-400 hover:bg-yellow-500 text-black font-bold px-8 py-3 rounded-md transition"
+            >
+              {loading ? 'Submitting...' : 'Submit Manager & Review'}
+            </button>
+          </div>
         </form>
       </main>
 
       <footer className="text-center text-gray-500 text-sm py-6">
-        Anonymous by default — built for honesty 💙
+        Anonymous by default — built for honesty 💛
       </footer>
     </div>
   );
