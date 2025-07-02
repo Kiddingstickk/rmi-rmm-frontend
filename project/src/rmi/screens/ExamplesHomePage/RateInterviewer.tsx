@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 const RateInterviewer = () => {
@@ -9,6 +9,67 @@ const RateInterviewer = () => {
   const [rating, setRating] = useState(0);
   const [interviewStatus, setInterviewStatus] = useState('');
   const [reviewText, setReviewText] = useState('');
+
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      alert('You need to be logged in to submit a review.');
+      navigate('/');
+    }
+  }, [navigate]);
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    const token = localStorage.getItem('token');
+
+    if (!name || !company || rating < 1 || !reviewText) {
+      alert('Please fill all required fields and give a rating.');
+      return;
+    }
+
+    try {
+      // 1. Create interviewer
+      const interviewerRes = await fetch(`${import.meta.env.VITE_API_URL}/api/interviewers`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          name,
+          company,
+          position,
+        }),
+      });
+
+      if (!interviewerRes.ok) throw new Error('Failed to create interviewer');
+      const interviewer = await interviewerRes.json();
+
+      // 2. Submit review
+      const reviewRes = await fetch(`${import.meta.env.VITE_API_URL}/api/reviews/rmi`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          interviewerId: interviewer._id,
+          rating,
+          reviewText,
+          interviewStatus,
+          anonymous: true,
+        }),
+      });
+
+      if (!reviewRes.ok) throw new Error('Review submission failed');
+
+      alert('✅ Review submitted successfully!');
+      navigate(`/interviewers/${interviewer._id}`);
+    } catch (err) {
+      console.error(err);
+      alert('❌ Something went wrong. Please try again.');
+    }
+  };
 
   const StarRating = () => (
     <div className="flex gap-2 text-3xl mt-2">
@@ -37,7 +98,7 @@ const RateInterviewer = () => {
 
       {/* Form Section */}
       <main className="flex justify-center p-8">
-        <form className="w-full max-w-5xl grid grid-cols-1 md:grid-cols-3 gap-8 bg-white p-8 rounded-xl shadow-lg">
+        <form onSubmit={handleSubmit} className="w-full max-w-5xl grid grid-cols-1 md:grid-cols-3 gap-8 bg-white p-8 rounded-xl shadow-lg">
           {/* Left: Inputs */}
           <div className="space-y-5 md:col-span-2">
             <input
@@ -48,7 +109,6 @@ const RateInterviewer = () => {
               className="w-full border border-gray-300 rounded-md px-4 py-3 focus:outline-none focus:ring-2 focus:ring-yellow-400"
               required
             />
-
             <input
               type="text"
               placeholder="Company"
@@ -57,7 +117,6 @@ const RateInterviewer = () => {
               className="w-full border border-gray-300 rounded-md px-4 py-3 focus:outline-none focus:ring-2 focus:ring-yellow-400"
               required
             />
-
             <input
               type="text"
               placeholder="Position"
@@ -82,7 +141,7 @@ const RateInterviewer = () => {
             <StarRating />
           </div>
 
-          {/* Full Width: Interview Status Dropdown */}
+          {/* Interview Status Dropdown */}
           <div className="md:col-span-3">
             <label className="block text-gray-700 font-semibold mb-2">
               Interview Outcome
@@ -99,7 +158,7 @@ const RateInterviewer = () => {
             </select>
           </div>
 
-          {/* Full Width: Review Textarea */}
+          {/* Review Textarea */}
           <div className="md:col-span-3">
             <label className="block text-gray-700 font-semibold mb-2">
               Your Review
@@ -114,7 +173,7 @@ const RateInterviewer = () => {
             />
           </div>
 
-          {/* Full Width: Submit Button */}
+          {/* Submit Button */}
           <div className="md:col-span-3 flex justify-center">
             <button
               type="submit"
