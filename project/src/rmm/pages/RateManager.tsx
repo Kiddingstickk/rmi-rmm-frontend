@@ -91,7 +91,7 @@ const RateManager = () => {
           key={star}
           type="button"
           onClick={() => setRating(star)}
-          className={star <= rating ? 'text-yellow-500' : 'text-gray-300'}
+          className={star <= rating ? 'text-blue-300' : 'text-gray-300'}
         >
           ★
         </button>
@@ -102,14 +102,6 @@ const RateManager = () => {
   return (
     <div className="min-h-screen bg-gray-100 flex flex-col">
       <ResponsiveNavbar isLoggedIn={isLoggedIn} onLogout={logout} />
-
-      {/* Yellow Header */}
-      <div className="mt-[64px] bg-yellow-400 py-6 px-10 shadow-md flex justify-between items-center">
-        <img src="/rmm-logo.png" alt="RMM Logo" className="w-12 h-12 rounded-full" />
-        <h1 className="text-2xl font-bold text-gray-900 text-right">
-          INPUT YOUR RATING:
-        </h1>
-      </div>
 
       {/* Form Section */}
       <main className="flex justify-center p-8">
@@ -129,7 +121,7 @@ const RateManager = () => {
               placeholder="Position"
               value={position}
               onChange={(e) => setPosition(e.target.value)}
-              className="w-full border border-gray-300 rounded-md px-4 py-3 focus:outline-none focus:ring-2 focus:ring-yellow-400"
+              className="w-full border border-gray-300 rounded-md px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-300"
               required
             />
             <input
@@ -137,7 +129,7 @@ const RateManager = () => {
               placeholder="Branch / Office"
               value={branch}
               onChange={(e) => setBranch(e.target.value)}
-              className="w-full border border-gray-300 rounded-md px-4 py-3 focus:outline-none focus:ring-2 focus:ring-yellow-400"
+              className="w-full border border-gray-300 rounded-md px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-300"
             />
             <div className="relative">
               <input
@@ -148,7 +140,7 @@ const RateManager = () => {
                   setDepartmentName(e.target.value);
                   setDepartmentId('');
                 }}
-                className="w-full border border-gray-300 rounded-md px-4 py-3 focus:outline-none focus:ring-2 focus:ring-yellow-400"
+                className="w-full border border-gray-300 rounded-md px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-300"
                 required
               />
               {departmentSuggestions.length > 0 && (
@@ -193,7 +185,7 @@ const RateManager = () => {
               onChange={(e) => setReviewText(e.target.value)}
               rows={5}
               placeholder="Write your feedback about the manager..."
-              className="w-full border border-gray-300 rounded-md px-4 py-3 focus:outline-none focus:ring-2 focus:ring-yellow-400"
+              className="w-full border border-gray-300 rounded-md px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-300"
               required
             />
           </div>
@@ -210,7 +202,7 @@ const RateManager = () => {
             <button
               type="submit"
               disabled={loading}
-              className="bg-yellow-400 hover:bg-yellow-500 text-black font-bold px-8 py-3 rounded-md transition"
+              className="bg-blue-300 hover:bg-blue-400 text-black font-bold px-8 py-3 rounded-md transition"
             >
               {loading ? 'Submitting...' : 'Submit Manager & Review'}
             </button>
