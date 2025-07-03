@@ -152,10 +152,10 @@ const RateInterviewer = () => {
               className="w-full border border-gray-300 rounded-md px-4 py-3 bg-white focus:outline-none focus:ring-2 focus:ring-yellow-400"
             >
               <option value="">Select Outcome</option>
-              <option value="option1">Cleared</option>
-              <option value="option2">Not Cleared</option>
-              <option value="option3">Waiting</option>
-              <option value="option4">No Interview</option>
+              <option value="Cleared">Cleared</option>
+              <option value="Not Cleared">Not Cleared</option>
+              <option value="Waiting">Waiting</option>
+              <option value="No Interview">No Interview</option>
             </select>
           </div>
 
