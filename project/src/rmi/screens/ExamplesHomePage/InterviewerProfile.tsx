@@ -135,57 +135,62 @@ const InterviewerProfile = () => {
       </header>
 
       {/* 👤 Interviewer Summary */}
-      <section className="max-w-5xl mx-auto px-6 py-10 bg-white rounded-xl shadow-lg mt-6">
-        <div className="flex flex-col md:flex-row justify-between items-start md:items-center">
-          <div>
-            <h2 className="text-2xl font-bold text-gray-800">{interviewer?.name}</h2>
-            <p className="text-gray-600 mt-1">{interviewer?.position}, {interviewer?.company}</p>
-          </div>
-          <div className="mt-4 md:mt-0 space-x-3">
-            <button className="bg-yellow-400 px-6 py-2 rounded-md font-semibold hover:bg-yellow-500">
-              Rate
-            </button>
-            <button className="bg-gray-200 px-6 py-2 rounded-md font-semibold hover:bg-gray-300">
-              Save
-            </button>
-          </div>
-        </div>
+      {/* 👤 Interviewer Summary & Rating Distribution (Updated Layout) */}
+<section className="max-w-5xl mx-auto px-6 py-10 bg-white rounded-xl shadow-lg mt-6">
+  <div className="flex flex-col md:flex-row justify-between gap-8">
+    {/* ⬅️ Left Side: Name, Stars, Info, Buttons */}
+    <div className="flex-1">
+      <h2 className="text-3xl font-bold text-gray-800">{interviewer?.name}</h2>
+      <p className="text-gray-600 mt-1">{interviewer?.position}, {interviewer?.company}</p>
 
-        {/* ⭐ Average Rating */}
-        <div className="mt-8 border-t pt-6">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-2 text-yellow-500 text-2xl">
-              {renderStars(Math.round(avgRating))}
-              <span className="text-gray-800 text-lg font-semibold ml-2">{avgRating.toFixed(1)}</span>
+      {/* ⭐ Average Rating */}
+      <div className="mt-3 flex items-center gap-2 text-yellow-500 text-2xl">
+        {renderStars(Math.round(avgRating))}
+        <span className="text-gray-800 text-lg font-semibold ml-2">
+          {avgRating.toFixed(1)}
+        </span>
+      </div>
+
+      <p className="text-sm text-gray-500 mt-1">
+        Overall rating based on {reviews.length} review{reviews.length !== 1 && 's'}
+      </p>
+
+      {/* 🔘 Buttons */}
+      <div className="mt-4 flex gap-3">
+        <button className="bg-yellow-400 px-6 py-2 rounded-md font-semibold hover:bg-yellow-500">
+          Rate
+        </button>
+        <button className="bg-gray-200 px-6 py-2 rounded-md font-semibold hover:bg-gray-300">
+          Save
+        </button>
+      </div>
+    </div>
+
+    {/* ➡️ Right Side: Rating Breakdown */}
+    <div className="flex-1">
+      <h3 className="text-lg font-medium text-gray-700 mb-4">Rating Distribution</h3>
+      <div className="space-y-3">
+        {[5, 4, 3, 2, 1].map((stars) => {
+          const label = ['Awful', 'OK', 'Good', 'Great', 'Awesome'][5 - stars];
+          const count = reviews.filter((r) => r.rating === stars).length;
+          return (
+            <div key={stars} className="flex items-center justify-between">
+              <div className="w-24 text-sm font-medium text-gray-700">{label}</div>
+              <div className="flex gap-1 text-yellow-400 text-sm">{'★'.repeat(stars)}</div>
+              <div className="relative w-full h-3 bg-gray-200 rounded mx-4">
+                <div
+                  className="absolute h-3 bg-yellow-400 rounded"
+                  style={{ width: `${(count / reviews.length) * 100 || 0}%` }}
+                />
+              </div>
+              <div className="text-sm font-medium text-gray-700 w-6 text-right">{count}</div>
             </div>
-            <p className="text-sm text-gray-500">{reviews.length} ratings</p>
-          </div>
-
-          {/* 📊 Rating Distribution */}
-          <div className="mt-6 space-y-4">
-            {[5, 4, 3, 2, 1].map((stars) => {
-              const count = reviews.filter((r) => r.rating === stars).length;
-              return (
-                <div key={stars} className="flex items-center justify-between">
-                  <div className="w-28 flex-shrink-0 text-sm font-medium text-gray-700">
-                    {['Awful', 'OK', 'Good', 'Great', 'Awesome'][5 - stars]}
-                  </div>
-                  <div className="flex gap-1 text-yellow-400 text-sm">
-                    {'★'.repeat(stars)}
-                  </div>
-                  <div className="relative w-full h-3 bg-gray-200 rounded mx-4">
-                    <div
-                      className="absolute h-3 bg-yellow-400 rounded"
-                      style={{ width: `${(count / reviews.length) * 100 || 0}%` }}
-                    />
-                  </div>
-                  <div className="text-sm font-medium text-gray-700 w-6 text-right">{count}</div>
-                </div>
-              );
-            })}
-          </div>
-        </div>
-      </section>
+          );
+        })}
+      </div>
+    </div>
+  </div>
+</section>
 
       {/* 💬 Reviews Section */}
       <section className="max-w-5xl mx-auto px-6 py-10 space-y-6">
