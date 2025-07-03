@@ -64,14 +64,15 @@ const SearchManager = () => {
                     <div className="p-4 text-sm text-gray-500">Searching...</div>
                   ) : results.length > 0 ? (
                     results.map((person, i) => (
-                      <div
-                        key={i}
-                        onClick={() => navigate(`/managers/${person._id}`)}
-                        className="px-4 py-3 hover:bg-gray-100 border-b cursor-pointer"
-                      >
-                        <p className="font-medium">{person.Name || person.name}</p>
-                        <p className="text-sm text-gray-500">{person.Department || person.company}</p>
-                      </div>
+                    <div
+                      key={i}
+                      onClick={() => navigate(`/rmm/managers/${person._id}`)}
+                      className="px-4 py-3 hover:bg-gray-100 border-b cursor-pointer"
+                    >
+                      <p className="font-medium">{person.Name || person.name}</p>
+                      <p className="text-sm text-gray-500">{person.Department || person.company}</p>
+                    </div>
+
                     ))
                   ) : (
                     <div className="p-3 text-sm text-gray-500">No matches found</div>

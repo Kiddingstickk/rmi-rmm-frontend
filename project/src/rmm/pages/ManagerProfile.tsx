@@ -1,12 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import ReviewForm from "../components/departments/ReviewForm";
-//import auth  from "../../../backend/shared/middleware/auth.js";
 import { AxiosError } from "axios";
-
 import api from "../../lib/api";
-
-// Types defined inside the same file
 
 interface Department {
   _id: string;
@@ -28,12 +23,9 @@ interface Review {
   rating: number;
   anonymous: boolean;
   createdAt: string;
-  likes: number;      // counts only
-  dislikes: number; 
+  likes: number;
+  dislikes: number;
 }
-
-
-
 
 interface Manager {
   _id: string;
@@ -44,24 +36,30 @@ interface Manager {
   reviews: Review[];
 }
 
-
-
-
-
-
-
-
+const renderStars = (rating: number) => {
+  return (
+    <div className="flex text-blue-500">
+      {[...Array(5)].map((_, i) =>
+        i < rating ? (
+          <span key={i}>★</span>
+        ) : (
+          <span key={i} className="text-gray-300">
+            ★
+          </span>
+        )
+      )}
+    </div>
+  );
+};
 
 const ManagerProfile = () => {
-  const { id } = useParams(); // and then use id in fetch URL
+  const { id } = useParams();
   const [manager, setManager] = useState<Manager | null>(null);
   const [editingReview, setEditingReview] = useState<Review | null>(null);
-  const userId = localStorage.getItem('userId'); 
-  const token = localStorage.getItem('token');
-
+  const userId = localStorage.getItem("userId");
+  const token = localStorage.getItem("token");
 
   useEffect(() => {
-    console.log("Manager ID from route params:" , id);
     if (id) fetchManager();
   }, [id]);
 
@@ -69,14 +67,11 @@ const ManagerProfile = () => {
     try {
       const res = await fetch(`${import.meta.env.VITE_API_URL}/api/rmm/managers/${id}`);
       const data = await res.json();
-
-      // Convert likes/dislikes arrays to counts
       data.reviews = data.reviews.map((r: any) => ({
         ...r,
         likes: r.likes.length,
         dislikes: r.dislikes.length
       }));
-
       setManager(data);
     } catch (error) {
       console.error("Failed to fetch manager", error);
@@ -91,9 +86,8 @@ const ManagerProfile = () => {
       fetchManager();
     } catch (err) {
       const error = err as AxiosError;
-      console.error('Error liking review:', error.response?.data || error.message);
+      console.error("Error liking review:", error.response?.data || error.message);
     }
-    
   };
 
   const handleDislike = async (reviewId: string) => {
@@ -104,106 +98,112 @@ const ManagerProfile = () => {
       fetchManager();
     } catch (err) {
       const error = err as AxiosError;
-      console.error('Error liking review:', error.response?.data || error.message);
+      console.error("Error disliking review:", error.response?.data || error.message);
     }
-    
   };
 
-
-
-
-  console.log("Manager object:", manager);
-  // userId is string, e.g. '6833550dd9a79790f77a279a'
-  console.log('Logged-in user id:', userId);
-
+  const totalReviews = manager?.reviews.length || 0;
+  const avgRating =
+    totalReviews === 0
+      ? 0
+      : manager!.reviews.reduce((sum, r) => sum + r.rating, 0) / totalReviews;
 
   return (
-    <div className="max-w-3xl mx-auto p-6">
-      {manager ? (
-        <>
-          <div className="bg-white p-6 rounded shadow mb-6">
-            <h1 className="text-2xl font-bold text-gray-800">{manager.name}</h1>
-            <p className="text-gray-500">{manager.position}</p>
-            <p className="text-sm text-gray-400 mb-3">{manager.department.name}</p>
-            <p className="text-lg font-semibold">
-              Average Rating:{" "}
-              <span className={
-                  manager?.averageRating! >= 4.5 ? "text-green-600" :
-                  manager?.averageRating! >= 3 ? "text-yellow-500" :
-                  "text-red-500"
-                }>
-                  {manager?.averageRating?.toFixed(1)} / 5
+    <div className="min-h-screen bg-gray-100">
+      {/* 🔵 Header */}
+      <header className="bg-blue-400 flex justify-between items-center px-8 py-6 shadow-md">
+        <img src="/rmm-logo.png" alt="RMM Logo" className="w-12 h-12 rounded-full" />
+        <h1 className="text-xl md:text-2xl font-bold text-right text-gray-900 uppercase">
+          Manager Profile:
+        </h1>
+      </header>
+
+      {/* 👤 Summary & Distribution */}
+      <section className="max-w-5xl mx-auto px-6 py-10 bg-white rounded-xl shadow-lg mt-6">
+        <div className="flex flex-col md:flex-row justify-between gap-8">
+          {/* Left Side */}
+          <div className="flex-1">
+            <h2 className="text-3xl font-bold text-gray-800">{manager?.name}</h2>
+
+            <div className="mt-3 flex items-center gap-2 text-2xl">
+              {renderStars(Math.round(avgRating))}
+              <span className="text-gray-800 text-lg font-semibold ml-2">
+                {avgRating.toFixed(1)}
               </span>
+            </div>
 
+            <p className="text-sm text-gray-500 mt-1">
+              Overall rating based on {totalReviews} review{totalReviews !== 1 ? "s" : ""}
             </p>
+
+            <div className="mt-4 flex gap-3">
+              <button className="bg-blue-400 px-6 py-2 rounded-md font-semibold hover:bg-blue-500">
+                Rate
+              </button>
+              <button className="bg-gray-200 px-6 py-2 rounded-md font-semibold hover:bg-gray-300">
+                Save
+              </button>
+            </div>
           </div>
 
-          <div className="bg-white p-6 rounded shadow mb-6">
-            <h2 className="text-xl font-semibold mb-4">{editingReview ? "Update Your Review" : "Submit Your Review"}</h2>
-            <ReviewForm managerId={manager._id}  onSuccess={() => {
-                fetchManager();
-                setEditingReview(null);
-              }}
-              existingReview={editingReview}
-              onCancelEdit={() => setEditingReview(null)} />
-          </div>
-
-
-          <div className="bg-white p-6 rounded shadow">
-            <h2 className="text-xl font-semibold mb-4">User Reviews</h2>
-            {manager.reviews?.length > 0 ? (() => {
-    const sortedReviews = [...manager.reviews];
-    const userReviewIndex = sortedReviews.findIndex(
-      (rev) =>
-        (typeof rev.userId === "string" ? rev.userId : rev.userId?._id) === userId
-    );
-
-    if (userReviewIndex !== -1) {
-      const [userReview] = sortedReviews.splice(userReviewIndex, 1);
-      sortedReviews.unshift(userReview);
-    }
-
-    return sortedReviews.map((rev, i) =>(
-                <div key={i} className="border-b pb-3 mb-3">
-                  <p className="font-semibold">Rating: {rev.rating} / 5</p>
-                  <p>{rev.reviewText}</p>
-                  <p className="text-xs text-gray-400">Posted on {new Date(rev.createdAt).toLocaleDateString()}</p>
-
-                  <div className="flex items-center mt-2 gap-4">
-                    <button
-                      onClick={() => handleLike(rev._id)}
-                      className="text-green-600 hover:underline text-sm"
-                    >
-                      👍{rev.likes}
-                    </button>
-                    <button
-                      onClick={() => handleDislike(rev._id)}
-                      className="text-red-600 hover:underline text-sm"
-                    >
-                      👎{rev.dislikes}
-                    </button>
+          {/* Right Side */}
+          <div className="flex-1">
+            <h3 className="text-lg font-medium text-gray-700 mb-4">Rating Distribution</h3>
+            <div className="space-y-3">
+              {[5, 4, 3, 2, 1].map((star) => {
+                const label = ['Awful', 'OK', 'Good', 'Great', 'Awesome'][5 - star];
+                const count = manager?.reviews.filter((r) => r.rating === star).length || 0;
+                return (
+                  <div key={star} className="flex items-center justify-between">
+                    <div className="w-24 text-sm font-medium text-gray-700">{label}</div>
+                    <div className="flex gap-1 text-blue-400 text-sm">{'★'.repeat(star)}</div>
+                    <div className="relative w-full h-3 bg-gray-200 rounded mx-4">
+                      <div
+                        className="absolute h-3 bg-blue-400 rounded"
+                        style={{
+                          width:
+                            totalReviews > 0
+                              ? `${(count / totalReviews) * 100}%`
+                              : '0%'
+                        }}
+                      />
+                    </div>
+                    <div className="text-sm font-medium text-gray-700 w-6 text-right">{count}</div>
                   </div>
-
-
-
-                  {rev.userId._id === userId && (
-                    <button
-                      onClick={() => setEditingReview(rev)}
-                      className="text-blue-500 hover:underline mt-1"
-                    >
-                      Update
-                    </button>
-                  )}
-                </div>
-             ));
-            })() : (
-              <p className="text-gray-500">No reviews yet.</p>
-            )}
+                );
+              })}
+            </div>
           </div>
-        </>
-      )  : (
-        <p>Loading manager...</p>
-      )}
+        </div>
+      </section>
+
+      {/* 💬 Reviews */}
+      <section className="max-w-5xl mx-auto px-6 py-10 space-y-6">
+        {manager?.reviews.map((review) => (
+          <div
+            key={review._id}
+            className="bg-white shadow-md p-6 rounded-xl border border-gray-200"
+          >
+            <div className="flex items-center gap-2 text-blue-500 text-xl mb-2">
+              {renderStars(review.rating)}
+            </div>
+            <p className="text-gray-700 mb-2 italic">"{review.reviewText}"</p>
+            <p className="text-sm text-gray-500 mb-2">
+              Submitted on {new Date(review.createdAt).toLocaleDateString()}
+            </p>
+            <div className="flex gap-4 text-sm text-gray-600">
+              <button onClick={() => handleLike(review._id)}>👍 {review.likes}</button>
+              <button onClick={() => handleDislike(review._id)}>👎 {review.dislikes}</button>
+            </div>
+          </div>
+        ))}
+
+        <div className="flex justify-center pt-6">
+          <button className="bg-gray-200 hover:bg-gray-300 px-6 py-2 rounded font-medium">
+            See More
+          </button>
+        </div>
+      </section>
     </div>
   );
 };
