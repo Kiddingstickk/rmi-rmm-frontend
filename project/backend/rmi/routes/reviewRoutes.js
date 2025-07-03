@@ -9,7 +9,7 @@ const router = express.Router();
 // @access  Private
 router.get('/my-reviews', auth , async (req, res) => {
   try {
-    const reviews = await Review.find({ user: req.user._id }).populate('interviewer', 'name position company');
+    const reviews = await Review.find({ user: req.user.id }).populate('interviewer', 'name position company');
 
     res.json(reviews);
   } catch (error) {
@@ -24,6 +24,10 @@ router.get('/my-reviews', auth , async (req, res) => {
 // POST - Submit a new review for an interviewer
 router.post('/', auth, async (req, res) => {
   try {
+    console.log('REQ.BODY:', req.body);
+    console.log('REQ.USER:', req.user);
+
+
     const { interviewerId, rating, reviewText, interviewStatus, anonymous } = req.body;
 
     if (!interviewerId || !rating || !reviewText) {
@@ -32,7 +36,7 @@ router.post('/', auth, async (req, res) => {
 
     const newReview = new Review({
       interviewer: interviewerId,
-      user: req.user._id,
+      user: req.user.id,
       rating,
       reviewText,
       interviewStatus,
