@@ -51,5 +51,26 @@ router.post('/', auth, async (req, res) => {
   }
 });
 
+router.get('/', async (req, res) => {
+  try {
+    const { interviewerId } = req.query;
+
+    if (!interviewerId) {
+      return res.status(400).json({ message: 'interviewerId is required' });
+    }
+
+    const reviews = await Review.find({ interviewer: interviewerId })
+      .sort({ createdAt: -1 })
+      .populate('user', 'name')
+      .lean();
+
+    res.json(reviews);
+  } catch (err) {
+    console.error('Error fetching reviews:', err.message);
+    res.status(500).json({ message: 'Server error' });
+  }
+});
+
+
 
 export default router;
