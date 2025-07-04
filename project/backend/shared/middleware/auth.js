@@ -11,6 +11,7 @@ const auth = (req, res, next) => {
 
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    console.error('Auth verification failed:', decoded);
 
     // Attach a consistent user object
     req.user = {

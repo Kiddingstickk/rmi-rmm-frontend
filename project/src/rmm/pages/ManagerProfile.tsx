@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { AxiosError } from "axios";
 import api from "../../lib/api";
+import ReviewForm from "../components/departments/ReviewForm";
 
 interface Department {
   _id: string;
@@ -10,7 +10,6 @@ interface Department {
   managers: string[];
   createdAt: string;
   updatedAt: string;
-  __v?: number;
 }
 
 interface Review {
@@ -36,28 +35,24 @@ interface Manager {
   reviews: Review[];
 }
 
-const renderStars = (rating: number) => {
-  return (
-    <div className="flex text-blue-500">
-      {[...Array(5)].map((_, i) =>
-        i < rating ? (
-          <span key={i}>★</span>
-        ) : (
-          <span key={i} className="text-gray-300">
-            ★
-          </span>
-        )
-      )}
-    </div>
-  );
-};
+const renderStars = (rating: number) => (
+  <div className="flex text-blue-500">
+    {[...Array(5)].map((_, i) =>
+      i < rating ? (
+        <span key={i}>★</span>
+      ) : (
+        <span key={i} className="text-gray-300">★</span>
+      )
+    )}
+  </div>
+);
 
 const ManagerProfile = () => {
   const { id } = useParams();
   const [manager, setManager] = useState<Manager | null>(null);
-  const [editingReview, setEditingReview] = useState<Review | null>(null);
-  const userId = localStorage.getItem("userId");
+  const userId = localStorage.getItem("userId") || '';
   const token = localStorage.getItem("token");
+  const [showForm, setShowForm] = useState(false);
 
   useEffect(() => {
     if (id) fetchManager();
@@ -70,7 +65,7 @@ const ManagerProfile = () => {
       data.reviews = data.reviews.map((r: any) => ({
         ...r,
         likes: r.likes.length,
-        dislikes: r.dislikes.length
+        dislikes: r.dislikes.length,
       }));
       setManager(data);
     } catch (error) {
@@ -80,37 +75,39 @@ const ManagerProfile = () => {
 
   const handleLike = async (reviewId: string) => {
     try {
-      await api.post(`${import.meta.env.VITE_API_URL}/api/manager-reviews/like/${reviewId}`, {}, {
-        headers: { Authorization: `Bearer ${token}` }
-      });
+      await api.post(
+        `${import.meta.env.VITE_API_URL}/api/manager-reviews/like/${reviewId}`,
+        {},
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
       fetchManager();
     } catch (err) {
-      const error = err as AxiosError;
-      console.error("Error liking review:", error.response?.data || error.message);
+      console.error("Error liking review:", err);
     }
   };
 
   const handleDislike = async (reviewId: string) => {
     try {
-      await api.post(`${import.meta.env.VITE_API_URL}/api/manager-reviews/dislike/${reviewId}`, {}, {
-        headers: { Authorization: `Bearer ${token}` }
-      });
+      await api.post(
+        `${import.meta.env.VITE_API_URL}/api/manager-reviews/dislike/${reviewId}`,
+        {},
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
       fetchManager();
     } catch (err) {
-      const error = err as AxiosError;
-      console.error("Error disliking review:", error.response?.data || error.message);
+      console.error("Error disliking review:", err);
     }
   };
 
   const totalReviews = manager?.reviews.length || 0;
-  const avgRating =
-    totalReviews === 0
-      ? 0
-      : manager!.reviews.reduce((sum, r) => sum + r.rating, 0) / totalReviews;
+  const avgRating = totalReviews > 0
+    ? manager!.reviews.reduce((sum, r) => sum + r.rating, 0) / totalReviews
+    : 0;
+
+  const userReview = manager?.reviews.find((r) => r.userId._id === userId);
 
   return (
     <div className="min-h-screen bg-gray-100">
-      {/* 🔵 Header */}
       <header className="bg-blue-400 flex justify-between items-center px-8 py-6 shadow-md">
         <img src="/rmm-logo.png" alt="RMM Logo" className="w-12 h-12 rounded-full" />
         <h1 className="text-xl md:text-2xl font-bold text-right text-gray-900 uppercase">
@@ -118,27 +115,25 @@ const ManagerProfile = () => {
         </h1>
       </header>
 
-      {/* 👤 Summary & Distribution */}
       <section className="max-w-5xl mx-auto px-6 py-10 bg-white rounded-xl shadow-lg mt-6">
         <div className="flex flex-col md:flex-row justify-between gap-8">
-          {/* Left Side */}
           <div className="flex-1">
             <h2 className="text-3xl font-bold text-gray-800">{manager?.name}</h2>
-
             <div className="mt-3 flex items-center gap-2 text-2xl">
               {renderStars(Math.round(avgRating))}
               <span className="text-gray-800 text-lg font-semibold ml-2">
                 {avgRating.toFixed(1)}
               </span>
             </div>
-
             <p className="text-sm text-gray-500 mt-1">
               Overall rating based on {totalReviews} review{totalReviews !== 1 ? "s" : ""}
             </p>
-
             <div className="mt-4 flex gap-3">
-              <button className="bg-blue-400 px-6 py-2 rounded-md font-semibold hover:bg-blue-500">
-                Rate
+              <button
+                onClick={() => setShowForm(true)}
+                className="bg-blue-400 px-6 py-2 rounded-md font-semibold hover:bg-blue-500"
+              >
+                {userReview ? "Edit Review" : "Rate"}
               </button>
               <button className="bg-gray-200 px-6 py-2 rounded-md font-semibold hover:bg-gray-300">
                 Save
@@ -146,7 +141,6 @@ const ManagerProfile = () => {
             </div>
           </div>
 
-          {/* Right Side */}
           <div className="flex-1">
             <h3 className="text-lg font-medium text-gray-700 mb-4">Rating Distribution</h3>
             <div className="space-y-3">
@@ -175,9 +169,20 @@ const ManagerProfile = () => {
             </div>
           </div>
         </div>
+
+        {/* Inline Review Form */}
+        {showForm && manager?._id && (
+          <div className="mt-10">
+           <ReviewForm
+            managerId={manager._id}
+            existingReview={userReview || null}
+            onSuccess={fetchManager}
+            onCancelEdit={() => setShowForm(false)}
+          />
+          </div>
+        )}
       </section>
 
-      {/* 💬 Reviews */}
       <section className="max-w-5xl mx-auto px-6 py-10 space-y-6">
         {manager?.reviews.map((review) => (
           <div
@@ -197,7 +202,6 @@ const ManagerProfile = () => {
             </div>
           </div>
         ))}
-
         <div className="flex justify-center pt-6">
           <button className="bg-gray-200 hover:bg-gray-300 px-6 py-2 rounded font-medium">
             See More

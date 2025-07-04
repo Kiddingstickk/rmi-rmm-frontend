@@ -75,7 +75,7 @@ const RateManager = () => {
       });
 
       setMessage('✅ Submitted successfully!');
-      navigate(`/managers/${manager._id}`);
+      navigate(`/rmm/management/managers/${manager._id}`);
     } catch (err) {
       console.error(err);
       setMessage('❌ Submission failed. Try again.');
@@ -162,7 +162,7 @@ const RateManager = () => {
           {/* Right Column: Avatar */}
           <div className="flex justify-center items-start">
             <div className="w-32 h-32 rounded-full bg-gray-200 flex items-center justify-center text-5xl text-gray-500 shadow-inner">
-              👨‍💼
+            👤
             </div>
           </div>
 
