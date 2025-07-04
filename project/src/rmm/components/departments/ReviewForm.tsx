@@ -68,6 +68,7 @@ const ReviewForm: React.FC<ReviewFormProps> = ({ managerId, onSuccess,  existing
       setRating(0);
       setReview("");
       onSuccess?.();
+      onCancelEdit?.();
     } catch (err: any) {
       setMessage(err.message || "Something went wrong.");
     } finally {
@@ -114,6 +115,7 @@ const ReviewForm: React.FC<ReviewFormProps> = ({ managerId, onSuccess,  existing
       setRating(0);
       setReview("");
       onSuccess?.();
+      onCancelEdit?.();
     } catch (err: any) {
       setMessage(err.message || "Something went wrong.");
     } finally {
