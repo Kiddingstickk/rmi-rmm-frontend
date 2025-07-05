@@ -48,16 +48,15 @@ const InterviewReviewForm: React.FC<InterviewReviewFormProps> = ({
 
     try {
       const token = localStorage.getItem("token");
-      const res = await fetch(
-        `${import.meta.env.VITE_API_URL}/api/interviewer-reviews/${existingReview._id}`,
-        { method: "DELETE", headers: { Authorization: `Bearer ${token}` } }
-      );
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/interviewer-reviews/${existingReview._id}`, {
+        method: "DELETE",
+        headers: { Authorization: `Bearer ${token}` },
+      });
 
       const data = await res.json();
       if (!res.ok) throw new Error(data.message || "Delete failed.");
-      setMessage("Review deleted successfully.");
-      setRating(0);
-      setReview("");
+
+      setMessage("Review deleted.");
       onSuccess?.();
       onCancelEdit?.();
     } catch (err: any) {
@@ -76,7 +75,7 @@ const InterviewReviewForm: React.FC<InterviewReviewFormProps> = ({
       const token = localStorage.getItem("token");
       const url = existingReview
         ? `${import.meta.env.VITE_API_URL}/api/interviewer-reviews/${existingReview._id}`
-        : `${import.meta.env.VITE_API_URL}/api/reviews/rmi`; // ✅ corrected URL
+        : `${import.meta.env.VITE_API_URL}/api/reviews/rmi`;
 
       const method = existingReview ? "PUT" : "POST";
 
@@ -98,10 +97,7 @@ const InterviewReviewForm: React.FC<InterviewReviewFormProps> = ({
       const data = await res.json();
       if (!res.ok) throw new Error(data.message || "Submit failed.");
 
-      setMessage(existingReview ? "Review updated successfully!" : "Review submitted successfully!");
-      setRating(0);
-      setReview("");
-      setInterviewStatus("");
+      setMessage(existingReview ? "Review updated!" : "Review submitted!");
       onSuccess?.();
       onCancelEdit?.();
     } catch (err: any) {
@@ -112,8 +108,7 @@ const InterviewReviewForm: React.FC<InterviewReviewFormProps> = ({
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4">
-      {/* Stars */}
+    <form onSubmit={handleSubmit} className="space-y-4 mt-6">
       <div className="flex items-center gap-1">
         {[1, 2, 3, 4, 5].map((star) => (
           <Star
@@ -124,7 +119,6 @@ const InterviewReviewForm: React.FC<InterviewReviewFormProps> = ({
         ))}
       </div>
 
-      {/* Interview Status Dropdown */}
       <select
         value={interviewStatus}
         onChange={(e) => setInterviewStatus(e.target.value)}
@@ -138,7 +132,6 @@ const InterviewReviewForm: React.FC<InterviewReviewFormProps> = ({
         <option value="No Interview">No Interview</option>
       </select>
 
-      {/* Review Text */}
       <textarea
         value={review}
         onChange={(e) => setReview(e.target.value)}
@@ -148,7 +141,6 @@ const InterviewReviewForm: React.FC<InterviewReviewFormProps> = ({
         required
       />
 
-      {/* Buttons */}
       <div className="flex gap-2">
         <button
           type="submit"
