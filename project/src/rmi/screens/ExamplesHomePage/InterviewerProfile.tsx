@@ -149,15 +149,23 @@ const InterviewerProfile = () => {
               Overall rating based on {reviews.length} review{reviews.length !== 1 ? 's' : ''}
             </p>
             <div className="mt-4 flex gap-3">
+                        <div className="mt-4 flex gap-3">
               <button
-                className="bg-yellow-400 px-6 py-2 rounded-md font-semibold hover:bg-yellow-500"
+                className={`px-6 py-2 rounded-md font-semibold ${
+                  userReview
+                    ? 'bg-yellow-400 hover:bg-yellow-500'
+                    : 'bg-yellow-400 hover:bg-yellow-500'
+                }`}
                 onClick={() => setShowForm(true)}
+                disabled={!!userReview && !showForm}
               >
                 {userReview ? 'Edit Review' : 'Rate'}
               </button>
+
               <button className="bg-gray-200 px-6 py-2 rounded-md font-semibold hover:bg-gray-300">
                 Save
               </button>
+            </div>
             </div>
           </div>
 
