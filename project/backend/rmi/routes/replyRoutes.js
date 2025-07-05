@@ -40,7 +40,27 @@ router.get('/:reviewId', async (req, res) => {
 });
 
 
+// PUT - Update existing interviewer review
+router.put('/:id', auth, async (req, res) => {
+  try {
+    const { rating, reviewText, interviewStatus, anonymous } = req.body;
 
+    const updated = await Review.findOneAndUpdate(
+      { _id: req.params.id, user: req.user.id }, // ensures ownership
+      { rating, reviewText, interviewStatus, anonymous },
+      { new: true }
+    );
+
+    if (!updated) {
+      return res.status(404).json({ message: 'Review not found or unauthorized.' });
+    }
+
+    res.json({ message: 'Review updated', review: updated });
+  } catch (err) {
+    console.error('Update failed:', err.message);
+    res.status(500).json({ message: 'Server Error' });
+  }
+});
 
 
 export default router;
