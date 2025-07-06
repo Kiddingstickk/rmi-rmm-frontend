@@ -1,111 +1,97 @@
-// /screens/ContactPage.tsx
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import axios from 'axios';
 
 const ContactPage = () => {
-  const [formData, setFormData] = useState({ name: '', email: '', subject: '', message: '' });
-  const [successMessage, setSuccessMessage] = useState('');
-  const [particles, setParticles] = useState<{ left: string; top: string }[]>([]);
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [subject, setSubject] = useState('');
+  const [message, setMessage] = useState('');
+  const [status, setStatus] = useState<string | null>(null);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
     try {
-      await axios.post(`${import.meta.env.VITE_API_URL}/api/contact`, formData);
-      setSuccessMessage('Message sent successfully!');
-      setFormData({ name: '', email: '', subject: '', message: '' });
-    } catch (error) {
-      console.error('Error sending message:', error);
+      await axios.post(`${import.meta.env.VITE_API_URL}/api/contact`, {
+        name,
+        email,
+        subject,
+        message,
+      });
+
+      setStatus('✅ Message sent successfully!');
+      setName('');
+      setEmail('');
+      setSubject('');
+      setMessage('');
+    } catch (err) {
+      console.error('Failed to send message:', err);
+      setStatus('❌ Failed to send message. Please try again.');
     }
   };
 
-  useEffect(() => {
-    const p = Array.from({ length: 30 }).map(() => ({
-      left: `${Math.random() * 100}%`,
-      top: `${Math.random() * 100}%`
-    }));
-    setParticles(p);
-  }, []);
-
   return (
-    <div className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-br from-gray-100 via-purple-50 to-gray-200 px-4">
-      {particles.map((pos, index) => (
-        <div
-          key={index}
-          className="absolute w-2 h-2 bg-white rounded-full opacity-20 animate-ping"
-          style={{ left: pos.left, top: pos.top, animationDuration: `${2 + Math.random() * 3}s` }}
-        />
-      ))}
+    <div className="min-h-screen bg-gray-100 flex flex-col">
+      {/* 🔶 Header */}
+      <header className="bg-yellow-400 flex items-center justify-between px-8 py-6 shadow-md">
+        <img src="/rmi-logo.png" alt="RMI Logo" className="w-12 h-12 rounded-full" />
+        <h1 className="text-xl font-bold text-black">CONTACT US:</h1>
+      </header>
 
-      <div className="absolute w-96 h-96 bg-indigo-200 opacity-20 rounded-full blur-3xl animate-blob move-slow-1"></div>
-      <div className="absolute w-80 h-80 bg-purple-200 opacity-20 rounded-full blur-2xl animate-blob move-slow-2"></div>
+      {/* ✉️ Form Section */}
+      <main className="flex-grow flex items-center justify-center px-6 py-12">
+        <form
+          onSubmit={handleSubmit}
+          className="bg-white shadow-md rounded-xl p-8 w-full max-w-lg space-y-5"
+        >
+          <h2 className="text-2xl font-bold text-gray-800 text-center">We’d love to hear from you</h2>
 
-      <div className="relative z-10 bg-white/60 backdrop-blur-lg shadow-xl rounded-3xl p-10 w-full max-w-3xl">
-        <h1 className="text-3xl font-semibold text-center text-gray-800 mb-6">Get in Touch</h1>
-        {successMessage && (
-          <div className="mb-6 text-green-600 text-center font-semibold">{successMessage}</div>
-        )}
-        <form onSubmit={handleSubmit} className="space-y-6">
-          <div>
-            <label className="block mb-2 text-gray-800 font-semibold">Name</label>
-            <input
-              type="text"
-              name="name"
-              value={formData.name}
-              onChange={handleChange}
-              required
-              className="w-full p-3 border border-gray-300 rounded-xl bg-white/80 focus:outline-none focus:ring-2 focus:ring-indigo-300"
-            />
-          </div>
-          <div>
-            <label className="block mb-2 text-gray-800 font-semibold">Email</label>
-            <input
-              type="email"
-              name="email"
-              value={formData.email}
-              onChange={handleChange}
-              required
-              className="w-full p-3 border border-gray-300 rounded-xl bg-white/80 focus:outline-none focus:ring-2 focus:ring-indigo-300"
-            />
-          </div>
-          <div>
-            <label className="block mb-2 text-gray-800 font-semibold">Subject</label>
-            <input
-              type="text"
-              name="subject"
-              value={formData.subject}
-              onChange={handleChange}
-              className="w-full p-3 border border-gray-300 rounded-xl bg-white/80 focus:outline-none focus:ring-2 focus:ring-indigo-300"
-            />
-          </div>
-          <div>
-            <label className="block mb-2 text-gray-800 font-semibold">Message</label>
-            <textarea
-              name="message"
-              value={formData.message}
-              onChange={handleChange}
-              required
-              className="w-full p-3 border border-gray-300 rounded-xl h-40 bg-white/80 focus:outline-none focus:ring-2 focus:ring-indigo-300"
-            />
-          </div>
+          {status && <p className="text-center text-sm text-gray-600">{status}</p>}
+
+          <input
+            type="text"
+            placeholder="Your name"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            className="w-full border border-gray-300 rounded-md p-3 text-sm focus:outline-none focus:ring-2 focus:ring-yellow-400"
+            required
+          />
+
+          <input
+            type="email"
+            placeholder="Your email address"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            className="w-full border border-gray-300 rounded-md p-3 text-sm focus:outline-none focus:ring-2 focus:ring-yellow-400"
+            required
+          />
+
+          <input
+            type="text"
+            placeholder="Subject"
+            value={subject}
+            onChange={(e) => setSubject(e.target.value)}
+            className="w-full border border-gray-300 rounded-md p-3 text-sm focus:outline-none focus:ring-2 focus:ring-yellow-400"
+            required
+          />
+
+          <textarea
+            placeholder="Your message"
+            value={message}
+            onChange={(e) => setMessage(e.target.value)}
+            rows={5}
+            className="w-full border border-gray-300 rounded-md p-3 text-sm resize-none focus:outline-none focus:ring-2 focus:ring-yellow-400"
+            required
+          />
+
           <button
             type="submit"
-            className="w-full bg-indigo-500 text-white font-bold py-3 rounded-xl shadow-md hover:bg-indigo-600 transition-all duration-300 hover:scale-[1.02]"
+            className="w-full bg-yellow-400 hover:bg-yellow-500 text-black font-semibold py-3 rounded-md transition"
           >
             Send Message
           </button>
         </form>
-
-        <p className="text-center text-sm text-gray-600 mt-6">
-          Prefer to email?{' '}
-          <a href="mailto:team@ratemyinterviewer.com" className="text-indigo-500 hover:underline">
-            team@ratemyinterviewer.com
-          </a>
-        </p>
-      </div>
+      </main>
     </div>
   );
 };
