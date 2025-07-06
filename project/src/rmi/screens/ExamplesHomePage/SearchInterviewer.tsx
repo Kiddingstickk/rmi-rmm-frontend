@@ -50,8 +50,16 @@ const SearchInterviewer = () => {
 
             <div className="w-full max-w-md relative">
               <input
-                value={query}
-                onChange={(e) => setQuery(e.target.value)}
+                  value={query}
+                  onChange={(e) => setQuery(e.target.value)}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter') {
+                      e.preventDefault();
+                      if (query.trim()) {
+                        navigate(`/search/${encodeURIComponent(query.trim())}`);
+                      }
+                    }
+                  }}                
                 type="text"
                 placeholder={`Search by ${searchMode}...`}
                 className="w-full bg-white/20 text-white px-5 py-3 rounded-t-md backdrop-blur-sm placeholder:text-white/70 focus:outline-none"
