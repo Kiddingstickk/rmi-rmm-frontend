@@ -19,7 +19,7 @@ const SearchInterviewer = () => {
       setIsSearching(true);
       try {
         const data = await getInterviewers(query, searchMode);
-        setResults(data);
+        setResults(Array.isArray(data) ? data : []);
       } catch (err) {
         console.error('Search failed:', err);
       } finally {
@@ -29,6 +29,15 @@ const SearchInterviewer = () => {
 
     return () => clearTimeout(timer);
   }, [query, searchMode]);
+
+  const handleEnterKey = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      if (query.trim()) {
+        navigate(`/search/${encodeURIComponent(query.trim())}`);
+      }
+    }
+  };
 
   return (
     <div className="min-h-screen bg-white flex flex-col">
@@ -50,16 +59,9 @@ const SearchInterviewer = () => {
 
             <div className="w-full max-w-md relative">
               <input
-                  value={query}
-                  onChange={(e) => setQuery(e.target.value)}
-                  onKeyDown={(e) => {
-                    if (e.key === 'Enter') {
-                      e.preventDefault();
-                      if (query.trim()) {
-                        navigate(`/search/${encodeURIComponent(query.trim())}`);
-                      }
-                    }
-                  }}                
+                value={query}
+                onChange={(e) => setQuery(e.target.value)}
+                onKeyDown={handleEnterKey}
                 type="text"
                 placeholder={`Search by ${searchMode}...`}
                 className="w-full bg-white/20 text-white px-5 py-3 rounded-t-md backdrop-blur-sm placeholder:text-white/70 focus:outline-none"
@@ -70,16 +72,24 @@ const SearchInterviewer = () => {
                   {isSearching ? (
                     <div className="p-4 text-sm text-gray-500">Searching...</div>
                   ) : results.length > 0 ? (
-                    results.map((person, i) => (
+                    <>
+                      {results.map((person, i) => (
+                        <div
+                          key={i}
+                          onClick={() => navigate(`/interviewers/${person._id}`)}
+                          className="px-4 py-3 hover:bg-gray-100 border-b cursor-pointer"
+                        >
+                          <p className="font-medium">{person.Name || person.name}</p>
+                          <p className="text-sm text-gray-500">{person.Company || person.company}</p>
+                        </div>
+                      ))}
                       <div
-                        key={i}
-                        onClick={() => navigate(`/interviewers/${person._id}`)}
-                        className="px-4 py-3 hover:bg-gray-100 border-b cursor-pointer"
+                        onClick={() => navigate(`/search/${encodeURIComponent(query.trim())}`)}
+                        className="px-4 py-3 text-center text-sm font-medium bg-yellow-100 hover:bg-yellow-200 cursor-pointer rounded-b-md"
                       >
-                        <p className="font-medium">{person.Name || person.name}</p>
-                        <p className="text-sm text-gray-500">{person.Company || person.company}</p>
+                        See full results
                       </div>
-                    ))
+                    </>
                   ) : (
                     <div className="p-3 text-sm text-gray-500">No matches found</div>
                   )}
@@ -99,7 +109,6 @@ const SearchInterviewer = () => {
               SEARCH BY {searchMode === 'name' ? 'COMPANY' : 'NAME'}
             </button>
           </div>
-        
         </div>
       </section>
 
