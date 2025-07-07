@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import ResponsiveNavbar from '../../../rmm/components/Navbar/navbar';
 import { useAuth } from '../../lib/useAuth';
-import { getInterviewers } from '../../lib/api';
+import { getInterviewers, Interviewer } from '../../lib/api';
 
 const SearchInterviewer = () => {
   const navigate = useNavigate();
@@ -10,18 +10,23 @@ const SearchInterviewer = () => {
 
   const [query, setQuery] = useState('');
   const [searchMode, setSearchMode] = useState<'name' | 'company'>('name');
-  const [results, setResults] = useState<any[]>([]);
+  const [results, setResults] = useState<Interviewer[]>([]);
   const [isSearching, setIsSearching] = useState(false);
 
   useEffect(() => {
     const timer = setTimeout(async () => {
-      if (!query.trim()) return setResults([]);
+      if (!query.trim()) {
+        setResults([]);
+        return;
+      }
+
       setIsSearching(true);
       try {
         const data = await getInterviewers(query, searchMode);
-        setResults(Array.isArray(data) ? data : []);
+        setResults(data); // ✅ No .results needed — your API returns Interviewer[]
       } catch (err) {
         console.error('Search failed:', err);
+        setResults([]);
       } finally {
         setIsSearching(false);
       }
@@ -51,7 +56,6 @@ const SearchInterviewer = () => {
         <div className="absolute inset-0 bg-black/40 z-0" />
 
         <div className="relative z-10 flex flex-col justify-between items-center text-center px-6 h-full">
-          {/* Top Content */}
           <div className="flex flex-col items-center">
             <h1 className="text-2xl sm:text-3xl font-bold text-white mb-6">
               SEARCH INTERVIEWER
@@ -79,8 +83,8 @@ const SearchInterviewer = () => {
                           onClick={() => navigate(`/interviewers/${person._id}`)}
                           className="px-4 py-3 hover:bg-gray-100 border-b cursor-pointer"
                         >
-                          <p className="font-medium">{person.Name || person.name}</p>
-                          <p className="text-sm text-gray-500">{person.Company || person.company}</p>
+                          <p className="font-medium">{person.name}</p>
+                          <p className="text-sm text-gray-500">{person.company || '—'}</p>
                         </div>
                       ))}
                       <div
@@ -98,7 +102,7 @@ const SearchInterviewer = () => {
             </div>
           </div>
 
-          {/* Bottom-Aligned Button */}
+          {/* Toggle Button */}
           <div className="mt-6">
             <button
               onClick={() =>

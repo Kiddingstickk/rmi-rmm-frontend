@@ -94,28 +94,38 @@ const ExampleHomePage = (): JSX.Element => {
 </section>
 
 
-{/* 🛠️ How It Works Section */}
 <section className="bg-neutralCanvas dark:bg-gray-900 py-16 px-6">
   <div className="max-w-6xl mx-auto text-center">
     <h3 className="text-3xl sm:text-4xl font-bold text-deepGray dark:text-white mb-10">
       How it Works
     </h3>
+
     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 text-center">
-      {[
-        "Search by Interviewer Name or Company",
-        "Add the position you interviewed for",
-        "Add your review",
-        "Share to the world anonymously"
-      ].map((text, index) => (
-        <div
-          key={index}
-          className="p-6 bg-white dark:bg-gray-800 shadow rounded-lg flex flex-col justify-center items-center text-deepGray dark:text-white"
-        >
-          <div className="w-14 h-14 mb-4 bg-gray-300 dark:bg-gray-700 rounded-full" />
-          <p className="text-sm sm:text-base font-medium">{text}</p>
-        </div>
-      ))}
+      {/* Card 1 */}
+      <div className="p-6 bg-white dark:bg-gray-800 shadow rounded-lg flex flex-col justify-center items-center text-deepGray dark:text-white">
+        <img src="/icons/webpic.png" alt="Search" className="w-14 h-14 mb-4" />
+        <p className="text-sm sm:text-base font-medium">Search by Interviewer Name or Company</p>
+      </div>
+
+      {/* Card 2 */}
+      <div className="p-6 bg-white dark:bg-gray-800 shadow rounded-lg flex flex-col justify-center items-center text-deepGray dark:text-white">
+        <img src="/icons/pencil.png" alt="Position" className="w-14 h-14 mb-4" />
+        <p className="text-sm sm:text-base font-medium">Add the position you interviewed for</p>
+      </div>
+
+      {/* Card 3 */}
+      <div className="p-6 bg-white dark:bg-gray-800 shadow rounded-lg flex flex-col justify-center items-center text-deepGray dark:text-white">
+        <img src="/icons/likedislike.png" alt="Review" className="w-14 h-14 mb-4" />
+        <p className="text-sm sm:text-base font-medium">Add your review</p>
+      </div>
+
+      {/* Card 4 */}
+      <div className="p-6 bg-white dark:bg-gray-800 shadow rounded-lg flex flex-col justify-center items-center text-deepGray dark:text-white">
+        <img src="/icons/detective.png" alt="Anonymous" className="w-14 h-14 mb-4" />
+        <p className="text-sm sm:text-base font-medium">Share to the world anonymously</p>
+      </div>
     </div>
+
     <div className="mt-10">
       <Button
         onClick={() => navigate('/contact')}
@@ -126,7 +136,6 @@ const ExampleHomePage = (): JSX.Element => {
     </div>
   </div>
 </section>
-
 </main>
 
   </MainLayout>
