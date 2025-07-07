@@ -46,25 +46,25 @@ const RmmLanding = () => {
           <div className="grid md:grid-cols-4 gap-8 max-w-6xl mx-auto text-left">
         {/* Card 1 */}
         <div className="bg-white shadow-sm p-6 rounded-lg">
-          <img src="/rmm-icons/search.png" alt="Search" className="w-14 h-14 mb-4" />
+          <img src="/webpic.png" alt="Search" className="w-14 h-14 mb-4" />
           <p className="text-gray-700 font-medium">Search by Interviewer Name or Company</p>
         </div>
 
         {/* Card 2 */}
         <div className="bg-white shadow-sm p-6 rounded-lg">
-          <img src="/rmm-icons/position.png" alt="Position" className="w-14 h-14 mb-4" />
+          <img src="/pencil.png" alt="Position" className="w-14 h-14 mb-4" />
           <p className="text-gray-700 font-medium">Add the position you interviewed for</p>
         </div>
 
         {/* Card 3 */}
         <div className="bg-white shadow-sm p-6 rounded-lg">
-          <img src="/rmm-icons/review.png" alt="Review" className="w-14 h-14 mb-4" />
+          <img src="/likedislike.png" alt="Review" className="w-14 h-14 mb-4" />
           <p className="text-gray-700 font-medium">Add your review</p>
         </div>
 
         {/* Card 4 */}
         <div className="bg-white shadow-sm p-6 rounded-lg">
-          <img src="/rmm-icons/share.png" alt="Share" className="w-14 h-14 mb-4" />
+          <img src="/detective.png" alt="Share" className="w-14 h-14 mb-4" />
           <p className="text-gray-700 font-medium">Share to the world anonymously</p>
         </div>
       </div>
