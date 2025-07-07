@@ -76,12 +76,6 @@ const RmmLanding = () => {
       <section className="py-20 px-6 text-center bg-indigo-700 text-white">
         <h2 className="text-3xl font-bold mb-4">Ready to make your voice heard?</h2>
         <p className="mb-6">Join the community of professionals sharing real experiences.</p>
-        <button
-          onClick={() => navigate('/rmm/Home')}
-          className="bg-white text-indigo-700 font-semibold px-6 py-3 rounded-md hover:bg-gray-200"
-        >
-          Explore Managers
-        </button>
       </section>
     </div>
   );
