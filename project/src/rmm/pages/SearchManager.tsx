@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import ResponsiveNavbar from '../components/Navbar/navbar';
-import { useAuth } from '../../rmi/lib/useAuth'; // ✅ Adjust path based on your RMM structure
+import { useAuth } from '../../rmi/lib/useAuth';
 import { getManagers } from '../lib/managers';
 
 const SearchManager = () => {
@@ -18,7 +18,7 @@ const SearchManager = () => {
       if (!query.trim()) return setResults([]);
       setIsSearching(true);
       try {
-        const data = await getManagers(query, searchMode); // 👈 Real manager data
+        const data = await getManagers(query, searchMode);
         setResults(data);
       } catch (err) {
         console.error('Search failed:', err);
@@ -30,6 +30,12 @@ const SearchManager = () => {
     return () => clearTimeout(timer);
   }, [query, searchMode]);
 
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter' && query.trim()) {
+      navigate(`/rmm/search-managers?q=${encodeURIComponent(query.trim())}`);
+    }
+  };
+
   return (
     <div className="min-h-screen bg-white flex flex-col">
       <ResponsiveNavbar isLoggedIn={isLoggedIn} onLogout={logout} />
@@ -37,22 +43,22 @@ const SearchManager = () => {
       {/* Hero Section */}
       <section
         className="relative bg-cover bg-center text-white mt-[64px] py-40"
-        style={{ backgroundImage: "url('/rmmbg.png')" }} // Swap if needed
+        style={{ backgroundImage: "url('/rmmbg.png')" }}
       >
         <div className="absolute inset-0 bg-black/60 z-0" />
 
         <div className="relative z-10 flex flex-col justify-between items-center text-center px-6 h-full">
           {/* Top Content */}
           <div className="flex flex-col items-center">
-          <h1 className="text-2xl sm:text-3xl font-bold text-white mb-6">
-            SEARCH MANAGER
-          </h1>
-
+            <h1 className="text-2xl sm:text-3xl font-bold text-white mb-6">
+              SEARCH MANAGER
+            </h1>
 
             <div className="w-full max-w-md relative">
               <input
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
+                onKeyDown={handleKeyDown}
                 type="text"
                 placeholder={`Search by ${searchMode}...`}
                 className="w-full bg-white/20 text-white px-5 py-3 rounded-t-md backdrop-blur-sm placeholder:text-white/70 focus:outline-none"
@@ -63,17 +69,24 @@ const SearchManager = () => {
                   {isSearching ? (
                     <div className="p-4 text-sm text-gray-500">Searching...</div>
                   ) : results.length > 0 ? (
-                    results.map((person, i) => (
-                  <div
-                    key={i}
-                    onClick={() => navigate(`/rmm/management/managers/${person._id}`)}
-                    className="px-4 py-3 hover:bg-gray-100 border-b cursor-pointer"
-                  >
-                    <p className="font-medium">{person.Name || person.name}</p>
-                    <p className="text-sm text-gray-500">{person.Department || person.company}</p>
-                  </div>
-
-                    ))
+                    <>
+                      {results.map((person, i) => (
+                        <div
+                          key={i}
+                          onClick={() => navigate(`/rmm/management/managers/${person._id}`)}
+                          className="px-4 py-3 hover:bg-gray-100 border-b cursor-pointer"
+                        >
+                          <p className="font-medium">{person.Name || person.name}</p>
+                          <p className="text-sm text-gray-500">{person.Department || person.company}</p>
+                        </div>
+                      ))}
+                      <div
+                        onClick={() => navigate(`/rmm/search-managers?q=${encodeURIComponent(query.trim())}`)}
+                        className="px-4 py-3 text-center text-sm font-medium bg-blue-100 hover:bg-blue-200 cursor-pointer rounded-b-md"
+                      >
+                        See full results
+                      </div>
+                    </>
                   ) : (
                     <div className="p-3 text-sm text-gray-500">No matches found</div>
                   )}
