@@ -51,7 +51,10 @@ const SearchResults = () => {
           }),
         ]);
         setResults(res.data);
-        setSavedIds(savedRes.data.map((r: Interviewer) => r._id));
+        console.log('Saved Response:', savedRes.data);
+        const saved = Array.isArray(savedRes.data) ? savedRes.data : [];
+        setSavedIds(saved.map((r: Interviewer) => r._id));
+        console.log('Saved Response:', savedRes.data);
       } catch (err) {
         console.error(err);
         setError('Something went wrong. Please try again.');

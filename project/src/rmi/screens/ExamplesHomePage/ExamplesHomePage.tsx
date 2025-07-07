@@ -103,25 +103,25 @@ const ExampleHomePage = (): JSX.Element => {
     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 text-center">
       {/* Card 1 */}
       <div className="p-6 bg-white dark:bg-gray-800 shadow rounded-lg flex flex-col justify-center items-center text-deepGray dark:text-white">
-        <img src="/icons/webpic.png" alt="Search" className="w-14 h-14 mb-4" />
+        <img src="/webpic.png" alt="Search" className="w-14 h-14 mb-4" />
         <p className="text-sm sm:text-base font-medium">Search by Interviewer Name or Company</p>
       </div>
 
       {/* Card 2 */}
       <div className="p-6 bg-white dark:bg-gray-800 shadow rounded-lg flex flex-col justify-center items-center text-deepGray dark:text-white">
-        <img src="/icons/pencil.png" alt="Position" className="w-14 h-14 mb-4" />
+        <img src="/pencil.png" alt="Position" className="w-14 h-14 mb-4" />
         <p className="text-sm sm:text-base font-medium">Add the position you interviewed for</p>
       </div>
 
       {/* Card 3 */}
       <div className="p-6 bg-white dark:bg-gray-800 shadow rounded-lg flex flex-col justify-center items-center text-deepGray dark:text-white">
-        <img src="/icons/likedislike.png" alt="Review" className="w-14 h-14 mb-4" />
+        <img src="/likedislike.png" alt="Review" className="w-14 h-14 mb-4" />
         <p className="text-sm sm:text-base font-medium">Add your review</p>
       </div>
 
       {/* Card 4 */}
       <div className="p-6 bg-white dark:bg-gray-800 shadow rounded-lg flex flex-col justify-center items-center text-deepGray dark:text-white">
-        <img src="/icons/detective.png" alt="Anonymous" className="w-14 h-14 mb-4" />
+        <img src="/detective.png" alt="Anonymous" className="w-14 h-14 mb-4" />
         <p className="text-sm sm:text-base font-medium">Share to the world anonymously</p>
       </div>
     </div>
