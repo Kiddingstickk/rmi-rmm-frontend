@@ -32,7 +32,7 @@ const SearchManager = () => {
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter' && query.trim()) {
-      navigate(`/rmm/search-managers?q=${encodeURIComponent(query.trim())}`);
+      navigate(`/rmm/searchresults?q=${encodeURIComponent(query.trim())}`);
     }
   };
 

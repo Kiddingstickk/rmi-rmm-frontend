@@ -15,7 +15,7 @@ const calculateRatingColor = (rating: number) => {
   return 'bg-yellow-100 text-yellow-800';
 };
 
-const ManagerSearchResults = () => {
+const SearchResults = () => {
   const [searchParams] = useSearchParams();
   const query = searchParams.get('q') || '';
   const navigate = useNavigate();
@@ -111,4 +111,4 @@ const ManagerSearchResults = () => {
   );
 };
 
-export default ManagerSearchResults;
+export default SearchResults;
