@@ -51,10 +51,8 @@ const SearchResults = () => {
           }),
         ]);
         setResults(res.data);
-        console.log('Saved Response:', savedRes.data);
         const saved = Array.isArray(savedRes.data) ? savedRes.data : [];
         setSavedIds(saved.map((r: Interviewer) => r._id));
-        console.log('Saved Response:', savedRes.data);
       } catch (err) {
         console.error(err);
         setError('Something went wrong. Please try again.');
@@ -92,13 +90,13 @@ const SearchResults = () => {
 
   return (
     <div className="min-h-screen bg-gray-100 flex flex-col">
-      {/* 🔶 Header */}
+      {/* Header */}
       <header className="bg-yellow-400 flex items-center justify-between px-8 py-6 shadow-md">
         <img src="/rmi-logo.png" alt="RMI Logo" className="w-12 h-12 rounded-full" />
         <h1 className="text-xl font-bold text-black">SEARCH RESULTS:</h1>
       </header>
 
-      <main className="flex-grow px-6 py-10 max-w-6xl mx-auto">
+      <main className="flex-grow px-6 py-10 max-w-4xl mx-auto">
         <h2 className="text-2xl font-bold text-gray-800 mb-6">
           Found {results.length} result{results.length !== 1 ? 's' : ''} for <span className="text-yellow-600">"{query}"</span>
         </h2>
@@ -113,7 +111,7 @@ const SearchResults = () => {
             <img src="/no-results.png" alt="No results" className="mx-auto mt-4 w-64 opacity-60" />
           </div>
         ) : (
-          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="space-y-4">
             {pageResults.map((int) => {
               const avg = calculateWeightedRating(int.ratings);
               const cardStyle = getRatingColor(avg);
@@ -121,20 +119,23 @@ const SearchResults = () => {
                 <div
                   key={int._id}
                   onClick={() => navigate(`/interviewers/${int._id}`)}
-                  className={`cursor-pointer rounded-xl p-6 shadow-md hover:shadow-xl hover:ring-2 hover:ring-yellow-400 transition ${cardStyle}`}
+                  className={`flex items-center justify-between p-5 bg-white rounded-lg shadow-sm hover:shadow-md border border-gray-200 cursor-pointer transition ${cardStyle}`}
                 >
-                  <h3 className="text-lg font-bold">{int.name}</h3>
-                  <p className="text-sm">🏢 {int.company}</p>
-                  <p className="text-sm">👔 {int.position || 'N/A'}</p>
-                  <p className="text-sm">📖 {int.experience || 'N/A'}</p>
-                  <div className="mt-3 flex justify-between items-center">
-                    <span className="text-sm font-medium">⭐ {avg.toFixed(1)} / 5</span>
+                  <div>
+                    <h3 className="text-lg font-semibold text-gray-800">{int.name}</h3>
+                    <p className="text-sm text-gray-600 mt-1">
+                      🏢 {int.company || '—'} &nbsp;|&nbsp; 👔 {int.position || '—'} &nbsp;|&nbsp; 📖 {int.experience || '—'}
+                    </p>
+                  </div>
+
+                  <div className="flex flex-col items-end">
+                    <span className="text-sm font-semibold">⭐ {avg.toFixed(1)} / 5</span>
                     <button
                       onClick={(e) => {
                         e.stopPropagation();
                         handleSave(int);
                       }}
-                      className={`px-3 py-1 rounded-full text-xs font-semibold ${
+                      className={`mt-2 px-3 py-1 rounded-full text-xs font-semibold ${
                         savedIds.includes(int._id)
                           ? 'bg-red-500 text-white'
                           : 'bg-green-500 text-white'
@@ -149,7 +150,6 @@ const SearchResults = () => {
           </div>
         )}
 
-        {/* Pagination */}
         {totalPages > 1 && (
           <div className="mt-10 flex justify-center items-center gap-2 text-sm">
             <button
