@@ -90,7 +90,6 @@ const SearchResults = () => {
 
   return (
     <div className="min-h-screen bg-gray-100 flex flex-col">
-      {/* Header */}
       <header className="bg-yellow-400 flex items-center justify-between px-8 py-6 shadow-md">
         <img src="/rmi-logo.png" alt="RMI Logo" className="w-12 h-12 rounded-full" />
         <h1 className="text-xl font-bold text-black">SEARCH RESULTS:</h1>
@@ -111,31 +110,40 @@ const SearchResults = () => {
             <img src="/no-results.png" alt="No results" className="mx-auto mt-4 w-64 opacity-60" />
           </div>
         ) : (
-          <div className="space-y-4">
+          <div className="space-y-5">
             {pageResults.map((int) => {
               const avg = calculateWeightedRating(int.ratings);
-              const cardStyle = getRatingColor(avg);
+              const badgeStyle = getRatingColor(avg);
+
               return (
                 <div
                   key={int._id}
                   onClick={() => navigate(`/interviewers/${int._id}`)}
-                  className={`flex items-center justify-between p-5 bg-white rounded-lg shadow-sm hover:shadow-md border border-gray-200 cursor-pointer transition ${cardStyle}`}
+                  className="flex items-center justify-between p-6 bg-white rounded-xl shadow-sm hover:shadow-md border border-gray-200 cursor-pointer transition"
                 >
-                  <div>
+                  {/* Rating Badge */}
+                  <div
+                    className={`flex-shrink-0 w-12 h-12 rounded-md flex items-center justify-center font-bold text-sm ${badgeStyle}`}
+                  >
+                    {avg.toFixed(1)}
+                  </div>
+
+                  {/* Content */}
+                  <div className="ml-5 flex-grow">
                     <h3 className="text-lg font-semibold text-gray-800">{int.name}</h3>
                     <p className="text-sm text-gray-600 mt-1">
                       🏢 {int.company || '—'} &nbsp;|&nbsp; 👔 {int.position || '—'} &nbsp;|&nbsp; 📖 {int.experience || '—'}
                     </p>
                   </div>
 
-                  <div className="flex flex-col items-end">
-                    <span className="text-sm font-semibold">⭐ {avg.toFixed(1)} / 5</span>
+                  {/* Save Button */}
+                  <div className="ml-4">
                     <button
                       onClick={(e) => {
                         e.stopPropagation();
                         handleSave(int);
                       }}
-                      className={`mt-2 px-3 py-1 rounded-full text-xs font-semibold ${
+                      className={`px-3 py-1 rounded-full text-xs font-semibold ${
                         savedIds.includes(int._id)
                           ? 'bg-red-500 text-white'
                           : 'bg-green-500 text-white'
