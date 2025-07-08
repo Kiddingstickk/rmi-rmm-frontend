@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { FaBars, FaTimes } from 'react-icons/fa';
-import ThemeToggle from '../../../rmi/components/ui/ThemeToggle';
+
 
 interface NavbarProps {
   isLoggedIn: boolean;
@@ -43,12 +43,12 @@ const ResponsiveNavbar: React.FC<NavbarProps> = ({ isLoggedIn, onLogout }) => {
           ) : (
             <button
               onClick={handleLoginClick}
-              className="bg-pastelBlue hover:bg-blue-600 text-white px-4 py-1 rounded-md"
+              className="bg-black text-white px-4 py-1 rounded-md"
             >
               Login
             </button>
           )}
-          <ThemeToggle />
+          
         </div>
 
         {/* Mobile hamburger */}
@@ -112,7 +112,7 @@ const ResponsiveNavbar: React.FC<NavbarProps> = ({ isLoggedIn, onLogout }) => {
                 Login
               </button>
             )}
-            <ThemeToggle />
+            
           </div>
         </div>
       </div>
