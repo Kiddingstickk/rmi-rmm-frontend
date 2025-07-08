@@ -129,7 +129,7 @@ const InterviewerProfile = () => {
 
   return (
     <div className="min-h-screen bg-gray-100">
-      <header className="bg-yellow-400 flex justify-between items-center px-8 py-6 shadow-md">
+      <header className="bg-pastelYellow flex justify-between items-center px-8 py-6 shadow-md">
         <img src="/favicon.png" alt="RMI Logo" className="w-12 h-12 rounded-full" />
         <h1 className="text-xl md:text-2xl font-bold text-right text-gray-900 uppercase">
           Interviewer Profile:
@@ -153,8 +153,8 @@ const InterviewerProfile = () => {
               <button
                 className={`px-6 py-2 rounded-md font-semibold ${
                   userReview
-                    ? 'bg-yellow-400 hover:bg-yellow-500'
-                    : 'bg-yellow-400 hover:bg-yellow-500'
+                    ? 'bg-pastelYellow hover:bg-yellow-500'
+                    : 'bg-pastelYellow hover:bg-yellow-500'
                 }`}
                 onClick={() => setShowForm(true)}
                 disabled={!!userReview && !showForm}
@@ -181,7 +181,7 @@ const InterviewerProfile = () => {
                     <div className="flex gap-1 text-yellow-400 text-sm">{'★'.repeat(stars)}</div>
                     <div className="relative w-full h-3 bg-gray-200 rounded mx-4">
                       <div
-                        className="absolute h-3 bg-yellow-400 rounded"
+                        className="absolute h-3 bg-pastelYellow rounded"
                         style={{ width: `${(count / reviews.length) * 100 || 0}%` }}
                       />
                     </div>

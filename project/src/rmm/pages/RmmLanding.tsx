@@ -26,7 +26,7 @@ const RmmLanding = () => {
           <div className="flex justify-center gap-6 flex-wrap">
           <button
             onClick={() => navigate('/rmm/search-managers')}
-            className="bg-blue-500 hover:bg-blue-600 text-white px-6 py-3 rounded-md font-semibold"
+            className="bg-pastelBlue hover:bg-blue-600 text-white px-6 py-3 rounded-md font-semibold"
           >
             Search Managers
           </button>

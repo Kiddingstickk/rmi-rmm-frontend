@@ -43,7 +43,7 @@ const SearchManager = () => {
       {/* Hero Section */}
       <section
         className="relative bg-cover bg-center text-white mt-[64px] py-40"
-        style={{ backgroundImage: "url('/rmmbg.png')" }}
+        style={{ backgroundImage: "url('/rmmbg.avif')" }}
       >
         <div className="absolute inset-0 bg-black/60 z-0" />
 
@@ -101,7 +101,7 @@ const SearchManager = () => {
               onClick={() =>
                 setSearchMode((prev) => (prev === 'name' ? 'company' : 'name'))
               }
-              className="text-white bg-blue-500 hover:bg-blue-600 font-semibold py-2 px-5 rounded-md text-sm"
+              className="text-white bg-pastelBlue hover:bg-blue-600 font-semibold py-2 px-5 rounded-md text-sm"
             >
               SEARCH BY {searchMode === 'name' ? 'WORKPLACE' : 'NAME'}
             </button>

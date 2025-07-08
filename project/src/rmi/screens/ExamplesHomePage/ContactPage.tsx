@@ -33,7 +33,7 @@ const ContactPage = () => {
   return (
     <div className="min-h-screen bg-gray-100 flex flex-col">
       {/* 🔶 Header */}
-      <header className="bg-yellow-400 flex items-center justify-between px-8 py-6 shadow-md">
+      <header className="bg-pastelYellow flex items-center justify-between px-8 py-6 shadow-md">
         <img src="/rmi-logo.png" alt="RMI Logo" className="w-12 h-12 rounded-full" />
         <h1 className="text-xl font-bold text-black">CONTACT US:</h1>
       </header>
@@ -86,7 +86,7 @@ const ContactPage = () => {
 
           <button
             type="submit"
-            className="w-full bg-yellow-400 hover:bg-yellow-500 text-black font-semibold py-3 rounded-md transition"
+            className="w-full bg-pastelYellow hover:bg-yellow-500 text-black font-semibold py-3 rounded-md transition"
           >
             Send Message
           </button>

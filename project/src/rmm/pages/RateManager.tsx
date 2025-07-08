@@ -202,7 +202,7 @@ const RateManager = () => {
             <button
               type="submit"
               disabled={loading}
-              className="bg-blue-300 hover:bg-blue-400 text-black font-bold px-8 py-3 rounded-md transition"
+              className="bg-pastelBlue hover:bg-blue-400 text-black font-bold px-8 py-3 rounded-md transition"
             >
               {loading ? 'Submitting...' : 'Submit Manager & Review'}
             </button>
