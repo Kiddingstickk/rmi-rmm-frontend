@@ -145,7 +145,7 @@ const InterviewReviewForm: React.FC<InterviewReviewFormProps> = ({
         <button
           type="submit"
           disabled={loading || rating === 0 || review.trim().length === 0}
-          className="bg-pastelBlue text-white py-2 px-4 rounded-md hover:bg-blue-700 transition disabled:opacity-50"
+          className="bg-pastelYellow text-white py-2 px-4 rounded-md hover:bg-blue-700 transition disabled:opacity-50"
         >
           {loading ? "Submitting..." : existingReview ? "Update Review" : "Submit Review"}
         </button>
