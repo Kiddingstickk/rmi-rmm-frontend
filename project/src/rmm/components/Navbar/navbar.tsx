@@ -22,7 +22,7 @@ const ResponsiveNavbar: React.FC<NavbarProps> = ({ isLoggedIn, onLogout }) => {
       {/* Top Navbar */}
       <nav
         className={`w-full px-6 py-4 flex justify-between items-center shadow-md transition-colors duration-300 ${
-          isRmm ? 'bg-blue-600 text-white' : 'bg-yellow-400 text-black'
+          isRmm ? 'bg-pastelBlue text-white' : 'bg-pastelYellow text-black'
         }`}
       >
         <button
@@ -43,7 +43,7 @@ const ResponsiveNavbar: React.FC<NavbarProps> = ({ isLoggedIn, onLogout }) => {
           ) : (
             <button
               onClick={handleLoginClick}
-              className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-1 rounded-md"
+              className="bg-pastelBlue hover:bg-blue-600 text-white px-4 py-1 rounded-md"
             >
               Login
             </button>
@@ -76,7 +76,7 @@ const ResponsiveNavbar: React.FC<NavbarProps> = ({ isLoggedIn, onLogout }) => {
         {/* Slide-in Drawer */}
         <div
           className={`absolute right-0 top-0 h-full w-64 ${
-            isRmm ? 'bg-blue-600 text-white' : 'bg-yellow-400 text-black'
+            isRmm ? 'bg-pastelBlue text-white' : 'bg-pastelYellow text-black'
           } shadow-lg transform transition-transform duration-300 ${
             isSidebarOpen ? 'translate-x-0' : 'translate-x-full'
           } flex flex-col gap-6 p-6`}
@@ -107,7 +107,7 @@ const ResponsiveNavbar: React.FC<NavbarProps> = ({ isLoggedIn, onLogout }) => {
                   handleLoginClick();
                   setIsSidebarOpen(false);
                 }}
-                className="bg-blue-500 hover:bg-blue-600 text-white px-6 py-3 rounded-md font-semibold"
+                className="bg-pastelBlue hover:bg-blue-600 text-white px-6 py-3 rounded-md font-semibold"
               >
                 Login
               </button>

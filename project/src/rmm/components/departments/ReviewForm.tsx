@@ -150,7 +150,7 @@ const ReviewForm: React.FC<ReviewFormProps> = ({ managerId, onSuccess,  existing
         <button
           type="submit"
           disabled={loading || rating === 0 || review.trim().length === 0}
-          className="bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 transition disabled:opacity-50"
+          className="bg-pastelBlue text-white py-2 px-4 rounded-md hover:bg-blue-700 transition disabled:opacity-50"
         >
           {loading
             ? "Submitting..."

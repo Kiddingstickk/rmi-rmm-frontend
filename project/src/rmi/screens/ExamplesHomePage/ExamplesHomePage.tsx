@@ -78,7 +78,7 @@ const ExampleHomePage = (): JSX.Element => {
     <div className="flex justify-center gap-6 flex-wrap">
       <button
         onClick={() => navigate('/search-interviewers')}
-        className="bg-yellow-400 hover:bg-yellow-300 text-black px-6 py-3 rounded-md font-semibold"
+        className="bg-pastelYellow hover:bg-yellow-300 text-black px-6 py-3 rounded-md font-semibold"
 
       >
         Search Interviewers
@@ -129,7 +129,7 @@ const ExampleHomePage = (): JSX.Element => {
     <div className="mt-10">
       <Button
         onClick={() => navigate('/contact')}
-        className="bg-yellow-400 text-black hover:bg-yellow-300 rounded-lg px-6 py-3 font-semibold"
+        className="bg-pastelYellow text-black hover:bg-yellow-300 rounded-lg px-6 py-3 font-semibold"
       >
         Contact Us
       </Button>

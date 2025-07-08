@@ -17,6 +17,8 @@ module.exports = {
         pastelPink: '#f582ae',
         deepNavy: '#001858',
         coolBlueGray: '#172c66',
+        pastelYellow: '#F9E29C',
+        pastelBlue: '#1C4BA0',
       },
       keyframes: {
         'fade-up': {

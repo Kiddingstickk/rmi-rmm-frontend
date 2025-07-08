@@ -51,7 +51,7 @@ const SearchInterviewer = () => {
       {/* Hero Section */}
       <section
         className="relative bg-cover bg-center text-white mt-[64px] py-40"
-        style={{ backgroundImage: "url('/rmibg.png')" }}
+        style={{ backgroundImage: "url('/rmibg.avif')" }}
       >
         <div className="absolute inset-0 bg-black/40 z-0" />
 
@@ -108,7 +108,7 @@ const SearchInterviewer = () => {
               onClick={() =>
                 setSearchMode((prev) => (prev === 'name' ? 'company' : 'name'))
               }
-              className="text-black bg-yellow-400 hover:bg-yellow-300 font-semibold py-2 px-5 rounded-md text-sm"
+              className="text-black bg-pastelYellow hover:bg-yellow-300 font-semibold py-2 px-5 rounded-md text-sm"
             >
               SEARCH BY {searchMode === 'name' ? 'COMPANY' : 'NAME'}
             </button>
