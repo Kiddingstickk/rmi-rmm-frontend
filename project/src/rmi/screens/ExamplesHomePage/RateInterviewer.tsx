@@ -89,8 +89,8 @@ const RateInterviewer = () => {
   return (
     <div className="min-h-screen bg-gray-100 flex flex-col">
       {/* Yellow Header */}
-      <div className="flex items-center justify-between bg-yellow-400 py-6 px-10 shadow-md">
-        <img src="/rmi-logo.png" alt="RMI Logo" className="w-12 h-12 rounded-full" />
+      <div className="flex items-center justify-between bg-pastelYellow py-6 px-10 shadow-md">
+        <img src="/favicon.png" alt="RMI Logo" className="w-12 h-12 rounded-full" />
         <h1 className="text-2xl font-bold text-right text-gray-900">
           INPUT YOUR RATING:
         </h1>
@@ -178,7 +178,7 @@ const RateInterviewer = () => {
           <div className="md:col-span-3 flex justify-center">
             <button
               type="submit"
-              className="bg-yellow-400 hover:bg-yellow-500 text-black font-bold px-8 py-3 rounded-md transition"
+              className="bg-yellow-300 hover:bg-yellow-500 text-black font-bold px-8 py-3 rounded-md transition"
             >
               Submit Review
             </button>
