@@ -68,7 +68,7 @@ const ExampleHomePage = (): JSX.Element => {
 {/* 🚀 Hero Section */}
 <section
   className="relative bg-cover bg-center text-white mt-[64px] pt-20 pb-32 px-6"
-  style={{ backgroundImage: "url('/rmibg.png')" }} // Replace with your actual image path
+  style={{ backgroundImage: "url('/rmibg.avif')" }} // Replace with your actual image path
 >
   <div className="absolute inset-0 bg-black/30 z-0" />
   <div className="relative z-10 text-center">
