@@ -14,7 +14,7 @@ const RmmLanding = () => {
       {/* Hero with Background Image */}
       <section
         className="relative bg-cover bg-center text-white mt-[64px] pt-16 pb-32 px-6"
-        style={{ backgroundImage: "url('/rmmbg.png')" }}
+        style={{ backgroundImage: "url('/rmmbg.avif')" }}
       >
 
 
