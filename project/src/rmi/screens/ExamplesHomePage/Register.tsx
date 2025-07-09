@@ -12,15 +12,18 @@ const Register = () => {
 
   const handleRegister = async (e: React.FormEvent) => {
     e.preventDefault();
-
+  
+    // 🚀 Navigate immediately to OTP page
+    localStorage.setItem('pendingEmail', email);
+    navigate('/verifyotp');
+  
+    // 🔄 Fire OTP request in the background
     try {
       await api.post('/auth/rmi/register', { name, email, password });
-      alert('OTP sent to your email. Please verify.');
-      localStorage.setItem('pendingEmail', email);
-      navigate('/verifyotp');
+      console.log('OTP sent successfully');
     } catch (err) {
       console.error('Registration failed:', err);
-      setError('Registration failed. Please try again.');
+      // Optional: you could store a flag to retry, or show a toast later
     }
   };
 
@@ -28,7 +31,7 @@ const Register = () => {
     <div className="min-h-screen bg-gray-100 flex flex-col">
       {/* 🔶 Header */}
       <header className="bg-pastelYellow flex items-center justify-between px-8 py-6 shadow-md">
-        <img src="/rmi-logo.png" alt="RMI Logo" className="w-12 h-12 rounded-full" />
+        <img src="/favicon.png" alt="RMI Logo" className="w-12 h-12 rounded-full" />
         <h1 className="text-xl font-bold text-black">REGISTER:</h1>
       </header>
 
