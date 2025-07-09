@@ -33,7 +33,6 @@ const SearchResults = () => {
   const navigate = useNavigate();
 
   const [results, setResults] = useState<Interviewer[]>([]);
-  const [savedIds, setSavedIds] = useState<string[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -43,16 +42,10 @@ const SearchResults = () => {
       setLoading(true);
       setError(null);
       try {
-        const token = localStorage.getItem('token');
-        const [res, savedRes] = await Promise.all([
-          axios.get(`${import.meta.env.VITE_API_URL}/api/interviewers/search/${query}`),
-          axios.get(`${import.meta.env.VITE_API_URL}/api/user/saved`, {
-            headers: { Authorization: `Bearer ${token}` },
-          }),
-        ]);
+        const res = await axios.get(
+          `${import.meta.env.VITE_API_URL}/api/interviewers/search/${query}`
+        );
         setResults(res.data);
-        const saved = Array.isArray(savedRes.data) ? savedRes.data : [];
-        setSavedIds(saved.map((r: Interviewer) => r._id));
       } catch (err) {
         console.error(err);
         setError('Something went wrong. Please try again.');
@@ -67,26 +60,11 @@ const SearchResults = () => {
     }
   }, [query]);
 
-  const handleSave = async (interviewer: Interviewer) => {
-    try {
-      const token = localStorage.getItem('token');
-      await axios.post(
-        `${import.meta.env.VITE_API_URL}/api/user/toggle-save/${interviewer._id}`,
-        {},
-        { headers: { Authorization: `Bearer ${token}` } }
-      );
-      setSavedIds((prev) =>
-        prev.includes(interviewer._id)
-          ? prev.filter((id) => id !== interviewer._id)
-          : [...prev, interviewer._id]
-      );
-    } catch (err) {
-      console.error('Save failed:', err);
-    }
-  };
-
   const totalPages = Math.ceil(results.length / RESULTS_PER_PAGE);
-  const pageResults = results.slice((currentPage - 1) * RESULTS_PER_PAGE, currentPage * RESULTS_PER_PAGE);
+  const pageResults = results.slice(
+    (currentPage - 1) * RESULTS_PER_PAGE,
+    currentPage * RESULTS_PER_PAGE
+  );
 
   return (
     <div className="min-h-screen bg-gray-100 flex flex-col">
@@ -97,7 +75,8 @@ const SearchResults = () => {
 
       <main className="flex-grow px-6 py-10 max-w-4xl mx-auto">
         <h2 className="text-2xl font-bold text-gray-800 mb-6">
-          Found {results.length} result{results.length !== 1 ? 's' : ''} for <span className="text-yellow-600">"{query}"</span>
+          Found {results.length} result{results.length !== 1 ? 's' : ''} for{' '}
+          <span className="text-yellow-600">"{query}"</span>
         </h2>
 
         {loading ? (
@@ -132,25 +111,9 @@ const SearchResults = () => {
                   <div className="ml-5 flex-grow">
                     <h3 className="text-lg font-semibold text-gray-800">{int.name}</h3>
                     <p className="text-sm text-gray-600 mt-1">
-                      🏢 {int.company || '—'} &nbsp;|&nbsp; 👔 {int.position || '—'} &nbsp;|&nbsp; 📖 {int.experience || '—'}
+                      🏢 {int.company || '—'} &nbsp;|&nbsp; 👔 {int.position || '—'} &nbsp;|&nbsp; 📖{' '}
+                      {int.experience || '—'}
                     </p>
-                  </div>
-
-                  {/* Save Button */}
-                  <div className="ml-4">
-                    <button
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        handleSave(int);
-                      }}
-                      className={`px-3 py-1 rounded-full text-xs font-semibold ${
-                        savedIds.includes(int._id)
-                          ? 'bg-red-500 text-white'
-                          : 'bg-green-500 text-white'
-                      }`}
-                    >
-                      {savedIds.includes(int._id) ? 'Unsave' : 'Save'}
-                    </button>
                   </div>
                 </div>
               );
