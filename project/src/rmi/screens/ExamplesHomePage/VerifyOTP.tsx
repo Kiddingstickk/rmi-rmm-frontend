@@ -2,9 +2,20 @@
 import { useState } from 'react';
 import api from "../../../lib/api";
 import { useNavigate } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
+
+
+
+
+
 
 const VerifyOTP = () => {
-  const [email, setEmail] = useState('');
+
+  const location = useLocation();
+  const initialEmail =
+    location.state?.email || localStorage.getItem('pendingEmail') || '';
+
+  const [email, setEmail] = useState(initialEmail);
   const [otp, setOtp] = useState('');
   const navigate = useNavigate();
 
