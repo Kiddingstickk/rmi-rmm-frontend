@@ -13,6 +13,23 @@ const SearchInterviewer = () => {
   const [results, setResults] = useState<Interviewer[]>([]);
   const [isSearching, setIsSearching] = useState(false);
 
+  // ✅ Inject JSON-LD for SEO
+  useEffect(() => {
+    const script = document.createElement('script');
+    script.type = 'application/ld+json';
+    script.text = JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "SearchResultsPage",
+      "name": "Search Interviewers and Managers",
+      "description": "Explore anonymous reviews and ratings of interviewers and managers across top companies. Share your own experience and help others prepare.",
+      "url": "https://rmi-rmm.netlify.app/search-interviewers"
+    });
+    document.head.appendChild(script);
+    return () => {
+      document.head.removeChild(script);
+    };
+  }, []);
+
   useEffect(() => {
     const timer = setTimeout(async () => {
       if (!query.trim()) {
@@ -23,7 +40,7 @@ const SearchInterviewer = () => {
       setIsSearching(true);
       try {
         const data = await getInterviewers(query, searchMode);
-        setResults(data); // ✅ No .results needed — your API returns Interviewer[]
+        setResults(data);
       } catch (err) {
         console.error('Search failed:', err);
         setResults([]);
@@ -54,13 +71,11 @@ const SearchInterviewer = () => {
         style={{ backgroundImage: "url('/rmibg.avif')" }}
       >
         <div className="absolute inset-0 bg-black/40 z-0" />
-
         <div className="relative z-10 flex flex-col justify-between items-center text-center px-6 h-full">
           <div className="flex flex-col items-center">
             <h1 className="text-2xl sm:text-3xl font-bold text-white mb-6">
               SEARCH INTERVIEWER
             </h1>
-
             <div className="w-full max-w-md relative">
               <input
                 value={query}
@@ -70,7 +85,6 @@ const SearchInterviewer = () => {
                 placeholder={`Search by ${searchMode}...`}
                 className="w-full bg-white/20 text-white px-5 py-3 rounded-t-md backdrop-blur-sm placeholder:text-white/70 focus:outline-none"
               />
-
               {query && (
                 <div className="absolute top-full left-0 right-0 mt-1 bg-white text-black shadow-lg z-10 max-h-64 overflow-y-auto rounded-b-md border">
                   {isSearching ? (
@@ -102,7 +116,6 @@ const SearchInterviewer = () => {
             </div>
           </div>
 
-          {/* Toggle Button */}
           <div className="mt-6">
             <button
               onClick={() =>
@@ -116,9 +129,29 @@ const SearchInterviewer = () => {
         </div>
       </section>
 
-      <footer className="text-center text-gray-500 text-sm py-6">
-        100% Anonymous
-      </footer>
+      {/* SEO Footer Section */}
+      <section className="bg-gray-50 py-16 px-6 mt-20 border-t border-gray-200">
+        <div className="max-w-5xl mx-auto text-center">
+          <h2 className="text-2xl sm:text-3xl font-bold text-gray-800 mb-6">
+            Empower Your Job Search
+          </h2>
+          <p className="text-gray-600 text-base mb-6">
+            Read honest reviews about interviewers and hiring managers. Share your own experience anonymously to help others prepare for their next opportunity.
+          </p>
+          <div className="flex justify-center gap-6 flex-wrap mt-4">
+            <a href="/rate-interviewer" className="bg-black text-white hover:bg-gray-800 px-6 py-3 rounded-md font-semibold">
+              Submit a Review
+            </a>
+            <a href="/contact" className="bg-pastelYellow text-black hover:bg-yellow-300 px-6 py-3 rounded-md font-semibold">
+              Contact Us
+            </a>
+          </div>
+          <div className="mt-10 text-sm text-gray-400">
+            <p className="mb-1">Rate My Interviewer is a neutral, anonymous platform. Reviews are user-submitted opinions. We do not verify or endorse the content.</p>
+            <p>&copy; {new Date().getFullYear()} Rate My Interviewer</p>
+          </div>
+        </div>
+      </section>
     </div>
   );
 };
