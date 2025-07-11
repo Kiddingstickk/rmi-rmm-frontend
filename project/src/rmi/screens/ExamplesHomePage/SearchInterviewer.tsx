@@ -138,14 +138,6 @@ const SearchInterviewer = () => {
           <p className="text-gray-600 text-base mb-6">
             Read honest reviews about interviewers and hiring managers. Share your own experience anonymously to help others prepare for their next opportunity.
           </p>
-          <div className="flex justify-center gap-6 flex-wrap mt-4">
-            <a href="/rate-interviewer" className="bg-black text-white hover:bg-gray-800 px-6 py-3 rounded-md font-semibold">
-              Submit a Review
-            </a>
-            <a href="/contact" className="bg-pastelYellow text-black hover:bg-yellow-300 px-6 py-3 rounded-md font-semibold">
-              Contact Us
-            </a>
-          </div>
           <div className="mt-10 text-sm text-gray-400">
             <p className="mb-1">Rate My Interviewer is a neutral, anonymous platform. Reviews are user-submitted opinions. We do not verify or endorse the content.</p>
             <p>&copy; {new Date().getFullYear()} Rate My Interviewer</p>

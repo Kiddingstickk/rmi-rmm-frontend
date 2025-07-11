@@ -37,6 +37,23 @@ const SearchResults = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
+  // ✅ Inject JSON-LD for SEO
+  useEffect(() => {
+    const script = document.createElement('script');
+    script.type = 'application/ld+json';
+    script.text = JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "SearchResultsPage",
+      "name": `Search Results for ${query}`,
+      "description": `Explore anonymous feedback and ratings for interviewers and managers matching '${query}'.`,
+      "url": `https://rmi-rmm.netlify.app/search/${encodeURIComponent(query || '')}`
+    });
+    document.head.appendChild(script);
+    return () => {
+      document.head.removeChild(script);
+    };
+  }, [query]);
+
   useEffect(() => {
     const fetchResults = async () => {
       setLoading(true);
@@ -74,10 +91,13 @@ const SearchResults = () => {
       </header>
 
       <main className="flex-grow px-6 py-10 max-w-4xl mx-auto">
-        <h2 className="text-2xl font-bold text-gray-800 mb-6">
+        <h2 className="text-2xl font-bold text-gray-800 mb-2">
           Found {results.length} result{results.length !== 1 ? 's' : ''} for{' '}
           <span className="text-yellow-600">"{query}"</span>
         </h2>
+        <p className="text-base text-gray-600 mb-6">
+          Explore reviews and ratings for interviewers and hiring managers across top tech companies. All feedback is shared anonymously to support transparency and informed decision-making.
+        </p>
 
         {loading ? (
           <p className="text-gray-600">Loading...</p>
@@ -100,14 +120,11 @@ const SearchResults = () => {
                   onClick={() => navigate(`/interviewers/${int._id}`)}
                   className="flex items-center justify-between p-6 bg-white rounded-xl shadow-sm hover:shadow-md border border-gray-200 cursor-pointer transition"
                 >
-                  {/* Rating Badge */}
                   <div
                     className={`flex-shrink-0 w-12 h-12 rounded-md flex items-center justify-center font-bold text-sm ${badgeStyle}`}
                   >
                     {avg.toFixed(1)}
                   </div>
-
-                  {/* Content */}
                   <div className="ml-5 flex-grow">
                     <h3 className="text-lg font-semibold text-gray-800">{int.name}</h3>
                     <p className="text-sm text-gray-600 mt-1">
@@ -152,6 +169,17 @@ const SearchResults = () => {
             </button>
           </div>
         )}
+
+        {/* ✅ SEO Footer Section */}
+        <section className="bg-gray-50 py-12 px-6 mt-20 border-t border-gray-200">
+          <div className="max-w-5xl mx-auto text-center">
+            <h3 className="text-xl font-semibold text-gray-800 mb-4">Platform Transparency</h3>
+            <p className="text-sm text-gray-600 mb-4">
+              Rate My Interviewer is a neutral and anonymous platform. All reviews are opinions submitted by users and are not verified or endorsed. We are committed to respectful, honest feedback that empowers candidates.
+            </p>
+            <p className="text-xs text-gray-400">&copy; {new Date().getFullYear()} Rate My Interviewer</p>
+          </div>
+        </section>
       </main>
     </div>
   );
