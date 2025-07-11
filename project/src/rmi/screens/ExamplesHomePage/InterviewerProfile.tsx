@@ -52,8 +52,8 @@ const InterviewerProfile = () => {
   const [reviews, setReviews] = useState<ReviewType[]>([]);
   const [userId, setUserId] = useState<string | null>(null);
   const [userReview, setUserReview] = useState<ReviewType | null>(null);
-  const token = localStorage.getItem('token');
   const [showForm, setShowForm] = useState(false);
+  const token = localStorage.getItem('token');
 
   useEffect(() => {
     const fetchInterviewer = async () => {
@@ -96,6 +96,28 @@ const InterviewerProfile = () => {
     }
   }, [reviews, userId]);
 
+  useEffect(() => {
+    if (!interviewer) return;
+    const script = document.createElement('script');
+    script.type = 'application/ld+json';
+    script.text = JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "Person",
+      "name": interviewer.name,
+      "jobTitle": interviewer.position,
+      "worksFor": {
+        "@type": "Organization",
+        "name": interviewer.company || "Unknown"
+      },
+      "url": `https://rmi-rmm.netlify.app/interviewers/${interviewer._id}`,
+      "description": `Anonymous feedback for ${interviewer.name}, ${interviewer.position} at ${interviewer.company}.`
+    });
+    document.head.appendChild(script);
+    return () => {
+      document.head.removeChild(script);
+    };
+  }, [interviewer]);
+
   const avgRating = calculateWeightedRating(reviews);
 
   const refreshReviews = async () => {
@@ -126,51 +148,52 @@ const InterviewerProfile = () => {
       console.error('Dislike failed:', err);
     }
   };
-
   return (
     <div className="min-h-screen bg-gray-100">
       <header className="bg-pastelYellow flex justify-between items-center px-8 py-6 shadow-md">
         <img src="/favicon.png" alt="RMI Logo" className="w-12 h-12 rounded-full" />
         <h1 className="text-xl md:text-2xl font-bold text-right text-gray-900 uppercase">
-          Interviewer Profile:
+          Interviewer Profile
         </h1>
       </header>
-
+  
       <section className="max-w-5xl mx-auto px-6 py-10 bg-white rounded-xl shadow-lg mt-6">
-        <div className="flex flex-col md:flex-row justify-between gap-8">
+        {interviewer && (
+          <>
+            <h1 className="text-3xl font-bold text-gray-800">
+              Interviewer Profile: {interviewer.name}
+            </h1>
+            <p className="text-base text-gray-600 mt-2">
+              {interviewer.name} is a {interviewer.position} at {interviewer.company}. View reviews and ratings shared anonymously by interviewees.
+            </p>
+          </>
+        )}
+  
+        <div className="flex flex-col md:flex-row justify-between gap-8 mt-6">
           <div className="flex-1">
-            <h2 className="text-3xl font-bold text-gray-800">{interviewer?.name}</h2>
-            <p className="text-gray-600 mt-1">{interviewer?.position}, {interviewer?.company}</p>
             <div className="mt-3 flex items-center gap-2 text-yellow-500 text-2xl">
               {renderStars(Math.round(avgRating))}
               <span className="text-gray-800 text-lg font-semibold ml-2">{avgRating.toFixed(1)}</span>
             </div>
             <p className="text-sm text-gray-500 mt-1">
-              Overall rating based on {reviews.length} review{reviews.length !== 1 ? 's' : ''}
+              Based on {reviews.length} review{reviews.length !== 1 ? 's' : ''}
             </p>
             <div className="mt-4 flex gap-3">
-                        <div className="mt-4 flex gap-3">
               <button
-                className={`px-6 py-2 rounded-md font-semibold ${
-                  userReview
-                    ? 'bg-pastelYellow hover:bg-yellow-500'
-                    : 'bg-pastelYellow hover:bg-yellow-500'
-                }`}
+                className="px-6 py-2 rounded-md font-semibold bg-pastelYellow hover:bg-yellow-500"
                 onClick={() => setShowForm(true)}
                 disabled={!!userReview && !showForm}
               >
                 {userReview ? 'Edit Review' : 'Rate'}
               </button>
-
               <button className="bg-gray-200 px-6 py-2 rounded-md font-semibold hover:bg-gray-300">
                 Save
               </button>
             </div>
-            </div>
           </div>
-
+  
           <div className="flex-1">
-            <h3 className="text-lg font-medium text-gray-700 mb-4">Rating Distribution</h3>
+            <h3 className="text-lg font-medium text-gray-700 mb-4">Rating Breakdown</h3>
             <div className="space-y-3">
               {[5, 4, 3, 2, 1].map((stars) => {
                 const label = ['Awful', 'OK', 'Good', 'Great', 'Awesome'][5 - stars];
@@ -192,7 +215,7 @@ const InterviewerProfile = () => {
             </div>
           </div>
         </div>
-
+  
         {showForm && interviewer?._id && (
           <div className="mt-8">
             <InterviewReviewForm
@@ -204,7 +227,7 @@ const InterviewerProfile = () => {
           </div>
         )}
       </section>
-
+  
       <section className="max-w-5xl mx-auto px-6 py-10 space-y-6">
         {reviews.map((review) => (
           <div key={review._id} className="bg-white shadow-md p-6 rounded-xl border border-gray-200">
@@ -213,23 +236,34 @@ const InterviewerProfile = () => {
             </div>
             <p className="text-gray-700 mb-2 italic">"{review.reviewText}"</p>
             <p className="text-sm text-gray-500 mb-2">
-             Submitted on {new Date(review.createdAt).toLocaleDateString()}
-           </p>
-          <div className="flex gap-4 text-sm text-gray-600">
-        <button onClick={() => handleLike(review._id)}>👍 {review.likes?.length || 0}</button>
-      <button onClick={() => handleDislike(review._id)}>👎 {review.dislikes?.length || 0}</button>
-      </div>
-      </div>
-     ))}
-     {/* 🔘 See More */}
-     <div className="flex justify-center pt-6">
-                <button className="bg-gray-200 hover:bg-gray-300 px-6 py-2 rounded font-medium">
-                See More
-            </button>
+              Submitted on {new Date(review.createdAt).toLocaleDateString()}
+            </p>
+            <div className="flex gap-4 text-sm text-gray-600">
+              <button onClick={() => handleLike(review._id)}>👍 {review.likes?.length || 0}</button>
+              <button onClick={() => handleDislike(review._id)}>👎 {review.dislikes?.length || 0}</button>
+            </div>
           </div>
-        </section>
-      </div>
-    );
-  };
-                
+        ))}
+  
+        <div className="flex justify-center pt-6">
+          <button className="bg-gray-200 hover:bg-gray-300 px-6 py-2 rounded font-medium">
+            See More
+          </button>
+        </div>
+      </section>
+  
+      {/* ✅ SEO Footer Block */}
+      <section className="bg-gray-50 py-12 px-6 mt-20 border-t border-gray-200">
+        <div className="max-w-5xl mx-auto text-center">
+          <h3 className="text-xl font-semibold text-gray-800 mb-4">Transparency Matters</h3>
+          <p className="text-sm text-gray-600 mb-4">
+            Rate My Interviewer is a neutral, anonymous platform. All feedback is user-submitted and we do not verify or endorse individual reviews.
+          </p>
+          <p className="text-xs text-gray-400">&copy; {new Date().getFullYear()} Rate My Interviewer</p>
+        </div>
+      </section>
+    </div>
+  );
+};
+
 export default InterviewerProfile;
