@@ -1,14 +1,21 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { getCompanies, createCompany } from '../../../rmm/lib/company';
+import { useRef } from 'react';
+
 
 const RateInterviewer = () => {
   const navigate = useNavigate();
   const [name, setName] = useState('');
-  const [company, setCompany] = useState('');
+  
   const [position, setPosition] = useState('');
   const [rating, setRating] = useState(0);
   const [interviewStatus, setInterviewStatus] = useState('');
   const [reviewText, setReviewText] = useState('');
+  const [companyName, setCompanyName] = useState('');
+  const [companyId, setCompanyId] = useState('');
+  const [companySuggestions, setCompanySuggestions] = useState([]);
+  const debounceTimer = useRef<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
     const token = localStorage.getItem('token');
@@ -18,17 +25,36 @@ const RateInterviewer = () => {
     }
   }, [navigate]);
 
+  useEffect(() => {
+    if (!companyName.trim()) return setCompanySuggestions([]);
+    if (debounceTimer.current) clearTimeout(debounceTimer.current);
+  
+    debounceTimer.current = setTimeout(async () => {
+      try {
+        const results = await getCompanies(companyName);
+        setCompanySuggestions(results || []);
+      } catch (err) {
+        console.error('Failed to fetch companies:', err);
+      }
+    }, 300);
+  }, [companyName]);
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const token = localStorage.getItem('token');
 
-    if (!name || !company || rating < 1 || !reviewText) {
+    if (!name || !companyName || rating < 1 || !reviewText) {
       alert('Please fill all required fields and give a rating.');
       return;
     }
 
     try {
-      // 1. Create interviewer
+      let compId = companyId;
+      if (!compId) {
+        const newCompany = await createCompany({ name: companyName.trim() });
+        compId = newCompany._id;
+      }
+  
       const interviewerRes = await fetch(`${import.meta.env.VITE_API_URL}/api/interviewers`, {
         method: 'POST',
         headers: {
@@ -37,7 +63,7 @@ const RateInterviewer = () => {
         },
         body: JSON.stringify({
           name,
-          company,
+          company: compId,
           position,
         }),
       });
@@ -109,14 +135,37 @@ const RateInterviewer = () => {
               className="w-full border border-gray-300 rounded-md px-4 py-3 focus:outline-none focus:ring-2 focus:ring-yellow-400"
               required
             />
-            <input
-              type="text"
-              placeholder="Company"
-              value={company}
-              onChange={(e) => setCompany(e.target.value)}
-              className="w-full border border-gray-300 rounded-md px-4 py-3 focus:outline-none focus:ring-2 focus:ring-yellow-400"
-              required
-            />
+            <div className="relative">
+              <input
+                type="text"
+                placeholder="Company"
+                value={companyName}
+                onChange={(e) => {
+                  setCompanyName(e.target.value);
+                  setCompanyId('');
+                }}
+                className="w-full border border-gray-300 rounded-md px-4 py-3 focus:outline-none focus:ring-2 focus:ring-yellow-400"
+                required
+              />
+              {companySuggestions.length > 0 && (
+                <ul className="absolute z-10 w-full bg-white border rounded-md shadow-md mt-1 max-h-40 overflow-y-auto">
+                  {companySuggestions.map((comp: any) => (
+                    <li
+                      key={comp._id}
+                      onClick={() => {
+                        setCompanyName(comp.name);
+                        setCompanyId(comp._id);
+                        setCompanySuggestions([]);
+                      }}
+                      className="px-4 py-2 hover:bg-yellow-100 cursor-pointer text-sm"
+                    >
+                      {comp.name}
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </div>
+
             <input
               type="text"
               placeholder="Position"
