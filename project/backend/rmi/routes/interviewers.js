@@ -70,7 +70,7 @@ router.delete('/:id', async (req, res) => {
 // Route to get an interviewer by ID
 router.get('/:id', async (req, res) => {
   try {
-    const interviewer = await Interviewer.findById(req.params.id);
+    const interviewer = await Interviewer.findById(req.params.id).populate('company');
     if (!interviewer) {
       return res.status(404).json({ message: 'Interviewer not found' });
     }
@@ -287,6 +287,13 @@ router.post('/', auth , async (req, res) => {
     });
 
     const savedInterviewer = await newInterviewer.save();
+    if (company) {
+      await Company.findByIdAndUpdate(company, {
+        $addToSet: { interviewers: savedInterviewer._id }
+      });
+    }
+
+
     res.status(201).json(savedInterviewer);
   } catch (err) {
     console.error('Error creating interviewer:', err);
