@@ -1,5 +1,7 @@
 import Manager from '../models/Manager.js';
 import Department from '../models/Department.js';
+import Company from '../models/Company.js';
+
 
 // Get all managers
 export const getAllManagers = async (req, res) => {
@@ -88,7 +90,7 @@ export const deleteManager = async (req, res) => {
 
 // Create a new manager (admin-only)
 export const createManager = async (req, res) => {
-  const { name, departmentId, position, bio ,branch} = req.body;
+  const { name, departmentId, position, bio ,branch,company} = req.body;
 
   try {
     const department = await Department.findById(departmentId);
@@ -100,6 +102,7 @@ export const createManager = async (req, res) => {
       position,
       bio,
       branch,
+      company,
       averageRating: 0
     });
 
@@ -109,6 +112,14 @@ export const createManager = async (req, res) => {
       departmentId,
       { $addToSet: { managers: manager._id } } // ensures no duplicates
     );
+
+    if (company) {
+      await Company.findByIdAndUpdate(company, {
+        $addToSet: { managers: manager._id }
+      });
+    }
+
+
 
     res.status(201).json(manager);
   } catch (err) {

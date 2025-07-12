@@ -16,7 +16,14 @@ const companySchema = new mongoose.Schema({
       type: mongoose.Schema.Types.ObjectId,
       ref: 'Interviewer' // or 'Manager' — use whichever your schema links to
     }
+  ],
+  managers: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Manager'
+    }
   ]
+
 }, { timestamps: true });
 
 const Company = mongoose.model('Company', companySchema);
