@@ -40,6 +40,20 @@ const RateManager = () => {
     }, 300);
   }, [departmentName]);
 
+  useEffect(() => {
+    if (!companyName.trim()) return setCompanySuggestions([]);
+    if (debounceTimer.current) clearTimeout(debounceTimer.current);
+  
+    debounceTimer.current = setTimeout(async () => {
+      try {
+        const results = await getCompanies(companyName);
+        setCompanySuggestions(results || []);
+      } catch (err) {
+        console.error('Failed to fetch companies:', err);
+      }
+    }, 300);
+  }, [companyName]);
+
   const handleDepartmentSelect = (dept: any) => {
     setDepartmentName(dept.name);
     setDepartmentId(dept._id);
