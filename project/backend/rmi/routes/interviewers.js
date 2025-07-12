@@ -6,6 +6,7 @@ import User from '../models/user.js';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import auth from '../../shared/middleware/auth.js';
+import Company from '../../rmm/models/Company.js';
 
 
 
@@ -24,20 +25,35 @@ router.get('/', async (req, res) => {
 // GET by name or company
 router.get('/search/:query', async (req, res) => {
   const { query } = req.params;
-  
 
-  
   try {
-    const results = await Interviewer.find({
-      $or: [
-        { name: { $regex: query, $options: 'i' } },
-        { company: { $regex: query, $options: 'i' } }
-      ]
-    });
+    // 1. Find companies with interviewers matching name or position
+    const companies = await Company.find()
+      .populate({
+        path: 'interviewers',
+        match: {
+          $or: [
+            { name: { $regex: query, $options: 'i' } },
+            { position: { $regex: query, $options: 'i' } }
+          ]
+        }
+      });
 
-    res.json(results);
+    // 2. Flatten and enrich interviewers with company context
+    const matchedInterviewers = companies.flatMap((comp) =>
+      comp.interviewers.map((i) => ({
+        ...i.toObject(),
+        company: {
+          _id: comp._id,
+          name: comp.name
+        }
+      }))
+    );
+
+    res.json(matchedInterviewers);
   } catch (err) {
-    res.status(500).json({ message: err.message });
+    console.error('Search failed:', err);
+    res.status(500).json({ message: 'Internal Server Error' });
   }
 });
 
@@ -155,6 +171,11 @@ router.post('/:id/rating', auth , async (req, res) => {
 router.post('/', async (req, res) => {
   const { name, company, position, rating, experience } = req.body;
 
+  if (!name || !company) {
+    return res.status(400).json({ message: 'Name and company are required.' });
+  }
+
+
   const newInterviewer = new Interviewer({
     name,
     company,
@@ -166,6 +187,11 @@ router.post('/', async (req, res) => {
 
   try {
     const savedInterviewer = await newInterviewer.save();
+    await Company.findByIdAndUpdate(company, {
+      $addToSet: { interviewers: savedInterviewer._id }
+    });
+
+
     res.status(201).json(savedInterviewer); // Return the saved interviewer
   } catch (err) {
     res.status(400).json({ message: 'Failed to create interviewer', error: err.message });

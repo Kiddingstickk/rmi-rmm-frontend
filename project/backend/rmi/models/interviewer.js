@@ -12,7 +12,11 @@ const ratingSchema = new mongoose.Schema({
 
 const interviewerSchema = new mongoose.Schema({
   name: { type: String, required: true },
-  company: { type: String },
+  company: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Company',
+    required: true
+  },
   position: { type: String },
 
   // New optional fields
