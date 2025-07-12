@@ -22,11 +22,24 @@ interface ReviewType {
   dislikes: string[];
 }
 
+interface Company {
+  _id: string;
+  name: string;
+  description?: string;
+}
+
 interface Interviewer {
   _id: string;
   name: string;
   position: string;
-  company: string;
+  company: Company; // Now you're accessing company.name without type errors
+}
+
+interface Interviewer {
+  _id: string;
+  name: string;
+  position: string;
+  company: Company;
 }
 
 const calculateWeightedRating = (ratings: ReviewType[]) => {
@@ -164,7 +177,7 @@ const InterviewerProfile = () => {
               Interviewer Profile: {interviewer.name}
             </h1>
             <p className="text-base text-gray-600 mt-2">
-              {interviewer.name} is a {interviewer.position} at {interviewer.company}. View reviews and ratings shared anonymously by interviewees.
+              {interviewer.name} is a {interviewer.position} at {interviewer.company?.name || 'Unknown Company'}. View reviews and ratings shared anonymously by interviewees.
             </p>
           </>
         )}
