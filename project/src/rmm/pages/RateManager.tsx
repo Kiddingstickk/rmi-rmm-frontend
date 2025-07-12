@@ -4,6 +4,7 @@ import ResponsiveNavbar from '../components/Navbar/navbar';
 import { useAuth } from '../../rmi/lib/useAuth';
 import { createManager, submitManagerReview } from '../lib/managers';
 import { getDepartments, createDepartment } from '../lib/department';
+import { getCompanies, createCompany } from '../lib/company';
 
 const RateManager = () => {
   const { isLoggedIn, logout } = useAuth();
@@ -19,6 +20,9 @@ const RateManager = () => {
   const [reviewText, setReviewText] = useState('');
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState('');
+  const [companyName, setCompanyName] = useState('');
+  const [companyId, setCompanyId] = useState('');
+  const [companySuggestions, setCompanySuggestions] = useState([]);
 
   const debounceTimer = useRef<NodeJS.Timeout | null>(null);
 
@@ -51,6 +55,7 @@ const RateManager = () => {
       return;
     }
 
+
     try {
       setLoading(true);
 
@@ -60,11 +65,18 @@ const RateManager = () => {
         deptId = newDept._id;
       }
 
+      let compId = companyId;
+      if (!compId) {
+        const newCompany = await createCompany({ name: companyName });
+        compId = newCompany._id;
+      }
+
       const manager = await createManager({
         name,
         position,
         branch,
         departmentId: deptId,
+        company: compId,
       });
 
       await submitManagerReview({
@@ -157,6 +169,36 @@ const RateManager = () => {
                 </ul>
               )}
             </div>
+            <div className="relative">
+            <input
+              type="text"
+              placeholder="Company Name"
+              value={companyName}
+              onChange={(e) => {
+                setCompanyName(e.target.value);
+                setCompanyId('');
+              }}
+              className="w-full border border-gray-300 rounded-md px-4 py-3 focus:outline-none focus:ring-2 focus:ring-yellow-400"
+              required
+            />
+            {companySuggestions.length > 0 && (
+              <ul className="absolute z-10 w-full bg-white border rounded-md shadow-md mt-1 max-h-40 overflow-y-auto">
+                {companySuggestions.map((comp: any) => (
+                  <li
+                    key={comp._id}
+                    onClick={() => {
+                      setCompanyName(comp.name);
+                      setCompanyId(comp._id);
+                      setCompanySuggestions([]);
+                    }}
+                    className="px-4 py-2 hover:bg-yellow-100 cursor-pointer text-sm"
+                  >
+                    {comp.name}
+                  </li>
+                ))}
+              </ul>
+            )}
+          </div>
           </div>
 
           {/* Right Column: Avatar */}

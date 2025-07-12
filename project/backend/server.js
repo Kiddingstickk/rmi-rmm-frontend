@@ -19,6 +19,8 @@ import departmentRoutes from './rmm/routes/departmentRoutes.js';
 import searchRoutes from './rmm/routes/searchRoutes.js';
 import managerReviewRoutes from './rmm/routes/managerReviewRoutes.js';
 import connectDB from './shared/config/db.js';
+import companyRoutes from './rmm/routes/companyRoutes.js';
+
 
 
 
@@ -64,6 +66,8 @@ app.use('/api/rmm/save', rmmSavedRoutes );
 app.use('/api/departments', departmentRoutes);
 app.use('/api/search', searchRoutes);
 app.use('/api/manager-reviews', managerReviewRoutes);
+app.use('/api/companies', companyRoutes);
+
 // MongoDB Connection
 mongoose.connect(process.env.MONGODB_URI, {
   useNewUrlParser: true,

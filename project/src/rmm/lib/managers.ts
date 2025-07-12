@@ -48,6 +48,7 @@ export const createManager = async (data: {
     branch?: string;
     departmentId: string;
     bio?: string;
+    company?: string;
   }) =>  {
   const res = await fetch(`${BASE_URL}/api/rmm/managers`, {
     method: 'POST',

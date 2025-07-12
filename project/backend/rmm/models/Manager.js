@@ -52,7 +52,13 @@ const managerSchema = new mongoose.Schema({
     required: false,
     trim: true,
     default: "Head Office" // Or use "Unknown" if you'd prefer ambiguity
-  }
+  },
+
+  company: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Company',
+    required: false // Optional if you want flexibility
+  },
   
 });
 
