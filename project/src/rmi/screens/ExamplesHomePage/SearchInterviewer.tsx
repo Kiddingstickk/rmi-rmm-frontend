@@ -98,7 +98,12 @@ const SearchInterviewer = () => {
                           className="px-4 py-3 hover:bg-gray-100 border-b cursor-pointer"
                         >
                           <p className="font-medium">{person.name}</p>
-                          <p className="text-sm text-gray-500">{person.company || '—'}</p>
+                          <p className="text-sm text-gray-500">
+                          {typeof person.company === 'object'
+                            ? person.company.name
+                            : person.company || '—'}
+                        </p>
+
                         </div>
                       ))}
                       <div

@@ -4,7 +4,7 @@ export interface Interviewer {
   _id: string;
   name: string;
   position: string;
-  company: string;
+  company?: string | { _id: string; name: string };
 }
 
 // Base API URL: adjust via environment variable or fallback to localhost
