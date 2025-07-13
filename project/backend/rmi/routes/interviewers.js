@@ -41,13 +41,18 @@ router.get('/search/:query', async (req, res) => {
 
     // 2. Flatten and enrich interviewers with company context
     const matchedInterviewers = companies.flatMap((comp) =>
-      comp.interviewers.map((i) => ({
-        ...i.toObject(),
-        company: {
-          _id: comp._id,
-          name: comp.name
-        }
-      }))
+      comp.interviewers.map((i) => {
+        const interviewerObj = i.toObject();
+        return {
+          ...interviewerObj,
+          company: {
+            _id: comp._id,
+            name: comp.name
+          },
+          rating: interviewerObj.rating ?? 0,
+          ratings: interviewerObj.ratings ?? []
+        };
+      })
     );
 
     res.json(matchedInterviewers);

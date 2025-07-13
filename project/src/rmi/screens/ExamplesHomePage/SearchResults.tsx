@@ -16,6 +16,7 @@ interface Interviewer {
   company?: string | Company;
   position?: string;
   experience?: string;
+  rating?: number; 
   ratings?: { rating: number }[];
 }
 
@@ -128,7 +129,10 @@ const SearchResults = () => {
           <div className="space-y-5">
             {pageResults.map((int) => {
               console.log(int.name, int.ratings);
-              const avg = calculateWeightedRating(int.ratings);
+              const avg =
+                  typeof int.rating === 'number' && int.rating > 0
+                    ? int.rating
+                    : calculateWeightedRating(int.ratings || []);
               const badgeStyle = getRatingColor(avg);
 
               return (
