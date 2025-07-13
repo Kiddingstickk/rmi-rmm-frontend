@@ -2,13 +2,29 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 
+interface Company {
+  _id: string;
+  name: string;
+}
+
+
+
+
 interface Interviewer {
   _id: string;
   name: string;
-  company?: string;
+  company?: string | Company;
   position?: string;
   experience?: string;
   ratings?: { rating: number }[];
+}
+
+export function getCompanyName(
+  company?: string | { _id: string; name: string }
+): string {
+  if (typeof company === 'object' && 'name' in company) return company.name;
+  if (typeof company === 'string') return company;
+  return '—';
 }
 
 const RESULTS_PER_PAGE = 12;
@@ -128,9 +144,12 @@ const SearchResults = () => {
                   <div className="ml-5 flex-grow">
                     <h3 className="text-lg font-semibold text-gray-800">{int.name}</h3>
                     <p className="text-sm text-gray-600 mt-1">
-                      🏢 {int.company || '—'} &nbsp;|&nbsp; 👔 {int.position || '—'} &nbsp;|&nbsp; 📖{' '}
-                      {int.experience || '—'}
-                    </p>
+  🏢 {typeof int.company === 'object' && 'name' in int.company
+    ? int.company.name
+    : typeof int.company === 'string'
+    ? int.company
+    : '—'} &nbsp;|&nbsp; 👔 {int.position || '—'} &nbsp;|&nbsp; 📖 {int.experience || '—'}
+</p>
                   </div>
                 </div>
               );
