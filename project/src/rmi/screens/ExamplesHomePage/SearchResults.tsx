@@ -127,6 +127,7 @@ const SearchResults = () => {
         ) : (
           <div className="space-y-5">
             {pageResults.map((int) => {
+              console.log(int.name, int.ratings);
               const avg = calculateWeightedRating(int.ratings);
               const badgeStyle = getRatingColor(avg);
 
@@ -144,12 +145,12 @@ const SearchResults = () => {
                   <div className="ml-5 flex-grow">
                     <h3 className="text-lg font-semibold text-gray-800">{int.name}</h3>
                     <p className="text-sm text-gray-600 mt-1">
-  🏢 {typeof int.company === 'object' && 'name' in int.company
-    ? int.company.name
-    : typeof int.company === 'string'
-    ? int.company
-    : '—'} &nbsp;|&nbsp; 👔 {int.position || '—'} &nbsp;|&nbsp; 📖 {int.experience || '—'}
-</p>
+                    🏢 {typeof int.company === 'object' && 'name' in int.company
+                      ? int.company.name
+                      : typeof int.company === 'string'
+                      ? int.company
+                      : '—'} &nbsp;|&nbsp; 👔 {int.position || '—'} &nbsp;|&nbsp; 📖 {int.experience || '—'}
+                  </p>
                   </div>
                 </div>
               );
