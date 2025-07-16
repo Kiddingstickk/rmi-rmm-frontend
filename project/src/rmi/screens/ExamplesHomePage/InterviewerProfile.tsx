@@ -177,7 +177,7 @@ const InterviewerProfile = () => {
               Interviewer Profile: {interviewer.name}
             </h1>
             <p className="text-base text-gray-600 mt-2">
-              {interviewer.name} is a {interviewer.position} at {interviewer.company?.name || 'Unknown Company'}. View reviews and ratings shared anonymously by interviewees.
+              {interviewer.name} is a {interviewer.position} at {interviewer.company?.name || 'Unknown Company'}.
             </p>
           </>
         )}

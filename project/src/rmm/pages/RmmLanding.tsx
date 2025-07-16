@@ -55,24 +55,27 @@ const RmmLanding = () => {
       </section>
 
       {/* ✅ How It Works */}
-      <section className="py-20 px-6 bg-gray-50 text-center">
-        <h2 className="text-3xl font-bold mb-10 text-gray-800">How it Works</h2>
-        <div className="grid md:grid-cols-4 gap-8 max-w-6xl mx-auto text-left">
-          <div className="bg-white shadow-sm p-6 rounded-lg">
-            <img src="/webpic.png" alt="Magnifying glass for search feature" className="w-14 h-14 mb-4" />
-            <p className="text-gray-700 font-medium">Search by Interviewer Name or Company</p>
-          </div>
-          <div className="bg-white shadow-sm p-6 rounded-lg">
-            <img src="/pencil.png" alt="Pencil icon for position entry" className="w-14 h-14 mb-4" />
-            <p className="text-gray-700 font-medium">Add the position you interviewed for</p>
-          </div>
-          <div className="bg-white shadow-sm p-6 rounded-lg">
-            <img src="/likedislike.png" alt="Thumbs icon for review rating" className="w-14 h-14 mb-4" />
-            <p className="text-gray-700 font-medium">Add your review</p>
-          </div>
-          <div className="bg-white shadow-sm p-6 rounded-lg">
-            <img src="/detective.png" alt="Anonymous share icon" className="w-14 h-14 mb-4" />
-            <p className="text-gray-700 font-medium">Share to the world anonymously</p>
+      <section className="py-20 px-6 bg-gray-50">
+        <div className="max-w-6xl mx-auto text-center">
+          <h2 className="text-3xl font-bold mb-10 text-gray-800">How it Works</h2>
+          
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8 text-center">
+            <div className="bg-white shadow-sm p-6 rounded-lg flex flex-col justify-center items-center">
+              <img src="/webpic.png" alt="Magnifying glass for search feature" className="w-14 h-14 mb-4" />
+              <p className="text-gray-700 font-medium text-sm sm:text-base">Search by Interviewer Name or Company</p>
+            </div>
+            <div className="bg-white shadow-sm p-6 rounded-lg flex flex-col justify-center items-center">
+              <img src="/pencil.png" alt="Pencil icon for position entry" className="w-14 h-14 mb-4" />
+              <p className="text-gray-700 font-medium text-sm sm:text-base">Add the position you interviewed for</p>
+            </div>
+            <div className="bg-white shadow-sm p-6 rounded-lg flex flex-col justify-center items-center">
+              <img src="/likedislike.png" alt="Thumbs icon for review rating" className="w-14 h-14 mb-4" />
+              <p className="text-gray-700 font-medium text-sm sm:text-base">Add your review</p>
+            </div>
+            <div className="bg-white shadow-sm p-6 rounded-lg flex flex-col justify-center items-center">
+              <img src="/detective.png" alt="Anonymous share icon" className="w-14 h-14 mb-4" />
+              <p className="text-gray-700 font-medium text-sm sm:text-base">Share to the world anonymously</p>
+            </div>
           </div>
         </div>
       </section>
