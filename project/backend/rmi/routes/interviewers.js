@@ -29,15 +29,16 @@ router.get('/search/:query', async (req, res) => {
   try {
     // 1. Find companies with interviewers matching name or position
     const companies = await Company.find()
-      .populate({
-        path: 'interviewers',
-        match: {
-          $or: [
-            { name: { $regex: query, $options: 'i' } },
-            { position: { $regex: query, $options: 'i' } }
-          ]
-        }
-      });
+    .populate({
+      path: 'interviewers',
+      match: {
+        $or: [
+          { name: { $regex: query, $options: 'i' } },
+          { position: { $regex: query, $options: 'i' } }
+        ]
+      },
+      select: 'name position rating ratings experience' // ✅ Include rating fields
+    });
 
     // 2. Flatten and enrich interviewers with company context
     const matchedInterviewers = companies.flatMap((comp) =>
