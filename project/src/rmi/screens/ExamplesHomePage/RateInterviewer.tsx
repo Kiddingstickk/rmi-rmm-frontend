@@ -116,7 +116,7 @@ const RateInterviewer = () => {
     <div className="min-h-screen bg-gray-100 flex flex-col">
       {/* Yellow Header */}
       <div className="flex items-center justify-between bg-pastelYellow py-6 px-10 shadow-md">
-        <img src="/favicon.png" alt="RMI Logo" className="w-12 h-12 rounded-full" />
+        <img src="/rmmlogo.png" alt="RMI Logo" className="w-12 h-12 rounded-full" />
         <h1 className="text-2xl font-bold text-right text-gray-900">
           INPUT YOUR RATING:
         </h1>

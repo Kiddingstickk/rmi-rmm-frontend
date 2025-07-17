@@ -5,14 +5,19 @@ import { useAuth } from '../../rmi/lib/useAuth';
 import { createManager, submitManagerReview } from '../lib/managers';
 import { getDepartments, createDepartment } from '../lib/department';
 import { getCompanies, createCompany } from '../lib/company';
+import { findOrCreateBranch } from '../lib/branch';
+
 
 const RateManager = () => {
   const { isLoggedIn, logout } = useAuth();
   const navigate = useNavigate();
 
+  const [branchCity, setBranchCity] = useState('');
+  const [branchLocation, setBranchLocation] = useState('');
+  const [branchId, setBranchId] = useState('');
+
   const [name, setName] = useState('');
   const [position, setPosition] = useState('');
-  const [branch, setBranch] = useState('');
   const [departmentName, setDepartmentName] = useState('');
   const [departmentId, setDepartmentId] = useState('');
   const [departmentSuggestions, setDepartmentSuggestions] = useState([]);
@@ -85,10 +90,14 @@ const RateManager = () => {
         compId = newCompany._id;
       }
 
+      const branch = await findOrCreateBranch(compId, branchCity, branchLocation);
+      setBranchId(branch._id);
+      
+
       const manager = await createManager({
         name,
         position,
-        branch,
+        branch : branchId,
         departmentId: deptId,
         company: compId,
       });
@@ -152,9 +161,18 @@ const RateManager = () => {
             />
             <input
               type="text"
-              placeholder="Branch / Office"
-              value={branch}
-              onChange={(e) => setBranch(e.target.value)}
+              placeholder="Branch City"
+              value={branchCity}
+              onChange={(e) => setBranchCity(e.target.value)}
+              className="w-full border border-gray-300 rounded-md px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-300"
+              required
+            />
+
+            <input
+              type="text"
+              placeholder="Specific Branch Location (optional)"
+              value={branchLocation}
+              onChange={(e) => setBranchLocation(e.target.value)}
               className="w-full border border-gray-300 rounded-md px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-300"
             />
             <div className="relative">

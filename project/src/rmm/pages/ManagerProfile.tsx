@@ -109,7 +109,7 @@ const ManagerProfile = () => {
   return (
     <div className="min-h-screen bg-gray-100">
       <header className="bg-blue-400 flex justify-between items-center px-8 py-6 shadow-md">
-        <img src="/favicon.png" alt="RMM Logo" className="w-12 h-12 rounded-full" />
+        <img src="/rmmlogo.png" alt="RMM Logo" className="w-12 h-12 rounded-full" />
         <h1 className="text-xl md:text-2xl font-bold text-right text-gray-900 uppercase">
           Manager Profile:
         </h1>

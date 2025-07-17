@@ -164,7 +164,7 @@ const InterviewerProfile = () => {
   return (
     <div className="min-h-screen bg-gray-100">
       <header className="bg-pastelYellow flex justify-between items-center px-8 py-6 shadow-md">
-        <img src="/favicon.png" alt="RMI Logo" className="w-12 h-12 rounded-full" />
+        <img src="/rmmlogo.png" alt="RMI Logo" className="w-12 h-12 rounded-full" />
         <h1 className="text-xl md:text-2xl font-bold text-right text-gray-900 uppercase">
           Interviewer Profile
         </h1>
