@@ -31,7 +31,7 @@ const Register = () => {
     <div className="min-h-screen bg-gray-100 flex flex-col">
       {/* 🔶 Header */}
       <header className="bg-pastelYellow flex items-center justify-between px-8 py-6 shadow-md">
-        <img src="/favicon.png" alt="RMI Logo" className="w-12 h-12 rounded-full" />
+        <img src="/rmmlogo.png" alt="RMI Logo" className="w-12 h-12 rounded-full" />
         <h1 className="text-xl font-bold text-black">REGISTER:</h1>
       </header>
 
