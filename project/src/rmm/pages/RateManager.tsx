@@ -28,6 +28,7 @@ const RateManager = () => {
   const [companyName, setCompanyName] = useState('');
   const [companyId, setCompanyId] = useState('');
   const [companySuggestions, setCompanySuggestions] = useState([]);
+  const [branchSuggestions, setBranchSuggestions] = useState([]);
 
   const debounceTimer = useRef<NodeJS.Timeout | null>(null);
 
@@ -159,15 +160,37 @@ const RateManager = () => {
               className="w-full border border-gray-300 rounded-md px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-300"
               required
             />
-            <input
-              type="text"
-              placeholder="Branch City"
-              value={branchCity}
-              onChange={(e) => setBranchCity(e.target.value)}
-              className="w-full border border-gray-300 rounded-md px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-300"
-              required
-            />
-
+           <div className="relative">
+          <input
+            type="text"
+            placeholder="Branch City"
+            value={branchCity}
+            onChange={(e) => {
+              setBranchCity(e.target.value);
+              setBranchId('');
+            }}
+            className="w-full border border-gray-300 rounded-md px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-300"
+            required
+          />
+          {branchSuggestions.length > 0 && (
+            <ul className="absolute z-10 w-full bg-white border rounded-md shadow-md mt-1 max-h-40 overflow-y-auto">
+              {branchSuggestions.map((branch: any) => (
+                <li
+                  key={branch._id}
+                  onClick={() => {
+                    setBranchCity(branch.city);
+                    setBranchLocation(branch.location || '');
+                    setBranchId(branch._id);
+                    setBranchSuggestions([]);
+                  }}
+                  className="px-4 py-2 hover:bg-yellow-100 cursor-pointer text-sm"
+                >
+                  {branch.name}
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
             <input
               type="text"
               placeholder="Specific Branch Location (optional)"

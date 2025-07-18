@@ -20,6 +20,8 @@ import searchRoutes from './rmm/routes/searchRoutes.js';
 import managerReviewRoutes from './rmm/routes/managerReviewRoutes.js';
 import connectDB from './shared/config/db.js';
 import companyRoutes from './rmm/routes/companyRoutes.js';
+import branchRoutes from './rmm/routes/branchRoutes.js';
+
 
 
 
@@ -67,6 +69,8 @@ app.use('/api/departments', departmentRoutes);
 app.use('/api/search', searchRoutes);
 app.use('/api/manager-reviews', managerReviewRoutes);
 app.use('/api/companies', companyRoutes);
+app.use('/api/branches', branchRoutes);
+
 
 // MongoDB Connection
 mongoose.connect(process.env.MONGODB_URI, {
