@@ -138,36 +138,68 @@ const RateManager = () => {
   return (
     <div className="min-h-screen bg-gray-100 flex flex-col">
       <ResponsiveNavbar isLoggedIn={isLoggedIn} onLogout={logout} />
-
+  
       {/* Form Section */}
       <main className="flex justify-center p-8">
-        <form onSubmit={handleSubmit} className="w-full max-w-5xl grid grid-cols-1 md:grid-cols-3 gap-8 bg-white p-8 rounded-xl shadow-lg">
+        <form
+          onSubmit={handleSubmit}
+          className="w-full max-w-5xl grid grid-cols-1 md:grid-cols-3 gap-8 bg-white p-8 rounded-xl shadow-lg"
+        >
           {/* Left Column: Form Fields */}
           <div className="space-y-5 md:col-span-2">
-            <input
-              type="text"
-              placeholder="Manager Name"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              className="w-full border border-gray-300 rounded-md px-4 py-3 focus:outline-none focus:ring-2 focus:ring-yellow-400"
-              required
-            />
-            <input
-              type="text"
-              placeholder="Position"
-              value={position}
-              onChange={(e) => setPosition(e.target.value)}
-              className="w-full border border-gray-300 rounded-md px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-300"
-              required
-            />
-           <div className="relative">
-            <input
-              type="text"
-              placeholder="Specific Branch Location (optional)"
-              value={branchLocation}
-              onChange={(e) => setBranchLocation(e.target.value)}
-              className="w-full border border-gray-300 rounded-md px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-300"
-            />
+            <div>
+              <input
+                type="text"
+                placeholder="Manager Name"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                className="w-full border border-gray-300 rounded-md px-4 py-3 focus:outline-none focus:ring-2 focus:ring-yellow-400"
+                required
+              />
+            </div>
+  
+            <div>
+              <input
+                type="text"
+                placeholder="Position"
+                value={position}
+                onChange={(e) => setPosition(e.target.value)}
+                className="w-full border border-gray-300 rounded-md px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-300"
+                required
+              />
+            </div>
+  
+            <div className="relative">
+              <input
+                type="text"
+                placeholder="Company Name"
+                value={companyName}
+                onChange={(e) => {
+                  setCompanyName(e.target.value);
+                  setCompanyId('');
+                }}
+                className="w-full border border-gray-300 rounded-md px-4 py-3 focus:outline-none focus:ring-2 focus:ring-yellow-400"
+                required
+              />
+              {companySuggestions.length > 0 && (
+                <ul className="absolute z-10 w-full bg-white border rounded-md shadow-md mt-1 max-h-40 overflow-y-auto">
+                  {companySuggestions.map((comp: any) => (
+                    <li
+                      key={comp._id}
+                      onClick={() => {
+                        setCompanyName(comp.name);
+                        setCompanyId(comp._id);
+                        setCompanySuggestions([]);
+                      }}
+                      className="px-4 py-2 hover:bg-yellow-100 cursor-pointer text-sm"
+                    >
+                      {comp.name}
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </div>
+  
             <div className="relative">
               <input
                 type="text"
@@ -194,85 +226,68 @@ const RateManager = () => {
                 </ul>
               )}
             </div>
+  
             <div className="relative">
-            <input
-              type="text"
-              placeholder="Company Name"
-              value={companyName}
-              onChange={(e) => {
-                setCompanyName(e.target.value);
-                setCompanyId('');
-              }}
-              className="w-full border border-gray-300 rounded-md px-4 py-3 focus:outline-none focus:ring-2 focus:ring-yellow-400"
-              required
-            />
-            {companySuggestions.length > 0 && (
-              <ul className="absolute z-10 w-full bg-white border rounded-md shadow-md mt-1 max-h-40 overflow-y-auto">
-                {companySuggestions.map((comp: any) => (
-                  <li
-                    key={comp._id}
-                    onClick={() => {
-                      setCompanyName(comp.name);
-                      setCompanyId(comp._id);
-                      setCompanySuggestions([]);
-                    }}
-                    className="px-4 py-2 hover:bg-yellow-100 cursor-pointer text-sm"
-                  >
-                    {comp.name}
-                  </li>
-                ))}
-              </ul>
-            )}
-          </div>
-          <input
-            type="text"
-            placeholder="Branch City"
-            value={branchCity}
-            onChange={(e) => {
-              setBranchCity(e.target.value);
-              setBranchId('');
-            }}
-            className="w-full border border-gray-300 rounded-md px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-300"
-            required
-          />
-          {branchSuggestions.length > 0 && (
-            <ul className="absolute z-10 w-full bg-white border rounded-md shadow-md mt-1 max-h-40 overflow-y-auto">
-              {branchSuggestions.map((branch: any) => (
-                <li
-                  key={branch._id}
-                  onClick={() => {
-                    setBranchCity(branch.city);
-                    setBranchLocation(branch.location || '');
-                    setBranchId(branch._id);
-                    setBranchSuggestions([]);
-                  }}
-                  className="px-4 py-2 hover:bg-yellow-100 cursor-pointer text-sm"
-                >
-                  {branch.name}
-                </li>
-              ))}
-            </ul>
-          )}
-        </div>
-          
-          </div>
-          
-          {/* Right Column: Avatar */}
-          <div className="flex justify-center items-start">
-            <div className="w-32 h-32 rounded-full bg-gray-200 flex items-center justify-center text-5xl text-gray-500 shadow-inner">
-            👤
+              <input
+                type="text"
+                placeholder="Branch City"
+                value={branchCity}
+                onChange={(e) => {
+                  setBranchCity(e.target.value);
+                  setBranchId('');
+                }}
+                className="w-full border border-gray-300 rounded-md px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-300"
+                required
+              />
+              {branchSuggestions.length > 0 && (
+                <ul className="absolute z-10 w-full bg-white border rounded-md shadow-md mt-1 max-h-40 overflow-y-auto">
+                  {branchSuggestions.map((branch: any) => (
+                    <li
+                      key={branch._id}
+                      onClick={() => {
+                        setBranchCity(branch.city);
+                        setBranchLocation(branch.location || '');
+                        setBranchId(branch._id);
+                        setBranchSuggestions([]);
+                      }}
+                      className="px-4 py-2 hover:bg-yellow-100 cursor-pointer text-sm"
+                    >
+                      {branch.name}
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </div>
+  
+            <div>
+              <input
+                type="text"
+                placeholder="Specific Branch Location (optional)"
+                value={branchLocation}
+                onChange={(e) => setBranchLocation(e.target.value)}
+                className="w-full border border-gray-300 rounded-md px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-300"
+              />
             </div>
           </div>
-
+  
+          {/* Right Column: Avatar */}
+          <div className="order-first md:order-none flex justify-center md:justify-end items-start">
+            <div className="w-32 h-32 rounded-full bg-gray-200 flex items-center justify-center text-5xl text-gray-500 shadow-inner">
+              👤
+            </div>
+          </div>
+  
           {/* Star Rating */}
           <div className="md:col-span-3">
             <label className="block text-gray-700 font-semibold mb-2">
               Overall Rating
             </label>
             <StarRating />
-            <span className="text-yellow-600 text-sm">{rating > 0 && `${rating} stars`}</span>
+            <span className="text-yellow-600 text-sm">
+              {rating > 0 && `${rating} stars`}
+            </span>
           </div>
-
+  
           {/* Review Box */}
           <div className="md:col-span-3">
             <label className="block text-gray-700 font-semibold mb-2">
@@ -287,14 +302,14 @@ const RateManager = () => {
               required
             />
           </div>
-
+  
           {/* Message Feedback */}
           {message && (
             <div className="md:col-span-3 text-center text-sm text-blue-700">
               {message}
             </div>
           )}
-
+  
           {/* Submit Button */}
           <div className="md:col-span-3 flex justify-center">
             <button
@@ -307,7 +322,7 @@ const RateManager = () => {
           </div>
         </form>
       </main>
-
+  
       <footer className="text-center text-gray-500 text-sm py-6">
         Anonymous by default — built for honesty 💛
       </footer>
