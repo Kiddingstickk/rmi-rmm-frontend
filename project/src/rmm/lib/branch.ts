@@ -31,7 +31,7 @@ export const createBranch = async ({
       'Content-Type': 'application/json',
       Authorization: `Bearer ${localStorage.getItem('token')}`,
     },
-    body: JSON.stringify({ name, company: companyId, city, location }),
+    body: JSON.stringify({ name, companyId, city, location }),
   });
 
   if (!res.ok) throw new Error('Failed to create branch');
