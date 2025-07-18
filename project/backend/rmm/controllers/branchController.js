@@ -1,6 +1,36 @@
 // controllers/branchController.js
 import Branch from '../models/Branch.js';
 
+
+
+export const getAllBranches = async (req, res) => {
+    const { search } = req.query;
+  
+    const filter = search
+      ? {
+          $or: [
+            { name: new RegExp(search.trim(), 'i') },
+            { city: new RegExp(search.trim(), 'i') },
+            { location: new RegExp(search.trim(), 'i') }
+          ]
+        }
+      : {};
+  
+    try {
+      const branches = await Branch.find(filter)
+        .populate('company', 'name') // includes company name
+        .sort({ city: 1, name: 1 });
+      res.json(branches);
+    } catch (err) {
+      console.error('Error fetching branches:', err);
+      res.status(500).json({ error: 'Server error' });
+    }
+  };
+
+
+
+
+
 export const createBranch = async (req, res) => {
   const { name, city, companyId, location = '' } = req.body;
 
