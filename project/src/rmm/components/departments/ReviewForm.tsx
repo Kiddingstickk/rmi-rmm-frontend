@@ -12,8 +12,8 @@ interface Review {
   rating: number;
   anonymous: boolean;
   createdAt: string;
-  likes: number;
-  dislikes: number;
+  likes: string[];
+  dislikes: string[];
 }
 
 

@@ -22,15 +22,27 @@ interface Review {
   rating: number;
   anonymous: boolean;
   createdAt: string;
-  likes: number;
-  dislikes: number;
+  likes: string[];
+  dislikes: string[];
 }
 
 interface Manager {
   _id: string;
   name: string;
-  department: Department;
   position: string;
+  department: {
+    _id: string;
+    name: string;
+  };
+  company?: {
+    _id: string;
+    name: string;
+  };
+  branch?: {
+    _id: string;
+    city: string;
+    location?: string;
+  };
   averageRating?: number;
   reviews: Review[];
 }
@@ -119,6 +131,28 @@ const ManagerProfile = () => {
         <div className="flex flex-col md:flex-row justify-between gap-8">
           <div className="flex-1">
             <h2 className="text-3xl font-bold text-gray-800">{manager?.name}</h2>
+            <div className="mt-2 space-y-1 text-sm text-gray-700">
+              <p>
+                <span className="font-medium">Position:</span>{' '}
+                <span className="text-blue-700">{manager?.position}</span>
+              </p>
+              <p>
+                <span className="font-medium">Department:</span>{' '}
+                <span className="text-green-700">{manager?.department?.name}</span>
+              </p>
+              <p>
+                <span className="font-medium">Company:</span>{' '}
+                <span className="text-yellow-700">{manager?.company?.name}</span>
+              </p>
+              <p>
+                <span className="font-medium">Branch:</span>{' '}
+                <span className="text-purple-700">
+                  {manager?.branch?.city}
+                  {manager?.branch?.location ? ` – ${manager.branch.location}` : ''}
+                </span>
+              </p>
+            </div>
+
             <div className="mt-3 flex items-center gap-2 text-2xl">
               {renderStars(Math.round(avgRating))}
               <span className="text-gray-800 text-lg font-semibold ml-2">
@@ -197,8 +231,8 @@ const ManagerProfile = () => {
               Submitted on {new Date(review.createdAt).toLocaleDateString()}
             </p>
             <div className="flex gap-4 text-sm text-gray-600">
-              <button onClick={() => handleLike(review._id)}>👍 {review.likes}</button>
-              <button onClick={() => handleDislike(review._id)}>👎 {review.dislikes}</button>
+            <button onClick={() => handleLike(review._id)}>👍 {review.likes?.length || 0}</button>
+            <button onClick={() => handleDislike(review._id)}>👎 {review.dislikes?.length || 0}</button>
             </div>
           </div>
         ))}
