@@ -107,7 +107,7 @@ export const createManager = async (req, res) => {
       branch,
       company,
       averageRating: 0,
-      ...(department && { department: department._id }) // only include if present
+      ...(department && { department: department._id }) 
     });
 
     await manager.save();

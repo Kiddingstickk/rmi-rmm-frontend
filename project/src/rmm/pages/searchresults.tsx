@@ -4,7 +4,7 @@ import { useNavigate, useSearchParams } from 'react-router-dom';
 type Manager = {
   _id: string;
   name: string;
-  department: { _id: string; name: string };
+  department?: { _id: string; name: string };
   position: string;
   averageRating: number;
 };
@@ -85,7 +85,7 @@ const SearchResults = () => {
                   <div className="ml-5 flex-grow">
                     <h3 className="text-lg font-semibold text-gray-800">{manager.name}</h3>
                     <p className="text-sm text-gray-600 mt-1">
-                      🏢 {manager.department.name || '—'} &nbsp;|&nbsp; 👔 {manager.position || '—'}
+                    🏢 {manager.department?.name || '—'} &nbsp;|&nbsp; 👔 {manager.position || '—'}
                     </p>
                   </div>
 
