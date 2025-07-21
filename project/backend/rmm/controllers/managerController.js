@@ -90,36 +90,39 @@ export const deleteManager = async (req, res) => {
 
 // Create a new manager (admin-only)
 export const createManager = async (req, res) => {
-  const { name, departmentId, position, bio ,branch,company} = req.body;
+  const { name, departmentId, position, bio, branch, company } = req.body;
 
   try {
-    const department = await Department.findById(departmentId);
-    if (!department) return res.status(400).json({ message: 'Invalid department' });
+    let department = null;
+
+    if (departmentId) {
+      department = await Department.findById(departmentId);
+      if (!department) return res.status(400).json({ message: 'Invalid department' });
+    }
 
     const manager = new Manager({
       name,
-      department: department._id,
       position,
       bio,
       branch,
       company,
-      averageRating: 0
+      averageRating: 0,
+      ...(department && { department: department._id }) // only include if present
     });
 
     await manager.save();
 
-    await Department.findByIdAndUpdate(
-      departmentId,
-      { $addToSet: { managers: manager._id } } // ensures no duplicates
-    );
+    if (department) {
+      await Department.findByIdAndUpdate(departmentId, {
+        $addToSet: { managers: manager._id }
+      });
+    }
 
     if (company) {
       await Company.findByIdAndUpdate(company, {
         $addToSet: { managers: manager._id }
       });
     }
-
-
 
     res.status(201).json(manager);
   } catch (err) {
