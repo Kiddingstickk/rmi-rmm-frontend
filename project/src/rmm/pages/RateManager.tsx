@@ -70,7 +70,7 @@ const RateManager = () => {
     e.preventDefault();
     if (!isLoggedIn) return setMessage('You must be logged in to submit.');
 
-    if (!name || !position || !departmentName || !reviewText || rating < 1) {
+    if (!name || !position || !reviewText || rating < 1) {
       setMessage('Please complete all required fields and provide a rating.');
       return;
     }
@@ -80,7 +80,7 @@ const RateManager = () => {
       setLoading(true);
 
       let deptId = departmentId;
-      if (!deptId) {
+      if (!deptId && departmentName.trim()) {
         const newDept = await createDepartment({ name: departmentName });
         deptId = newDept._id;
       }
@@ -95,13 +95,20 @@ const RateManager = () => {
       setBranchId(branch._id);
       
 
-      const manager = await createManager({
+
+      const managerPayload: any = {
         name,
         position,
-        branch : branchId,
-        departmentId: deptId,
+        branch: branchId,
         company: compId,
-      });
+      };
+      
+      if (deptId) {
+        managerPayload.departmentId = deptId;
+      }
+      
+      const manager = await createManager(managerPayload);
+
 
       await submitManagerReview({
         managerId: manager._id,
@@ -210,7 +217,7 @@ const RateManager = () => {
                   setDepartmentId('');
                 }}
                 className="w-full border border-gray-300 rounded-md px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-300"
-                required
+                //required
               />
               {departmentSuggestions.length > 0 && (
                 <ul className="absolute z-10 w-full bg-white border rounded-md shadow-md mt-1 max-h-40 overflow-y-auto">

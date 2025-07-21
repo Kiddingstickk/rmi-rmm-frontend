@@ -2,7 +2,7 @@ import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { Navigate } from 'react-router-dom';
-
+import { useAuth } from "./rmi/lib/useAuth";
 
 // Import components
 //import ExampleHomePage from "./rmi/screens/ExamplesHomePage";
@@ -38,6 +38,13 @@ import RateManager from './rmm/pages/RateManager';
 
 // Tailwind CSS import (No need to change this)
 import "../tailwind.css";
+
+const ProtectedRoute = ({ children }: { children: JSX.Element }) => {
+  const { isLoggedIn } = useAuth();
+  return isLoggedIn ? children : <Navigate to="/signin" replace />;
+};
+
+
 
 // App component that includes routes
 const App = () => {
@@ -79,7 +86,7 @@ const App = () => {
         <Route path="/rmm/management/managers/:id" element={<ManagerProfile />} />
         <Route path="/rmm/searchresults" element={<RmmSearchResults />} />
         <Route path="/rmm/search-managers" element={<SearchManager />} />
-        <Route path="/rmm/rate-manager" element={<RateManager />} />
+        <Route path="/rmm/rate-manager" element={<ProtectedRoute><RateManager /></ProtectedRoute>}/>
 
 
       </Routes>
