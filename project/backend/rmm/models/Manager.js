@@ -22,7 +22,7 @@ const managerSchema = new mongoose.Schema({
   department: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Department',
-    required: true
+    required: false
   },
   position: {
     type: String,

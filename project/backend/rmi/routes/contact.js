@@ -13,14 +13,14 @@ router.post('/', async (req, res) => {
   const transporter = nodemailer.createTransport({
     service: 'Gmail',
     auth: {
-      user: 'your@email.com',
-      pass: 'your_app_password',
+      user: 'satypanday@gmail.com',
+      pass: 'dfneraicmvcyhtat',
     },
   });
 
   const mailOptions = {
     from: email,
-    to: 'your@email.com',
+    to: 'satypanday@gmail.com',
     subject: `Contact Form: ${subject}`,
     text: `From: ${name} (${email})\n\n${message}`,
   };

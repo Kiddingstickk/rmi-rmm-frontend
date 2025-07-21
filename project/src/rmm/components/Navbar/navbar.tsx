@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate , Link } from 'react-router-dom';
 import { FaBars, FaTimes } from 'react-icons/fa';
 
 
@@ -14,7 +14,7 @@ const ResponsiveNavbar: React.FC<NavbarProps> = ({ isLoggedIn, onLogout }) => {
   const navigate = useNavigate();
 
   const isRmm = location.pathname.startsWith('/rmm');
-  const handleToggle = () => navigate(isRmm ? '/' : '/rmm');
+
   const handleLoginClick = () => navigate('/signin');
 
   return (
@@ -25,12 +25,14 @@ const ResponsiveNavbar: React.FC<NavbarProps> = ({ isLoggedIn, onLogout }) => {
           isRmm ? 'bg-pastelBlue text-white' : 'bg-pastelYellow text-black'
         }`}
       >
-        <button
-          onClick={handleToggle}
-          className="text-2xl font-bold focus:outline-none"
-        >
-          {isRmm ? 'RATE MY INTERVIEWER' : 'RATE MY MANAGER'}
-        </button>
+        <Link to="/rmm" aria-label="Go to RMM Home">
+          <img
+            src="/rmmlogo.png"
+            alt="Rate My Manager Logo"
+            className="w-10 h-10 md:w-12 md:h-12 cursor-pointer"
+          />
+        </Link>
+
 
         <div className="hidden md:flex items-center gap-6 font-medium">
           {isLoggedIn ? (
@@ -82,9 +84,7 @@ const ResponsiveNavbar: React.FC<NavbarProps> = ({ isLoggedIn, onLogout }) => {
           } flex flex-col gap-6 p-6`}
         >
           <div className="flex justify-between items-center mb-2">
-            <h2 className="text-xl font-bold">
-              {isRmm ? 'Rate My Interviewer' : 'Rate My Manager'}
-            </h2>
+          <h2 className="text-xl font-bold">Rate My Manager</h2>
             <button onClick={() => setIsSidebarOpen(false)} aria-label="Close menu">
               <FaTimes className="text-2xl" />
             </button>
