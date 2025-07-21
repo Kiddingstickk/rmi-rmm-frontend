@@ -1,9 +1,11 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { Navigate } from 'react-router-dom';
+
 
 // Import components
-import ExampleHomePage from "./rmi/screens/ExamplesHomePage";
+//import ExampleHomePage from "./rmi/screens/ExamplesHomePage";
 import InterviewerList from './rmi/screens/ExamplesHomePage/interviewerlist';
 import SearchResults from './rmi/screens/ExamplesHomePage/SearchResults'; 
 import InterviewerProfile from './rmi/screens/ExamplesHomePage/InterviewerProfile';// Assuming the path is './screens/SearchResults'
@@ -43,7 +45,7 @@ const App = () => {
     <Router>
       <Routes>
         {/* Home Page Route */}
-        <Route path="/" element={<ExampleHomePage />} />
+        <Route path="/" element={<Navigate to="/rmm" replace />} />
 
         {/* Auth */}
         <Route path="/signin" element={<SignIn />} />
