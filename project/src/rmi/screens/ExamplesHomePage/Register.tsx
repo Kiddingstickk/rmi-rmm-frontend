@@ -30,7 +30,7 @@ const Register = () => {
   return (
     <div className="min-h-screen bg-gray-100 flex flex-col">
       {/* 🔶 Header */}
-      <header className="bg-pastelYellow flex items-center justify-between px-8 py-6 shadow-md">
+      <header className="bg-pastelBlue flex items-center justify-between px-8 py-6 shadow-md">
         <img src="/rmmlogo.png" alt="RMI Logo" className="w-12 h-12 rounded-full" />
         <h1 className="text-xl font-bold text-black">REGISTER:</h1>
       </header>
@@ -50,7 +50,7 @@ const Register = () => {
             placeholder="Your full name"
             value={name}
             onChange={(e) => setName(e.target.value)}
-            className="w-full border border-gray-300 rounded-md p-3 text-sm focus:outline-none focus:ring-2 focus:ring-yellow-400"
+            className="w-full border border-gray-300 rounded-md p-3 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
             required
           />
 
@@ -59,7 +59,7 @@ const Register = () => {
             placeholder="Enter your email address"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            className="w-full border border-gray-300 rounded-md p-3 text-sm focus:outline-none focus:ring-2 focus:ring-yellow-400"
+            className="w-full border border-gray-300 rounded-md p-3 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
             required
           />
 
@@ -68,20 +68,20 @@ const Register = () => {
             placeholder="Create a password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            className="w-full border border-gray-300 rounded-md p-3 text-sm focus:outline-none focus:ring-2 focus:ring-yellow-400"
+            className="w-full border border-gray-300 rounded-md p-3 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
             required
           />
 
           <button
             type="submit"
-            className="w-full bg-pastelYellow hover:bg-yellow-500 text-black font-semibold py-3 rounded-md transition"
+            className="w-full bg-pastelBlue hover:bg-blue-500 text-black font-semibold py-3 rounded-md transition"
           >
             Register
           </button>
 
           <p className="text-center text-sm text-gray-600 mt-4">
             Already have an account?{' '}
-            <a href="/signin" className="text-yellow-600 hover:underline font-medium">
+            <a href="/signin" className="text-blue-600 hover:underline font-medium">
               Sign in
             </a>
           </p>
