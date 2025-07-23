@@ -207,32 +207,34 @@ const RateManager = () => {
               )}
             </div>
   
-            <div className="relative">
-              <input
-                type="text"
-                placeholder="Department"
-                value={departmentName}
-                onChange={(e) => {
-                  setDepartmentName(e.target.value);
-                  setDepartmentId('');
-                }}
-                className="w-full border border-gray-300 rounded-md px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-300"
-                //required
-              />
-              {departmentSuggestions.length > 0 && (
-                <ul className="absolute z-10 w-full bg-white border rounded-md shadow-md mt-1 max-h-40 overflow-y-auto">
-                  {departmentSuggestions.map((dept: any) => (
-                    <li
-                      key={dept._id}
-                      onClick={() => handleDepartmentSelect(dept)}
-                      className="px-4 py-2 hover:bg-yellow-100 cursor-pointer text-sm"
-                    >
-                      {dept.name}
-                    </li>
-                  ))}
-                </ul>
-              )}
-            </div>
+            {/*
+              <div className="relative">
+                <input
+                  type="text"
+                  placeholder="Department"
+                  value={departmentName}
+                  onChange={(e) => {
+                    setDepartmentName(e.target.value);
+                    setDepartmentId('');
+                  }}
+                  className="w-full border border-gray-300 rounded-md px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-300"
+                  //required
+                />
+                {departmentSuggestions.length > 0 && (
+                  <ul className="absolute z-10 w-full bg-white border rounded-md shadow-md mt-1 max-h-40 overflow-y-auto">
+                    {departmentSuggestions.map((dept: any) => (
+                      <li
+                        key={dept._id}
+                        onClick={() => handleDepartmentSelect(dept)}
+                        className="px-4 py-2 hover:bg-yellow-100 cursor-pointer text-sm"
+                      >
+                        {dept.name}
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </div>
+              */}
   
             <div className="relative">
               <input
