@@ -46,68 +46,70 @@ const SearchResults = () => {
   }, [query]);
 
   return (
-    <div className="min-h-screen bg-gray-100 flex flex-col">
-      <header className="bg-blue-500 flex items-center justify-between px-8 py-6 shadow-md">
-        <img src="/rmmlogo.png" alt="RMI Logo" className="w-12 h-12 rounded-full" />
-        <h1 className="text-xl font-bold text-white">MANAGER RESULTS</h1>
+    <main className="min-h-screen bg-white text-gray-800 px-6 py-12 max-w-6xl mx-auto">
+      {/* Header */}
+      <header className="mb-10 text-center">
+        <img src="/rmmlogo.png" alt="RMI Logo" className="mx-auto w-14 h-14 rounded-full mb-4" />
+        <h1 className="text-3xl font-bold">Search Results for “{query}”</h1>
+        <p className="text-sm text-gray-600 mt-2">
+          Discover anonymous feedback on managers across industries. Transparent, honest, and community-driven.
+        </p>
       </header>
 
-      <main className="flex-grow px-6 py-10 max-w-4xl mx-auto">
-        <h2 className="text-2xl font-bold text-gray-800 mb-6">
-          Found {results.length} result{results.length !== 1 ? 's' : ''} for <span className="text-blue-600">"{query}"</span>
-        </h2>
+      {/* Results */}
+      {loading ? (
+        <p className="text-center text-gray-600">Loading...</p>
+      ) : results.length === 0 ? (
+        <div className="text-center py-10 text-gray-600">
+          <h3 className="text-xl font-semibold">No managers found</h3>
+          <img src="/no-results.png" alt="No results" className="mx-auto mt-4 w-64 opacity-60" />
+          <p className="mt-4 text-sm">Try a different name or department.</p>
+        </div>
+      ) : (
+        <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {results.map((manager) => {
+            const avg = isFinite(manager.averageRating) ? manager.averageRating : 0;
+            const color = calculateRatingColor(avg);
 
-        {loading ? (
-          <p className="text-gray-600">Loading...</p>
-        ) : results.length === 0 ? (
-          <div className="text-center py-10 text-gray-600">
-            <h3 className="text-xl font-semibold">No managers found</h3>
-            <img src="/no-results.png" alt="No results" className="mx-auto mt-4 w-64 opacity-60" />
-          </div>
-        ) : (
-          <div className="space-y-5">
-            {results.map((manager) => {
-              const avg = isFinite(manager.averageRating) ? manager.averageRating : 0;
-              const color = calculateRatingColor(avg);
-
-              return (
-                <div
-                  key={manager._id}
-                  onClick={() => navigate(`/rmm/management/managers/${manager._id}`)}
-                  className="flex items-center justify-between p-6 bg-white rounded-xl shadow-sm hover:shadow-md border border-gray-200 cursor-pointer transition"
-                >
-                  {/* Rating Badge */}
-                  <div className={`w-12 h-12 flex items-center justify-center rounded-md font-bold text-sm ${color}`}>
+            return (
+              <article
+                key={manager._id}
+                onClick={() => navigate(`/rmm/management/managers/${manager._id}`)}
+                className="bg-white border rounded-lg shadow-sm hover:shadow-md p-6 cursor-pointer transition"
+              >
+                <div className="flex items-center justify-between mb-4">
+                  <h2 className="text-xl font-semibold text-indigo-700">{manager.name}</h2>
+                  <span className={`px-2 py-1 rounded text-xs font-bold ${color}`}>
                     {avg.toFixed(1)}
-                  </div>
-
-                  {/* Text Info */}
-                  <div className="ml-5 flex-grow">
-                    <h3 className="text-lg font-semibold text-gray-800">{manager.name}</h3>
-                    <p className="text-sm text-gray-600 mt-1">
-                    🏢 {manager.department?.name || '—'} &nbsp;|&nbsp; 👔 {manager.position || '—'}
-                    </p>
-                  </div>
-
-                  {/* View Button */}
-                  <div className="ml-4">
-                    <button
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        navigate(`/rmm/management/managers/${manager._id}`);
-                      }}
-                      className="px-3 py-1 bg-blue-500 hover:bg-blue-600 text-white text-xs rounded-full font-semibold"
-                    >
-                      View
-                    </button>
-                  </div>
+                  </span>
                 </div>
-              );
-            })}
-          </div>
-        )}
-      </main>
-    </div>
+                <p className="text-sm text-gray-500 mb-2">
+                  🏢 {manager.department?.name || '—'} &nbsp;|&nbsp; 👔 {manager.position || '—'}
+                </p>
+                <a
+                  href={`/rmm/management/managers/${manager._id}`}
+                  onClick={(e) => e.stopPropagation()}
+                  className="text-sm font-medium text-indigo-600 hover:underline"
+                >
+                  View Full Profile →
+                </a>
+              </article>
+            );
+          })}
+        </section>
+      )}
+
+      {/* Call to Action */}
+      <div className="mt-16 text-center">
+        <p className="text-sm text-gray-600 mb-4">Didn’t find who you were looking for?</p>
+        <a
+          href="/rmm/rate-manager"
+          className="inline-block bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-3 rounded-md font-semibold"
+        >
+          Rate a Manager
+        </a>
+      </div>
+    </main>
   );
 };
 
