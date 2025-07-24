@@ -33,6 +33,11 @@ import ManagerProfile from './rmm/pages/ManagerProfile';
 import RmmSearchResults from './rmm/pages/searchresults';
 import SearchManager from './rmm/pages/SearchManager';
 import RateManager from './rmm/pages/RateManager';
+import OurTeam from './rmm/pages/OurTeam';
+import PrivacyPolicy from './rmm/pages/PrivacyPolicy';
+import TermsOfService from './rmm/pages/TermsOfService';
+
+
 
 
 
@@ -87,6 +92,13 @@ const App = () => {
         <Route path="/rmm/searchresults" element={<RmmSearchResults />} />
         <Route path="/rmm/search-managers" element={<SearchManager />} />
         <Route path="/rmm/rate-manager" element={<ProtectedRoute><RateManager /></ProtectedRoute>}/>
+        <Route path="/team" element={<OurTeam />} />
+        <Route path="/privacy" element={<PrivacyPolicy />} />
+        <Route path="/terms" element={<TermsOfService />} />
+
+       
+
+
 
 
       </Routes>
