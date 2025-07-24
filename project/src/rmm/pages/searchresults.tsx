@@ -4,7 +4,7 @@ import { useNavigate, useSearchParams } from 'react-router-dom';
 type Manager = {
   _id: string;
   name: string;
-  department?: { _id: string; name: string };
+  company?: string;
   position: string;
   averageRating: number;
 };
@@ -15,6 +15,8 @@ const calculateRatingColor = (rating: number) => {
   return 'bg-yellow-100 text-yellow-800';
 };
 
+const RESULTS_PER_PAGE = 9;
+
 const SearchResults = () => {
   const [searchParams] = useSearchParams();
   const query = searchParams.get('q') || '';
@@ -22,6 +24,7 @@ const SearchResults = () => {
 
   const [results, setResults] = useState<Manager[]>([]);
   const [loading, setLoading] = useState(true);
+  const [page, setPage] = useState(1);
 
   useEffect(() => {
     const fetchResults = async () => {
@@ -32,6 +35,7 @@ const SearchResults = () => {
 
         if (res.ok) {
           setResults(data.managers || []);
+          setPage(1); // Reset to first page on new search
         } else {
           console.error('Search failed:', data.message);
         }
@@ -45,8 +49,11 @@ const SearchResults = () => {
     if (query) fetchResults();
   }, [query]);
 
+  const paginatedResults = results.slice((page - 1) * RESULTS_PER_PAGE, page * RESULTS_PER_PAGE);
+  const totalPages = Math.ceil(results.length / RESULTS_PER_PAGE);
+
   return (
-    <main className="min-h-screen bg-white text-gray-800 px-6 py-12 max-w-6xl mx-auto">
+    <main className="min-h-screen bg-gray-50 text-gray-800 px-6 py-12 max-w-6xl mx-auto">
       {/* Header */}
       <header className="mb-10 text-center">
         <img src="/rmmlogo.png" alt="RMI Logo" className="mx-auto w-14 h-14 rounded-full mb-4" />
@@ -63,40 +70,61 @@ const SearchResults = () => {
         <div className="text-center py-10 text-gray-600">
           <h3 className="text-xl font-semibold">No managers found</h3>
           <img src="/no-results.png" alt="No results" className="mx-auto mt-4 w-64 opacity-60" />
-          <p className="mt-4 text-sm">Try a different name or department.</p>
+          <p className="mt-4 text-sm">Try a different name or company.</p>
         </div>
       ) : (
-        <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {results.map((manager) => {
-            const avg = isFinite(manager.averageRating) ? manager.averageRating : 0;
-            const color = calculateRatingColor(avg);
+        <>
+          <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {paginatedResults.map((manager) => {
+              const avg = isFinite(manager.averageRating) ? manager.averageRating : 0;
+              const color = calculateRatingColor(avg);
 
-            return (
-              <article
-                key={manager._id}
-                onClick={() => navigate(`/rmm/management/managers/${manager._id}`)}
-                className="bg-white border rounded-lg shadow-sm hover:shadow-md p-6 cursor-pointer transition"
-              >
-                <div className="flex items-center justify-between mb-4">
-                  <h2 className="text-xl font-semibold text-indigo-700">{manager.name}</h2>
-                  <span className={`px-2 py-1 rounded text-xs font-bold ${color}`}>
-                    {avg.toFixed(1)}
-                  </span>
-                </div>
-                <p className="text-sm text-gray-500 mb-2">
-                  🏢 {manager.department?.name || '—'} &nbsp;|&nbsp; 👔 {manager.position || '—'}
-                </p>
-                <a
-                  href={`/rmm/management/managers/${manager._id}`}
-                  onClick={(e) => e.stopPropagation()}
-                  className="text-sm font-medium text-indigo-600 hover:underline"
+              return (
+                <article
+                  key={manager._id}
+                  onClick={() => navigate(`/rmm/management/managers/${manager._id}`)}
+                  className="bg-white border rounded-lg shadow-sm hover:shadow-md p-6 cursor-pointer transition"
                 >
-                  View Full Profile →
-                </a>
-              </article>
-            );
-          })}
-        </section>
+                  <div className="flex items-center justify-between mb-4">
+                    <h2 className="text-xl font-semibold text-indigo-700">{manager.name}</h2>
+                    <span className={`px-2 py-1 rounded text-xs font-bold ${color}`}>
+                      {avg.toFixed(1)}
+                    </span>
+                  </div>
+                  <p className="text-sm text-gray-500 mb-2">
+                    {manager.company || '—'} &nbsp;|&nbsp; {manager.position || '—'}
+                  </p>
+                  <a
+                    href={`/rmm/management/managers/${manager._id}`}
+                    onClick={(e) => e.stopPropagation()}
+                    className="text-sm font-medium text-indigo-600 hover:underline"
+                  >
+                    View Full Profile →
+                  </a>
+                </article>
+              );
+            })}
+          </section>
+
+          {/* Pagination */}
+          {totalPages > 1 && (
+            <div className="mt-10 flex justify-center items-center space-x-2">
+              {Array.from({ length: totalPages }, (_, i) => (
+                <button
+                  key={i}
+                  onClick={() => setPage(i + 1)}
+                  className={`px-3 py-1 rounded-md text-sm font-medium ${
+                    page === i + 1
+                      ? 'bg-indigo-600 text-white'
+                      : 'bg-white border text-gray-700 hover:bg-gray-100'
+                  }`}
+                >
+                  {i + 1}
+                </button>
+              ))}
+            </div>
+          )}
+        </>
       )}
 
       {/* Call to Action */}
