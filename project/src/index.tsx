@@ -57,7 +57,7 @@ const App = () => {
     <Router>
       <Routes>
         {/* Home Page Route */}
-        <Route path="/" element={<Navigate to="/rmm" replace />} />
+        <Route path="/" element={<RmmLanding />} />
 
         {/* Auth */}
         <Route path="/signin" element={<SignIn />} />
@@ -85,13 +85,13 @@ const App = () => {
 
 
         {/* RMM Routes */}
-        <Route path="/rmm" element={<RmmLanding />} />
-        <Route path="/rmm/Home" element={<ManagementHome />} />
-        <Route path="/rmm/management/departments/:name" element={<DepartmentPage />} />
-        <Route path="/rmm/management/managers/:id" element={<ManagerProfile />} />
-        <Route path="/rmm/searchresults" element={<RmmSearchResults />} />
-        <Route path="/rmm/search-managers" element={<SearchManager />} />
-        <Route path="/rmm/rate-manager" element={<ProtectedRoute><RateManager /></ProtectedRoute>}/>
+       
+        <Route path="/Home" element={<ManagementHome />} />
+        <Route path="/management/departments/:name" element={<DepartmentPage />} />
+        <Route path="/management/managers/:id" element={<ManagerProfile />} />
+        <Route path="/searchresults" element={<RmmSearchResults />} />
+        <Route path="/search-managers" element={<SearchManager />} />
+        <Route path="/rate-manager" element={<ProtectedRoute><RateManager /></ProtectedRoute>}/>
         <Route path="/team" element={<OurTeam />} />
         <Route path="/privacy" element={<PrivacyPolicy />} />
         <Route path="/terms" element={<TermsOfService />} />

@@ -44,10 +44,10 @@ const RmmLanding = () => {
           An Anonymous Way to Rate Your Manager in the Baltimore Restaurant Scene
           </p>
           <div className="flex justify-center gap-6 flex-wrap">
-            <a href="/rmm/search-managers" className="bg-pastelBlue hover:bg-blue-600 text-white px-6 py-3 rounded-md font-semibold">
+            <a href="/search-managers" className="bg-pastelBlue hover:bg-blue-600 text-white px-6 py-3 rounded-md font-semibold">
               Search Managers
             </a>
-            <a href="/rmm/rate-manager" className="bg-black hover:bg-gray-800 text-white px-6 py-3 rounded-md font-semibold">
+            <a href="/rate-manager" className="bg-black hover:bg-gray-800 text-white px-6 py-3 rounded-md font-semibold">
               Rate Now
             </a>
           </div>
@@ -108,7 +108,7 @@ const RmmLanding = () => {
           </div>
         </div>
         <div className="text-center mt-10">
-          <a href="/rmm/rate-manager" className="inline-block bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-3 rounded-md font-semibold">
+          <a href="/rate-manager" className="inline-block bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-3 rounded-md font-semibold">
             Rate a Manager
           </a>
         </div>
@@ -152,8 +152,8 @@ const RmmLanding = () => {
     <div>
       <h3 className="text-lg font-semibold text-white mb-4">Explore</h3>
       <ul className="space-y-2 text-sm">
-        <li><a href="/rmm/search-managers" className="hover:underline">Search Managers</a></li>
-        <li><a href="/rmm/rate-manager" className="hover:underline">Rate a Manager</a></li>
+        <li><a href="/search-managers" className="hover:underline">Search Managers</a></li>
+        <li><a href="/rate-manager" className="hover:underline">Rate a Manager</a></li>
         <li><a href="/contact" className="hover:underline">Contact Us</a></li>
         <li><a href="/team" className="hover:underline">Our Team</a></li>
         <li><a href="/privacy" className="hover:underline">Privacy Policy</a></li>
