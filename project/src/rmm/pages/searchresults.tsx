@@ -131,7 +131,7 @@ const SearchResults = () => {
       <div className="mt-16 text-center">
         <p className="text-sm text-gray-600 mb-4">Didn’t find who you were looking for?</p>
         <a
-          href="/rmm/rate-manager"
+          href="/rate-manager"
           className="inline-block bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-3 rounded-md font-semibold"
         >
           Rate a Manager

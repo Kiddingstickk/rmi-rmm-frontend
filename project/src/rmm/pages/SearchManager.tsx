@@ -121,7 +121,7 @@ const SearchManager = () => {
           </p>
           <p className="text-base leading-relaxed">
             Want to contribute your own experience?
-            <a href="/rmm/rate-manager" className="text-blue-600 hover:underline ml-1">Rate a manager anonymously</a>.
+            <a href="/rate-manager" className="text-blue-600 hover:underline ml-1">Rate a manager anonymously</a>.
           </p>
         </section>
 
@@ -208,8 +208,8 @@ const SearchManager = () => {
           <div>
             <h3 className="text-lg font-semibold text-white mb-4">Explore</h3>
             <ul className="space-y-2 text-sm">
-              <li><a href="/rmm/search-managers" className="hover:underline">Search Managers</a></li>
-              <li><a href="/rmm/rate-manager" className="hover:underline">Rate a Manager</a></li>
+              <li><a href="/search-managers" className="hover:underline">Search Managers</a></li>
+              <li><a href="/rate-manager" className="hover:underline">Rate a Manager</a></li>
               <li><a href="/contact" className="hover:underline">Contact Us</a></li>
               <li><a href="/team" className="hover:underline">Our Team</a></li>
               <li><a href="/privacy" className="hover:underline">Privacy Policy</a></li>
