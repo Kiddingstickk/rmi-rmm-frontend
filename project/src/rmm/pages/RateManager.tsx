@@ -118,7 +118,7 @@ const RateManager = () => {
       });
 
       setMessage('✅ Submitted successfully!');
-      navigate(`/rmm/management/managers/${manager._id}`);
+      navigate(`/management/managers/${manager._id}`);
     } catch (err) {
       console.error(err);
       setMessage('❌ Submission failed. Try again.');

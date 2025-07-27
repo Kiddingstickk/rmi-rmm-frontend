@@ -32,7 +32,7 @@ const SearchManager = () => {
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter' && query.trim()) {
-      navigate(`/rmm/searchresults?q=${encodeURIComponent(query.trim())}`);
+      navigate(`/searchresults?q=${encodeURIComponent(query.trim())}`);
     }
   };
 
@@ -74,7 +74,7 @@ const SearchManager = () => {
                         {results.map((person, i) => (
                           <div
                             key={i}
-                            onClick={() => navigate(`/rmm/management/managers/${person._id}`)}
+                            onClick={() => navigate(`/management/managers/${person._id}`)}
                             className="px-4 py-3 hover:bg-gray-100 border-b cursor-pointer"
                           >
                             <p className="font-medium">{person.Name || person.name}</p>
@@ -82,7 +82,7 @@ const SearchManager = () => {
                           </div>
                         ))}
                         <div
-                          onClick={() => navigate(`/rmm/search-managers?q=${encodeURIComponent(query.trim())}`)}
+                          onClick={() => navigate(`/search-managers?q=${encodeURIComponent(query.trim())}`)}
                           className="px-4 py-3 text-center text-sm font-medium bg-blue-100 hover:bg-blue-200 cursor-pointer rounded-b-md"
                         >
                           See full results
@@ -132,7 +132,7 @@ const SearchManager = () => {
           {['Zomato', 'Swiggy', 'Infosys', 'TCS', 'Reliance Retail', 'HDFC Bank'].map((company) => (
             <a
               key={company}
-              href={`/rmm/searchresults?q=${encodeURIComponent(company)}`}
+              href={`/searchresults?q=${encodeURIComponent(company)}`}
               className="block bg-white border border-gray-200 rounded-lg shadow hover:shadow-md p-5 transition"
             >
               <h3 className="text-lg font-semibold text-blue-700">{company}</h3>
@@ -156,7 +156,7 @@ const SearchManager = () => {
           ].map((manager) => (
             <a
               key={manager.name}
-              href={`/rmm/searchresults?q=${encodeURIComponent(manager.name)}`}
+              href={`/searchresults?q=${encodeURIComponent(manager.name)}`}
               className="block bg-white border border-gray-200 rounded-lg shadow hover:shadow-md p-5 transition"
             >
               <h3 className="text-lg font-semibold text-blue-700">{manager.name}</h3>
@@ -180,7 +180,7 @@ const SearchManager = () => {
           ].map((topic) => (
             <a
               key={topic}
-              href={`/rmm/searchresults?q=${encodeURIComponent(topic)}`}
+              href={`/searchresults?q=${encodeURIComponent(topic)}`}
               className="block bg-white border border-gray-200 rounded-lg shadow hover:shadow-md p-5 transition"
             >
               <h3 className="text-lg font-semibold text-blue-700">{topic}</h3>

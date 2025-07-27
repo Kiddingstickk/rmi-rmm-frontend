@@ -72,7 +72,7 @@ const ManagerProfile = () => {
 
   const fetchManager = async () => {
     try {
-      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/rmm/managers/${id}`);
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/managers/${id}`);
       const data = await res.json();
       data.reviews = data.reviews.map((r: any) => ({
         ...r,
