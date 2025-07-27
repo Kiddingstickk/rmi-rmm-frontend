@@ -65,10 +65,10 @@ app.use('/api/contact', contactRoutes);
 app.use('/api/replies', replyRoutes);
 
 // Routes for RMM
-app.use('/api/auth/rmm', rmmAuthRoutes);
-app.use('/api/rmm/managers', managerRoutes);
+app.use('/api/auth/', rmmAuthRoutes);
+app.use('/api/managers', managerRoutes);
 //app.use('/api/reviews/rmm', rmmReviewRoutes);
-app.use('/api/rmm/save', rmmSavedRoutes );
+app.use('/api/save', rmmSavedRoutes );
 app.use('/api/departments', departmentRoutes);
 app.use('/api/search', searchRoutes);
 app.use('/api/manager-reviews', managerReviewRoutes);
