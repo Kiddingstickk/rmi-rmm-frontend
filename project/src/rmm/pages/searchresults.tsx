@@ -82,7 +82,7 @@ const SearchResults = () => {
               return (
                 <article
                   key={manager._id}
-                  onClick={() => navigate(`/rmm/management/managers/${manager._id}`)}
+                  onClick={() => navigate(`/management/managers/${manager._id}`)}
                   className="bg-white border rounded-lg shadow-sm hover:shadow-md p-6 cursor-pointer transition"
                 >
                   <div className="flex items-center justify-between mb-4">
@@ -95,7 +95,7 @@ const SearchResults = () => {
                     {manager.company || '—'} &nbsp;|&nbsp; {manager.position || '—'}
                   </p>
                   <a
-                    href={`/rmm/management/managers/${manager._id}`}
+                    href={`/management/managers/${manager._id}`}
                     onClick={(e) => e.stopPropagation()}
                     className="text-sm font-medium text-indigo-600 hover:underline"
                   >
