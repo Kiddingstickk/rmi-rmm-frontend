@@ -24,7 +24,8 @@ export const getAllManagers = async (req, res) => {
         select: 'name',
         options: { strictPopulate: false } // ✅ prevents errors if company is missing
       })
-      .populate('department', 'name');
+      .populate('department', 'name')
+      .lean(); 
       console.log('📦 Raw managers after populate:', JSON.stringify(managers, null, 2));
 
     // Optional: Normalize response to ensure company is either object or undefined

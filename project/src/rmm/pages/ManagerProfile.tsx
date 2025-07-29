@@ -20,6 +20,11 @@ interface Review {
   };
   reviewText: string;
   rating: number;
+  leadership: number;
+  communication: number;
+  teamwork: number;
+  empathy: number;
+  fairness: number;
   anonymous: boolean;
   createdAt: string;
   likes: string[];
@@ -58,6 +63,19 @@ const renderStars = (rating: number) => (
     )}
   </div>
 );
+
+const getReviewAverage = (review: Review) => {
+  const values = [
+    review.leadership,
+    review.communication,
+    review.teamwork,
+    review.empathy,
+    review.fairness
+  ];
+  return values.reduce((sum, val) => sum + val, 0) / values.length;
+};
+
+
 
 const ManagerProfile = () => {
   const { id } = useParams();
@@ -118,6 +136,16 @@ const ManagerProfile = () => {
 
   const userReview = manager?.reviews.find((r) => r.userId._id === userId);
 
+  const dimensionLabels: (keyof Pick<Review, 'leadership' | 'communication' | 'teamwork' | 'empathy' | 'fairness'>)[] = [
+    'leadership',
+    'communication',
+    'teamwork',
+    'empathy',
+    'fairness'
+  ];
+
+
+
   return (
     <div className="min-h-screen bg-gray-100">
       <header className="bg-blue-400 flex justify-between items-center px-8 py-6 shadow-md">
@@ -135,10 +163,6 @@ const ManagerProfile = () => {
               <p>
                 <span className="font-medium">Position:</span>{' '}
                 <span className="text-blue-700">{manager?.position}</span>
-              </p>
-              <p>
-                <span className="font-medium">Department:</span>{' '}
-                <span className="text-green-700">{manager?.department?.name}</span>
               </p>
               <p>
                 <span className="font-medium">Company:</span>{' '}
@@ -233,6 +257,19 @@ const ManagerProfile = () => {
             <div className="flex gap-4 text-sm text-gray-600">
             <button onClick={() => handleLike(review._id)}>👍 {review.likes?.length || 0}</button>
             <button onClick={() => handleDislike(review._id)}>👎 {review.dislikes?.length || 0}</button>
+            </div>
+            {/* Dimension Ratings */}
+            <div className="mt-4 grid grid-cols-2 md:grid-cols-3 gap-2 text-sm text-gray-700">
+            {dimensionLabels.map((key) => (
+              <div key={key} className="flex items-center justify-between">
+                <span className="capitalize">{key}</span>
+                <div className="flex text-yellow-500">
+                  {[...Array(5)].map((_, i) => (
+                    <span key={i}>{i < review[key] ? "★" : "☆"}</span>
+                  ))}
+                </div>
+              </div>
+            ))}
             </div>
           </div>
         ))}
