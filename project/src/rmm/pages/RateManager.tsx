@@ -143,7 +143,18 @@ const RateManager = () => {
       }
       
       const manager = await createManager(managerPayload);
-
+      console.log('Submitting review with:', {
+        managerId: manager._id,
+        rating,
+        leadership,
+        communication,
+        teamwork,
+        empathy,
+        fairness,
+        reviewText,
+        anonymous: true,
+      });
+      
 
       await submitManagerReview({
         managerId: manager._id,
