@@ -52,11 +52,11 @@ const RateManager = () => {
   const [departmentId, setDepartmentId] = useState('');
   const [departmentSuggestions, setDepartmentSuggestions] = useState([]);
   const [rating, setRating] = useState(0);
-  const [leadership, setLeadership] = useState(3);
-  const [communication, setCommunication] = useState(3);
-  const [teamwork, setTeamwork] = useState(3);
-  const [empathy, setEmpathy] = useState(3);
-  const [fairness, setFairness] = useState(3);
+  const [leadership, setLeadership] = useState(0);
+  const [communication, setCommunication] = useState(0);
+  const [teamwork, setTeamwork] = useState(0);
+  const [empathy, setEmpathy] = useState(0);
+  const [fairness, setFairness] = useState(0);
   const [reviewText, setReviewText] = useState('');
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState('');
