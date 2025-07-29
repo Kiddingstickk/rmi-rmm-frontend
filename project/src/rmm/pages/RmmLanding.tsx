@@ -166,7 +166,6 @@ const RmmLanding = () => {
     <div>
       <h3 className="text-lg font-semibold text-white mb-4">Get in Touch</h3>
       <p className="text-sm">Email: support@ratemymanager.com</p>
-      <p className="text-sm">Phone: +91 98765 43210</p>
       <p className="text-sm mt-2">© {new Date().getFullYear()} Rate My Manager</p>
     </div>
 
