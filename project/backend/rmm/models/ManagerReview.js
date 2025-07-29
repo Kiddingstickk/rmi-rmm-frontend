@@ -18,6 +18,36 @@ const managerReviewSchema = new mongoose.Schema({
     min: 1,
     max: 5
   },
+  leadership: {
+    type: Number,
+    min: 1,
+    max: 5,
+    required: true
+  },
+  communication: {
+    type: Number,
+    min: 1,
+    max: 5,
+    required: true
+  },
+  teamwork: {
+    type: Number,
+    min: 1,
+    max: 5,
+    required: true
+  },
+  empathy: {
+    type: Number,
+    min: 1,
+    max: 5,
+    required: true
+  },
+  fairness: {
+    type: Number,
+    min: 1,
+    max: 5,
+    required: true
+  },
   reviewText: {
     type: String,
     trim: true

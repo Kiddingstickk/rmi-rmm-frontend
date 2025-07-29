@@ -6,6 +6,8 @@ import Company from '../models/Company.js';
 // Get all managers
 
 export const getAllManagers = async (req, res) => {
+  console.log('🚀 [getAllManagers] Controller triggered');
+
   try {
     const { q } = req.query;
 
@@ -14,6 +16,7 @@ export const getAllManagers = async (req, res) => {
       const regex = new RegExp(q.trim(), 'i');
       query.name = { $regex: regex };
     }
+    console.log('🔍 Query:', query);
 
     const managers = await Manager.find(query)
       .populate({
@@ -21,14 +24,17 @@ export const getAllManagers = async (req, res) => {
         select: 'name',
         options: { strictPopulate: false } // ✅ prevents errors if company is missing
       })
-      .populate('department', 'name')
-      .lean();
+      .populate('department', 'name');
+      console.log('📦 Raw managers after populate:', JSON.stringify(managers, null, 2));
 
     // Optional: Normalize response to ensure company is either object or undefined
     const normalized = managers.map(manager => ({
       ...manager,
-      company: manager.company?.name ? { name: manager.company.name } : undefined
+      company: manager.company?.name
+        ? { _id: manager.company._id, name: manager.company.name }
+        : undefined
     }));
+    console.log('✅ Normalized managers:', JSON.stringify(normalized, null, 2));
 
     res.json({ managers: normalized });
   } catch (err) {
@@ -41,14 +47,14 @@ export const getAllManagers = async (req, res) => {
 export const getManagerById = async (req, res) => {
   try {
     const manager = await Manager.findById(req.params.id)
-      .populate('department')
-      .populate({
-        path: 'reviews',
-        populate: {
-          path: 'userId',
-          select: 'name' // only get user name
-        }
-      });
+    .populate('company', 'name')
+    .populate('department', 'name')
+    .populate({
+      path: 'reviews',
+      select: 'rating comment createdAt' // Only show safe fields
+    });
+
+
 
     if (!manager) return res.status(404).json({ message: 'Manager not found' });
     res.json(manager);
