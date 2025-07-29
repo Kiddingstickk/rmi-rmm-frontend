@@ -69,11 +69,23 @@ export const submitManagerReview = async ({
     rating,
     reviewText,
     anonymous,
+    leadership,
+    communication,
+    teamwork,
+    empathy,
+    fairness,
+  
   }: {
     managerId: string;
     rating: number;
     reviewText: string;
     anonymous: boolean;
+    leadership: number;
+    communication: number;
+    teamwork: number;
+    empathy: number;
+    fairness: number;
+  
   }) => {
     const res = await fetch(`${BASE_URL}/api/manager-reviews/submit`, {
       method: 'POST',
@@ -81,7 +93,17 @@ export const submitManagerReview = async ({
         'Content-Type': 'application/json',
         Authorization: `Bearer ${localStorage.getItem('token')}`,
       },
-      body: JSON.stringify({ managerId, rating, reviewText, anonymous }),
+      body: JSON.stringify({
+        managerId,
+        rating,
+        reviewText,
+        anonymous,
+        leadership,
+        communication,
+        teamwork,
+        empathy,
+        fairness,
+      }),
     });
   
     if (!res.ok) throw new Error('Failed to submit review');

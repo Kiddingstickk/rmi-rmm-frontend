@@ -8,6 +8,36 @@ import { getCompanies, createCompany } from '../lib/company';
 import { findOrCreateBranch } from '../lib/branch';
 
 
+type DimensionRatingProps = {
+  label: string;
+  value: number;
+  onChange: (val: number) => void;
+};
+
+const DimensionRating: React.FC<DimensionRatingProps> = ({ label, value, onChange }) => (
+  <div className="mb-4">
+    <label className="block text-gray-700 font-medium mb-1">{label}</label>
+    <div className="flex gap-2 text-xl">
+      {[1, 2, 3, 4, 5].map((star) => (
+        <button
+          key={star}
+          type="button"
+          onClick={() => onChange(star)}
+          className={star <= value ? 'text-yellow-400' : 'text-gray-300'}
+        >
+          ★
+        </button>
+      ))}
+      <span className="text-sm text-gray-600 ml-2">{value} stars</span>
+    </div>
+  </div>
+);
+
+
+
+
+
+
 const RateManager = () => {
   const { isLoggedIn, logout } = useAuth();
   const navigate = useNavigate();
@@ -22,6 +52,11 @@ const RateManager = () => {
   const [departmentId, setDepartmentId] = useState('');
   const [departmentSuggestions, setDepartmentSuggestions] = useState([]);
   const [rating, setRating] = useState(0);
+  const [leadership, setLeadership] = useState(3);
+  const [communication, setCommunication] = useState(3);
+  const [teamwork, setTeamwork] = useState(3);
+  const [empathy, setEmpathy] = useState(3);
+  const [fairness, setFairness] = useState(3);
   const [reviewText, setReviewText] = useState('');
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState('');
@@ -113,6 +148,11 @@ const RateManager = () => {
       await submitManagerReview({
         managerId: manager._id,
         rating,
+        leadership,
+        communication,
+        teamwork,
+        empathy,
+        fairness,
         reviewText,
         anonymous: true,
       });
@@ -295,6 +335,15 @@ const RateManager = () => {
             <span className="text-yellow-600 text-sm">
               {rating > 0 && `${rating} stars`}
             </span>
+          </div>
+
+
+          <div className="md:col-span-3 grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
+            <DimensionRating label="Leadership" value={leadership} onChange={setLeadership} />
+            <DimensionRating label="Communication" value={communication} onChange={setCommunication} />
+            <DimensionRating label="Teamwork" value={teamwork} onChange={setTeamwork} />
+            <DimensionRating label="Empathy" value={empathy} onChange={setEmpathy} />
+            <DimensionRating label="Fairness" value={fairness} onChange={setFairness} />
           </div>
   
           {/* Review Box */}

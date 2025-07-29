@@ -11,12 +11,7 @@ const companySchema = new mongoose.Schema({
     type: String,
     default: ''
   },
-  interviewers: [
-    {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'Interviewer' // or 'Manager' — use whichever your schema links to
-    }
-  ],
+  
   managers: [
     {
       type: mongoose.Schema.Types.ObjectId,
