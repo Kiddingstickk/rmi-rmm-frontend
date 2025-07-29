@@ -153,7 +153,7 @@ export const getManagerReviews = async (req, res) => {
     }
 
     const reviews = await ManagerReview.find({ managerId })
-      .select('reviewText rating createdAt')
+      
       .sort({ createdAt: -1 }); // newest first
 
     res.status(200).json(reviews);

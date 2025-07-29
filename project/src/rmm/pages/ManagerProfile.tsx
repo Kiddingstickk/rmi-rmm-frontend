@@ -92,16 +92,26 @@ const ManagerProfile = () => {
     try {
       const res = await fetch(`${import.meta.env.VITE_API_URL}/api/managers/${id}`);
       const data = await res.json();
-      data.reviews = data.reviews.map((r: any) => ({
+
+      // Normalize likes/dislikes inside reviews
+      const reviews = data.reviews.map((r: any) => ({
         ...r,
         likes: Array.isArray(r.likes) ? r.likes.length : 0,
         dislikes: Array.isArray(r.dislikes) ? r.dislikes.length : 0,
       }));
-      setManager(data);
+  
+      // Attach reviews to manager before setting state
+      const managerWithReviews = {
+        ...data.manager,
+        reviews
+      };
+  
+      setManager(managerWithReviews);
     } catch (error) {
       console.error("Failed to fetch manager", error);
     }
   };
+
 
   const handleLike = async (reviewId: string) => {
     try {
