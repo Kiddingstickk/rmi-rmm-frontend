@@ -10,7 +10,17 @@ export const submitReview = async (req, res) => {
       return res.status(401).json({ message: 'Unauthorized. User not found.' });
     }
     
-    const { managerId, rating, reviewText, anonymous } = req.body;
+    const {
+      managerId,
+      rating,
+      leadership,
+      communication,
+      teamwork,
+      empathy,
+      fairness,
+      reviewText,
+      anonymous
+    } = req.body;
 
     const existingReview = await ManagerReview.findOne({ userId, managerId });
     if (existingReview) {
@@ -22,6 +32,11 @@ export const submitReview = async (req, res) => {
       userId,
       managerId,
       rating,
+      leadership,
+      communication,
+      teamwork,
+      empathy,
+      fairness,
       reviewText,
       anonymous,
     });
@@ -48,7 +63,16 @@ export const submitReview = async (req, res) => {
 };
 // Update review
 export const updateReview = async (req, res) => {
-  const { rating, reviewText, anonymous } = req.body;
+  const {
+    rating,
+    leadership,
+    communication,
+    teamwork,
+    empathy,
+    fairness,
+    reviewText,
+    anonymous
+  } = req.body;
   try {
     const review = await ManagerReview.findById(req.params.reviewId);
     if (!review) return res.status(404).json({ message: 'Review not found' });
@@ -58,6 +82,11 @@ export const updateReview = async (req, res) => {
     }
 
     review.rating = rating;
+    review.leadership = leadership;
+    review.communication = communication;
+    review.teamwork = teamwork;
+    review.empathy = empathy;
+    review.fairness = fairness;
     review.reviewText = reviewText;
     review.anonymous = anonymous;
     await review.save();
