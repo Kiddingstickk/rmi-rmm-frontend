@@ -94,8 +94,8 @@ const ManagerProfile = () => {
       const data = await res.json();
       data.reviews = data.reviews.map((r: any) => ({
         ...r,
-        likes: r.likes.length,
-        dislikes: r.dislikes.length,
+        likes: Array.isArray(r.likes) ? r.likes.length : 0,
+        dislikes: Array.isArray(r.dislikes) ? r.dislikes.length : 0,
       }));
       setManager(data);
     } catch (error) {
