@@ -134,7 +134,7 @@ const ManagerProfile = () => {
     ? manager!.reviews.reduce((sum, r) => sum + r.rating, 0) / totalReviews
     : 0;
 
-  const userReview = manager?.reviews.find((r) => r.userId._id === userId);
+  const userReview = manager?.reviews.find((r) => r.userId && r.userId._id === userId);
 
   const dimensionLabels: (keyof Pick<Review, 'leadership' | 'communication' | 'teamwork' | 'empathy' | 'fairness'>)[] = [
     'leadership',
