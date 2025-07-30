@@ -2,6 +2,7 @@ import Manager from '../models/Manager.js';
 import Department from '../models/Department.js';
 import Company from '../models/Company.js';
 import ManagerReview from '../models/ManagerReview.js';
+import { notifyGoogleManager } from "../../../../google-indexing/index.js";
 
 
 
@@ -160,6 +161,7 @@ export const createManager = async (req, res) => {
         $addToSet: { managers: manager._id }
       });
     }
+    await notifyGoogleManager(manager._id);
 
     res.status(201).json(manager);
   } catch (err) {

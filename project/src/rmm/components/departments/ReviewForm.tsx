@@ -10,11 +10,18 @@ interface Review {
   };
   reviewText: string;
   rating: number;
+  leadership: number;
+  communication: number;
+  teamwork: number;
+  empathy: number;
+  fairness: number;
   anonymous: boolean;
   createdAt: string;
   likes: string[];
   dislikes: string[];
 }
+
+
 
 
 interface ReviewFormProps {
@@ -27,6 +34,22 @@ interface ReviewFormProps {
 const ReviewForm: React.FC<ReviewFormProps> = ({ managerId, onSuccess,  existingReview , onCancelEdit }) => {
   const [rating, setRating] = useState<number>(0);
   const [review, setReview] = useState<string>("");
+  const [dimensions, setDimensions] = useState({
+    leadership: 0,
+    communication: 0,
+    teamwork: 0,
+    empathy: 0,
+    fairness: 0,
+  });
+  
+  const dimensionFields: (keyof typeof dimensions)[] = [
+    "leadership",
+    "communication",
+    "teamwork",
+    "empathy",
+    "fairness",
+  ];
+
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState<string | null>(null);
 
@@ -35,9 +58,25 @@ const ReviewForm: React.FC<ReviewFormProps> = ({ managerId, onSuccess,  existing
     if (existingReview) {
       setRating(existingReview.rating);
       setReview(existingReview.reviewText);
+      setDimensions({
+        leadership: existingReview.leadership || 0,
+        communication: existingReview.communication || 0,
+        teamwork: existingReview.teamwork || 0,
+        empathy: existingReview.empathy || 0,
+        fairness: existingReview.fairness || 0,
+      });
+    
     } else {
       setRating(0);
       setReview("");
+      setDimensions({
+        leadership: 0,
+        communication: 0,
+        teamwork: 0,
+        empathy: 0,
+        fairness: 0,
+      });
+
     }
   }, [existingReview]);
 
@@ -100,6 +139,7 @@ const ReviewForm: React.FC<ReviewFormProps> = ({ managerId, onSuccess,  existing
           rating,
           reviewText: review,
           anonymous: false,
+          dimensions,
         }),
       });
 
@@ -136,6 +176,32 @@ const ReviewForm: React.FC<ReviewFormProps> = ({ managerId, onSuccess,  existing
           />
         ))}
       </div>
+
+      <div className="grid grid-cols-2 gap-4">
+        {dimensionFields.map((field) => (
+          <div key={field} className="flex flex-col gap-1 text-sm text-gray-700">
+            <label className="capitalize">{field}</label>
+            <div className="flex gap-1">
+              {[1, 2, 3, 4, 5].map((star) => (
+                <Star
+                  key={star}
+                  className={`w-5 h-5 cursor-pointer ${
+                    dimensions[field] >= star ? "text-yellow-500 fill-yellow-500" : "text-gray-300"
+                  }`}
+                  onClick={() =>
+                    setDimensions((prev) => ({
+                      ...prev,
+                      [field]: star,
+                    }))
+                  }
+                />
+              ))}
+            </div>
+          </div>
+        ))}
+      </div>
+
+
 
       <textarea
         value={review}

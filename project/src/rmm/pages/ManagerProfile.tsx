@@ -3,14 +3,7 @@ import { useParams } from "react-router-dom";
 import api from "../../lib/api";
 import ReviewForm from "../components/departments/ReviewForm";
 
-interface Department {
-  _id: string;
-  name: string;
-  description: string;
-  managers: string[];
-  createdAt: string;
-  updatedAt: string;
-}
+
 
 interface Review {
   _id: string;
