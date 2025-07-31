@@ -128,7 +128,7 @@ const SearchResults = () => {
         ) : (
           <div className="space-y-5">
             {pageResults.map((int) => {
-              console.log(int.name, int.ratings);
+              
               const avg =
                   typeof int.rating === 'number' && int.rating > 0
                     ? int.rating

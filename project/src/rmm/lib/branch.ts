@@ -1,6 +1,6 @@
 const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
-console.log('🏬 BASE_URL for Branch API:', BASE_URL);
+
 
 /** Fetch branches matching a search term (name, city, location) */
 export const getBranches = async (query?: string) => {

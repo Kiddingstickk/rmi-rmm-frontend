@@ -20,7 +20,7 @@ const Register = () => {
     // 🔄 Fire OTP request in the background
     try {
       await api.post('/auth/rmi/register', { name, email, password });
-      console.log('OTP sent successfully');
+     
     } catch (err) {
       console.error('Registration failed:', err);
       // Optional: you could store a flag to retry, or show a toast later

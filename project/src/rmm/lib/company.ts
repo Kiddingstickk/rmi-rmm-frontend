@@ -1,6 +1,6 @@
 const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
-console.log('🏢 BASE_URL for Company API:', BASE_URL);
+
 
 export const getCompanies = async (query?: string) => {
   const url = query

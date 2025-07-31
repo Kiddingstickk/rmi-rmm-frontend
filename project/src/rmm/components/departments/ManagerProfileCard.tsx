@@ -55,7 +55,7 @@ const ManagerProfileCard: React.FC<ManagerProfileCardProps> = ({
         headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
       });
 
-      console.log("Delete response:", res.data);
+     
 
       // Optionally update the UI by calling the callback
       if (onReviewDeleted) onReviewDeleted(reviewId);
@@ -79,7 +79,7 @@ const ManagerProfileCard: React.FC<ManagerProfileCardProps> = ({
         }
       );
     
-      console.log("Flag response:", res.data);
+      
       alert("Manager flagged successfully.");
     } catch (err: any) {
       console.error("Flag error:", err.response?.data || err.message);
