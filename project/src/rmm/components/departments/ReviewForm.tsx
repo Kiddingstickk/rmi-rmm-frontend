@@ -21,8 +21,15 @@ interface Review {
   dislikes: string[];
 }
 
+interface Dimensions {
+  leadership: number;
+  communication: number;
+  teamwork: number;
+  empathy: number;
+  fairness: number;
+}
 
-
+const dimensionFields = ["leadership", "communication", "teamwork", "empathy", "fairness"] as const;
 
 interface ReviewFormProps {
   managerId: string;
@@ -34,7 +41,7 @@ interface ReviewFormProps {
 const ReviewForm: React.FC<ReviewFormProps> = ({ managerId, onSuccess,  existingReview , onCancelEdit }) => {
   const [rating, setRating] = useState<number>(0);
   const [review, setReview] = useState<string>("");
-  const [dimensions, setDimensions] = useState({
+  const [dimensions, setDimensions] = useState<Dimensions>({
     leadership: 0,
     communication: 0,
     teamwork: 0,
@@ -42,13 +49,6 @@ const ReviewForm: React.FC<ReviewFormProps> = ({ managerId, onSuccess,  existing
     fairness: 0,
   });
   
-  const dimensionFields: (keyof typeof dimensions)[] = [
-    "leadership",
-    "communication",
-    "teamwork",
-    "empathy",
-    "fairness",
-  ];
 
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState<string | null>(null);
@@ -139,7 +139,11 @@ const ReviewForm: React.FC<ReviewFormProps> = ({ managerId, onSuccess,  existing
           rating,
           reviewText: review,
           anonymous: false,
-          dimensions,
+          leadership: dimensions.leadership,
+          communication: dimensions.communication,
+          teamwork: dimensions.teamwork,
+          empathy: dimensions.empathy,
+          fairness: dimensions.fairness,
         }),
       });
 
@@ -178,7 +182,7 @@ const ReviewForm: React.FC<ReviewFormProps> = ({ managerId, onSuccess,  existing
       </div>
 
       <div className="grid grid-cols-2 gap-4">
-        {dimensionFields.map((field) => (
+      {dimensionFields.map((field: typeof dimensionFields[number]) => (
           <div key={field} className="flex flex-col gap-1 text-sm text-gray-700">
             <label className="capitalize">{field}</label>
             <div className="flex gap-1">
