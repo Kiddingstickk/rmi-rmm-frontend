@@ -33,9 +33,8 @@ const PORT = process.env.PORT || 5000;
 
 // CORS configuration
 const allowedOrigins = [
-  'https://rmi-rmm.netlify.app',
   'https://ratemymanagement.com',
-  'http://localhost:3000' // Optional: for local dev
+   
 ];
 const corsOptions = {
   origin: (origin, callback) => {

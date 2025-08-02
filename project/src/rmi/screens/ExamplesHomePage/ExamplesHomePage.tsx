@@ -23,10 +23,10 @@ const ExampleHomePage = (): JSX.Element => {
       "@type": "WebPage",
       "name": "Rate My Interviewer",
       "description": "Search and rate interviewers and hiring managers. Share experiences anonymously to promote transparency.",
-      "url": "https://rmi-rmm.netlify.app/search-interviewers",
+      "url": "https://ratemymanagement.com/search-interviewers",
       "potentialAction": {
         "@type": "SearchAction",
-        "target": "https://rmi-rmm.netlify.app/search/{search_term_string}",
+        "target": "https://ratemymanagement.com/search/{search_term_string}",
         "query-input": "required name=search_term_string"
       }
     });

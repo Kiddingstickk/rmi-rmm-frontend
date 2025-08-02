@@ -122,7 +122,7 @@ const InterviewerProfile = () => {
         "@type": "Organization",
         "name": interviewer.company?.name || "Unknown"
       },
-      "url": `https://rmi-rmm.netlify.app/interviewers/${interviewer._id}`,
+      "url": `https://ratemymanagement.com/interviewers/${interviewer._id}`,
       "description": `Anonymous feedback for ${interviewer.name}, ${interviewer.position} at ${interviewer.company?.name}.`
     });
     document.head.appendChild(script);

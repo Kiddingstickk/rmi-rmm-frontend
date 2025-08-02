@@ -63,7 +63,7 @@ const SearchResults = () => {
       "@type": "SearchResultsPage",
       "name": `Search Results for ${query}`,
       "description": `Explore anonymous feedback and ratings for interviewers and managers matching '${query}'.`,
-      "url": `https://rmi-rmm.netlify.app/search/${encodeURIComponent(query || '')}`
+      "url": `https://ratemymanagement.com/search/${encodeURIComponent(query || '')}`
     });
     document.head.appendChild(script);
     return () => {

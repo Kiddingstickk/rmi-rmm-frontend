@@ -22,7 +22,7 @@ const SearchInterviewer = () => {
       "@type": "SearchResultsPage",
       "name": "Search Interviewers and Managers",
       "description": "Explore anonymous reviews and ratings of interviewers and managers across top companies. Share your own experience and help others prepare.",
-      "url": "https://rmi-rmm.netlify.app/search-interviewers"
+      "url": "https://ratemymanagement.com/search-interviewers"
     });
     document.head.appendChild(script);
     return () => {
