@@ -18,7 +18,7 @@ const ResponsiveNavbar: React.FC<NavbarProps> = ({ isLoggedIn, onLogout }) => {
   return (
     <>
       {/* Top Navbar */}
-      <nav className="w-full px-6 py-4 flex justify-between items-center shadow-md bg-white text-gray-800 transition-colors duration-300">
+      <nav className="w-full px-6 py-4 flex justify-between items-center shadow-md bg-pastelBlue text-white transition-colors duration-300">
         <Link to="/" aria-label="Go to RMM Home">
           <img
             src="/rmmlogo.png"
@@ -28,13 +28,13 @@ const ResponsiveNavbar: React.FC<NavbarProps> = ({ isLoggedIn, onLogout }) => {
         </Link>
 
         <div className="hidden md:flex items-center gap-6 font-medium">
-          <Link to="/search-managers" className="hover:text-blue-600 text-sm">
+          <Link to="/search-managers" className="hover:text-blue-200 text-sm">
             Search
           </Link>
-          <Link to="/rate-manager" className="hover:text-blue-600 text-sm">
+          <Link to="/rate-manager" className="hover:text-blue-200 text-sm">
             Rate
           </Link>
-          <Link to="/team" className="hover:text-blue-600 text-sm">
+          <Link to="/team" className="hover:text-blue-200 text-sm">
             Team
           </Link>
 
@@ -42,13 +42,13 @@ const ResponsiveNavbar: React.FC<NavbarProps> = ({ isLoggedIn, onLogout }) => {
             <>
               <Link
                 to="/profile"
-                className="text-sm bg-black text-white px-4 py-2 rounded-md hover:bg-gray-800 transition"
+                className="text-sm bg-pastelBlue text-white px-4 py-2 rounded-md hover:bg-blue-200 transition"
               >
                 
               </Link>
               <button
                 onClick={onLogout}
-                className="text-sm bg-white border border-gray-300 px-4 py-2 rounded-md hover:bg-gray-100 transition"
+                className="text-sm bg-pastelBlue text-white px-4 py-2 rounded-md hover:bg-blue-200 transition"
               >
                 Logout
               </button>
@@ -56,7 +56,7 @@ const ResponsiveNavbar: React.FC<NavbarProps> = ({ isLoggedIn, onLogout }) => {
           ) : (
             <button
               onClick={handleLoginClick}
-              className="text-sm bg-black text-white px-4 py-2 rounded-md hover:bg-gray-800 transition"
+              className="text-sm bg-pastelBlue text-white px-4 py-2 rounded-md hover:bg-blue-200 transition"
             >
               Login
             </button>
