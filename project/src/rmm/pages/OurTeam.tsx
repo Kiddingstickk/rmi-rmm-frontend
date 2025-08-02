@@ -78,7 +78,7 @@ const OurTeam = () => {
         </section>
 
         <div className="mt-12 text-center">
-          <a href="/rmm" className="inline-block bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-3 rounded-md font-semibold">
+          <a href="/" className="inline-block bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-3 rounded-md font-semibold">
             Back to Home
           </a>
         </div>
