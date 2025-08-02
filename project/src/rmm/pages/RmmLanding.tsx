@@ -16,7 +16,7 @@ const RmmLanding = () => {
       "@type": "WebPage",
       "name": "Rate My Manager",
       "description": "Explore and share anonymous interview reviews for hiring managers. Built for transparency, powered by real candidate insights.",
-      "url": "https://rmi-rmm.netlify.app/rmm",
+      "url": "https://ratemymanagement.com/",
       "author": {
         "@type": "Organization",
         "name": "Rate My Interviewer"
