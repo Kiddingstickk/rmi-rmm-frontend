@@ -93,26 +93,19 @@ const ResponsiveNavbar: React.FC<NavbarProps> = ({ isLoggedIn, onLogout }) => {
             <Link to="/team" onClick={() => setIsSidebarOpen(false)}>Team</Link>
 
             {isLoggedIn ? (
-              <>
-                <Link
-                  to="/profile"
-                  onClick={() => setIsSidebarOpen(false)}
-                  className="bg-black text-white px-4 py-2 rounded-md hover:bg-gray-800 transition"
-                >
-                  
-                </Link>
-                <button
-                  onClick={() => {
-                    onLogout();
-                    setIsSidebarOpen(false);
-                  }}
-                  className="bg-white border border-gray-300 px-4 py-2 rounded-md hover:bg-gray-100 transition"
-                >
-                  Logout
-                </button>
-              </>
+              <button
+                type="button"
+                onClick={() => {
+                  onLogout();
+                  setIsSidebarOpen(false);
+                }}
+                className="bg-white border border-gray-300 px-4 py-2 rounded-md hover:bg-gray-100 transition"
+              >
+                Logout
+              </button>
             ) : (
               <button
+                type="button"
                 onClick={() => {
                   handleLoginClick();
                   setIsSidebarOpen(false);
@@ -122,7 +115,7 @@ const ResponsiveNavbar: React.FC<NavbarProps> = ({ isLoggedIn, onLogout }) => {
                 Login
               </button>
             )}
-          </div>
+                      </div>
         </div>
       </div>
     </>
