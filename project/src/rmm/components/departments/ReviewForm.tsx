@@ -9,6 +9,9 @@ interface Review {
     name: string;
   };
   reviewText: string;
+  reviewLeadership: string;            
+  reviewCommunicationText: string;    
+  reviewSupport: string;  
   rating: number;
   leadership: number;
   communication: number;
@@ -48,7 +51,9 @@ const ReviewForm: React.FC<ReviewFormProps> = ({ managerId, onSuccess,  existing
     empathy: 0,
     fairness: 0,
   });
-  
+  const [reviewLeadership, setReviewLeadership] = useState("");
+  const [reviewCommunicationText, setReviewCommunicationText] = useState("");
+  const [reviewSupport, setReviewSupport] = useState("");
 
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState<string | null>(null);
@@ -65,7 +70,9 @@ const ReviewForm: React.FC<ReviewFormProps> = ({ managerId, onSuccess,  existing
         empathy: existingReview.empathy || 0,
         fairness: existingReview.fairness || 0,
       });
-    
+      setReviewLeadership(existingReview.reviewLeadership || "");
+      setReviewCommunicationText(existingReview.reviewCommunicationText || "");
+      setReviewSupport(existingReview.reviewSupport || "");
     } else {
       setRating(0);
       setReview("");
@@ -76,6 +83,9 @@ const ReviewForm: React.FC<ReviewFormProps> = ({ managerId, onSuccess,  existing
         empathy: 0,
         fairness: 0,
       });
+      setReviewLeadership("");
+      setReviewCommunicationText("");
+      setReviewSupport("");
 
     }
   }, [existingReview]);
@@ -106,6 +116,9 @@ const ReviewForm: React.FC<ReviewFormProps> = ({ managerId, onSuccess,  existing
       setMessage("Review deleted successfully!");
       setRating(0);
       setReview("");
+      setReviewLeadership("");
+      setReviewCommunicationText("");
+      setReviewSupport("");
       onSuccess?.();
       onCancelEdit?.();
     } catch (err: any) {
@@ -138,6 +151,9 @@ const ReviewForm: React.FC<ReviewFormProps> = ({ managerId, onSuccess,  existing
           managerId,
           rating,
           reviewText: review,
+          reviewLeadership,
+          reviewCommunicationText,
+          reviewSupport,        
           anonymous: false,
           leadership: dimensions.leadership,
           communication: dimensions.communication,
@@ -158,6 +174,9 @@ const ReviewForm: React.FC<ReviewFormProps> = ({ managerId, onSuccess,  existing
       );
       setRating(0);
       setReview("");
+      setReviewLeadership("");
+      setReviewCommunicationText("");
+      setReviewSupport("");
       onSuccess?.();
       onCancelEdit?.();
     } catch (err: any) {
@@ -205,7 +224,29 @@ const ReviewForm: React.FC<ReviewFormProps> = ({ managerId, onSuccess,  existing
         ))}
       </div>
 
+      <textarea
+        value={reviewLeadership}
+        onChange={(e) => setReviewLeadership(e.target.value)}
+        placeholder="Comment on leadership..."
+        className="w-full border border-gray-300 rounded-md p-2 text-sm resize-none"
+        rows={3}
+      />
 
+      <textarea
+        value={reviewCommunicationText}
+        onChange={(e) => setReviewCommunicationText(e.target.value)}
+        placeholder="Comment on communication..."
+        className="w-full border border-gray-300 rounded-md p-2 text-sm resize-none"
+        rows={3}
+      />
+
+      <textarea
+        value={reviewSupport}
+        onChange={(e) => setReviewSupport(e.target.value)}
+        placeholder="Comment on support..."
+        className="w-full border border-gray-300 rounded-md p-2 text-sm resize-none"
+        rows={3}
+      />
 
       <textarea
         value={review}
