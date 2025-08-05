@@ -19,7 +19,7 @@ const RmmLanding = () => {
       "url": "https://ratemymanagement.com/",
       "author": {
         "@type": "Organization",
-        "name": "Rate My Interviewer"
+        "name": "Rate My Manager"
       }
     });
     document.head.appendChild(jsonLd);
@@ -61,19 +61,19 @@ const RmmLanding = () => {
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8 text-center">
             <div className="bg-white shadow-sm p-6 rounded-lg flex flex-col justify-center items-center">
               <img src="/webpic.png" alt="Search feature" className="w-14 h-14 mb-4" />
-              <p className="text-gray-700 font-medium text-sm sm:text-base">Search by Interviewer Name or Company</p>
+              <p className="text-gray-700 font-medium text-sm sm:text-base">Search by name or company to find your manager.</p>
             </div>
             <div className="bg-white shadow-sm p-6 rounded-lg flex flex-col justify-center items-center">
               <img src="/pencil.png" alt="Position entry" className="w-14 h-14 mb-4" />
-              <p className="text-gray-700 font-medium text-sm sm:text-base">Add the position you interviewed for</p>
+              <p className="text-gray-700 font-medium text-sm sm:text-base">Manager not listed? Create a new profile to rate.</p>
             </div>
             <div className="bg-white shadow-sm p-6 rounded-lg flex flex-col justify-center items-center">
               <img src="/likedislike.png" alt="Review rating" className="w-14 h-14 mb-4" />
-              <p className="text-gray-700 font-medium text-sm sm:text-base">Add your review</p>
+              <p className="text-gray-700 font-medium text-sm sm:text-base">Rate your manager and share your experience.</p>
             </div>
             <div className="bg-white shadow-sm p-6 rounded-lg flex flex-col justify-center items-center">
               <img src="/detective.png" alt="Anonymous share" className="w-14 h-14 mb-4" />
-              <p className="text-gray-700 font-medium text-sm sm:text-base">Share to the world anonymously</p>
+              <p className="text-gray-700 font-medium text-sm sm:text-base">Your review is posted anonymously.</p>
             </div>
           </div>
         </div>
