@@ -57,6 +57,9 @@ const RateManager = () => {
   const [teamwork, setTeamwork] = useState(0);
   const [empathy, setEmpathy] = useState(0);
   const [fairness, setFairness] = useState(0);
+  const [reviewLeadership, setReviewLeadership] = useState('');
+  const [reviewCommunicationText, setReviewCommunicationText] = useState('');
+  const [reviewSupport, setReviewSupport] = useState('');
   const [reviewText, setReviewText] = useState('');
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState('');
@@ -155,6 +158,9 @@ const RateManager = () => {
         empathy,
         fairness,
         reviewText,
+        reviewLeadership,
+        reviewCommunicationText,
+        reviewSupport,      
         anonymous: true,
       });
 
@@ -346,7 +352,47 @@ const RateManager = () => {
             <DimensionRating label="Empathy" value={empathy} onChange={setEmpathy} />
             <DimensionRating label="Fairness" value={fairness} onChange={setFairness} />
           </div>
-  
+          <div className="md:col-span-3 mt-6">
+            <label className="block text-gray-700 font-semibold mb-2">
+              What’s one thing your manager did that showed strong (or weak) leadership?
+            </label>
+            <textarea
+              value={reviewLeadership}
+              onChange={(e) => setReviewLeadership(e.target.value)}
+              rows={4}
+              placeholder="Describe a moment that reflected strong or weak leadership..."
+              className="w-full border border-gray-300 rounded-md px-4 py-3 focus:outline-none focus:ring-2 focus:ring-purple-400"
+            />
+          </div>
+
+          {/* Communication Clarity */}
+          <div className="md:col-span-3 mt-6">
+            <label className="block text-gray-700 font-semibold mb-2">
+              How clearly did your manager communicate goals or expectations?
+            </label>
+            <textarea
+              value={reviewCommunicationText}
+              onChange={(e) => setReviewCommunicationText(e.target.value)}
+              rows={4}
+              placeholder="Share how well goals or expectations were communicated..."
+              className="w-full border border-gray-300 rounded-md px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-400"
+            />
+          </div>
+
+          {/* Support Experience */}
+          <div className="md:col-span-3 mt-6">
+            <label className="block text-gray-700 font-semibold mb-2">
+              Did you feel supported in your role — why or why not?
+            </label>
+            <textarea
+              value={reviewSupport}
+              onChange={(e) => setReviewSupport(e.target.value)}
+              rows={4}
+              placeholder="Explain whether you felt supported, and why..."
+              className="w-full border border-gray-300 rounded-md px-4 py-3 focus:outline-none focus:ring-2 focus:ring-green-400"
+            />
+          </div>
+
           {/* Review Box */}
           <div className="md:col-span-3">
             <label className="block text-gray-700 font-semibold mb-2">

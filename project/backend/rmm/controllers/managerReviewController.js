@@ -2,6 +2,7 @@
 import Manager from '../models/Manager.js';
 import ManagerReview from '../models/ManagerReview.js';
 import mongoose from 'mongoose';
+import { sanitizeText } from '../../utils/sanitize.js';
 
 export const submitReview = async (req, res) => {
   try {
@@ -19,6 +20,9 @@ export const submitReview = async (req, res) => {
       empathy,
       fairness,
       reviewText,
+      reviewLeadership,
+      reviewCommunicationText,
+      reviewSupport,
       anonymous
     } = req.body;
 
@@ -37,7 +41,10 @@ export const submitReview = async (req, res) => {
       teamwork,
       empathy,
       fairness,
-      reviewText,
+      reviewText: sanitizeText(reviewText),
+      reviewLeadership: sanitizeText(reviewLeadership),
+      reviewCommunicationText: sanitizeText(reviewCommunicationText),
+      reviewSupport: sanitizeText(reviewSupport),    
       anonymous,
     });
     
@@ -71,6 +78,9 @@ export const updateReview = async (req, res) => {
     empathy,
     fairness,
     reviewText,
+    reviewLeadership,
+    reviewCommunicationText,
+    reviewSupport,
     anonymous
   } = req.body;
   try {
@@ -87,7 +97,10 @@ export const updateReview = async (req, res) => {
     review.teamwork = teamwork;
     review.empathy = empathy;
     review.fairness = fairness;
-    review.reviewText = reviewText;
+    review.reviewText = sanitizeText(reviewText);
+    review.reviewLeadership = sanitizeText(reviewLeadership);
+    review.reviewCommunicationText = sanitizeText(reviewCommunicationText);
+    review.reviewSupport = sanitizeText(reviewSupport);
     review.anonymous = anonymous;
     await review.save();
     await updateAverageRating(review.managerId);
