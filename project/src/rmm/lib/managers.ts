@@ -74,7 +74,10 @@ export const submitManagerReview = async ({
     teamwork,
     empathy,
     fairness,
-  
+    reviewLeadership,
+    reviewCommunicationText,
+    reviewSupport,
+
   }: {
     managerId: string;
     rating: number;
@@ -85,7 +88,10 @@ export const submitManagerReview = async ({
     teamwork: number;
     empathy: number;
     fairness: number;
-  
+    reviewLeadership?: string;
+    reviewCommunicationText?: string;
+    reviewSupport?: string;
+
   }) => {
     const res = await fetch(`${BASE_URL}/api/manager-reviews/submit`, {
       method: 'POST',
@@ -103,6 +109,10 @@ export const submitManagerReview = async ({
         teamwork,
         empathy,
         fairness,
+        reviewLeadership,
+        reviewCommunicationText,
+        reviewSupport,
+      
       }),
     });
   

@@ -63,7 +63,19 @@ const managerReviewSchema = new mongoose.Schema({
   dislikes: [{
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User'
-  }]
+  }],
+  reviewLeadership: {
+    type: String,
+    trim: true
+  },
+  reviewCommunicationText: {
+    type: String,
+    trim: true
+  },
+  reviewSupport: {
+    type: String,
+    trim: true
+  }
 }, {
   timestamps: true
 });
