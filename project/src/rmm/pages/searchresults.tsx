@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
+import ResponsiveNavbar from '../components/Navbar/navbar';
+import { useAuth } from '../../rmi/lib/useAuth';
 
 type Manager = {
   _id: string;
@@ -23,6 +25,7 @@ const RESULTS_PER_PAGE = 9;
 
 const SearchResults = () => {
   const [searchParams] = useSearchParams();
+  const { isLoggedIn, logout } = useAuth();
   const query = searchParams.get('q') || '';
   const navigate = useNavigate();
 
@@ -57,15 +60,20 @@ const SearchResults = () => {
   const totalPages = Math.ceil(results.length / RESULTS_PER_PAGE);
 
   return (
-    <main className="min-h-screen bg-gray-50 text-gray-800 px-6 py-12 max-w-6xl mx-auto">
-      {/* Header */}
-      <header className="mb-10 text-center">
-        <img src="/rmmlogo.png" alt="RMI Logo" className="mx-auto w-14 h-14 rounded-full mb-4" />
-        <h1 className="text-3xl font-bold">Search Results for “{query}”</h1>
-        <p className="text-sm text-gray-600 mt-2">
-          Discover anonymous feedback on managers across industries. Transparent, honest, and community-driven.
-        </p>
-      </header>
+    <div className="min-h-screen bg-gray-50 text-gray-800">
+      {/* Navbar */}
+      <ResponsiveNavbar isLoggedIn={isLoggedIn} onLogout={logout} />
+  
+      {/* Main Content */}
+      <main className="px-6 py-12 max-w-6xl mx-auto">
+        {/* Header */}
+        <header className="mb-10 text-center">
+          <img src="/rmmlogo.png" alt="RMI Logo" className="mx-auto w-14 h-14 rounded-full mb-4" />
+          <h1 className="text-3xl font-bold">Search Results for “{query}”</h1>
+          <p className="text-sm text-gray-600 mt-2">
+            Discover anonymous feedback on managers across industries. Transparent, honest, and community-driven.
+          </p>
+        </header>
 
       {/* Results */}
       {loading ? (
@@ -142,6 +150,7 @@ const SearchResults = () => {
         </a>
       </div>
     </main>
+    </div>
   );
 };
 
