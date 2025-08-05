@@ -12,6 +12,9 @@ interface Review {
     name: string;
   };
   reviewText: string;
+  reviewLeadership: string;
+  reviewCommunicationText: string;
+  reviewSupport: string;
   rating: number;
   leadership: number;
   communication: number;
@@ -190,12 +193,15 @@ const ManagerProfile = () => {
               Overall rating based on {totalReviews} review{totalReviews !== 1 ? "s" : ""}
             </p>
             <div className="mt-4 flex gap-3">
+            {!showForm && (
               <button
                 onClick={() => setShowForm(true)}
-                className="bg-blue-400 px-6 py-2 rounded-md font-semibold hover:bg-blue-500"
+                disabled={showForm}
+                className="bg-blue-400 px-6 py-2 rounded-md font-semibold hover:bg-blue-500 disabled:opacity-50"
               >
                 {userReview ? "Edit Review" : "Rate"}
               </button>
+            )}
               <button className="bg-gray-200 px-6 py-2 rounded-md font-semibold hover:bg-gray-300">
                 Save
               </button>
@@ -234,13 +240,24 @@ const ManagerProfile = () => {
         {/* Inline Review Form */}
         {showForm && manager?._id && (
           <div className="mt-10">
-           <ReviewForm
+          <ReviewForm
             managerId={manager._id}
             existingReview={userReview || null}
-            onSuccess={fetchManager}
+            onSuccess={() => {
+              fetchManager();
+              setShowForm(false);
+            }}
             onCancelEdit={() => setShowForm(false)}
           />
           </div>
+        )}
+        {showForm && (
+        <button
+          onClick={() => setShowForm(false)}
+          className="mt-2 bg-gray-300 px-4 py-2 rounded hover:bg-gray-400"
+        >
+          Cancel
+        </button>
         )}
       </section>
 
@@ -253,15 +270,6 @@ const ManagerProfile = () => {
             <div className="flex items-center gap-2 text-blue-500 text-xl mb-2">
               {renderStars(review.rating)}
             </div>
-            <p className="text-gray-700 mb-2 italic">"{review.reviewText}"</p>
-            <p className="text-sm text-gray-500 mb-2">
-              Submitted on {new Date(review.createdAt).toLocaleDateString()}
-            </p>
-            <div className="flex gap-4 text-sm text-gray-600">
-            <button onClick={() => handleLike(review._id)}>👍 {review.likes?.length || 0}</button>
-            <button onClick={() => handleDislike(review._id)}>👎 {review.dislikes?.length || 0}</button>
-            </div>
-            {/* Dimension Ratings */}
             <div className="mt-4 grid grid-cols-2 md:grid-cols-3 gap-2 text-sm text-gray-700">
             {dimensionLabels.map((key) => (
               <div key={key} className="flex items-center justify-between">
@@ -273,6 +281,29 @@ const ManagerProfile = () => {
                 </div>
               </div>
             ))}
+            </div>
+            {review.reviewLeadership && (
+              <p className="text-sm text-gray-700 mt-2">
+                <strong>Leadership:</strong> {review.reviewLeadership}
+              </p>
+            )}
+            {review.reviewCommunicationText && (
+              <p className="text-sm text-gray-700 mt-1">
+                <strong>Communication:</strong> {review.reviewCommunicationText}
+              </p>
+            )}
+            {review.reviewSupport && (
+              <p className="text-sm text-gray-700 mt-1">
+                <strong>Support:</strong> {review.reviewSupport}
+              </p>
+            )}
+            <p className="text-gray-700 mb-2 italic">"{review.reviewText}"</p>
+            <p className="text-sm text-gray-500 mb-2">
+              Submitted on {new Date(review.createdAt).toLocaleDateString()}
+            </p>
+            <div className="flex gap-4 text-sm text-gray-600">
+            <button onClick={() => handleLike(review._id)}>👍 {review.likes?.length || 0}</button>
+            <button onClick={() => handleDislike(review._id)}>👎 {review.dislikes?.length || 0}</button>
             </div>
           </div>
         ))}
