@@ -154,7 +154,7 @@ const ReviewForm: React.FC<ReviewFormProps> = ({ managerId, onSuccess,  existing
           reviewLeadership,
           reviewCommunicationText,
           reviewSupport,        
-          anonymous: false,
+          anonymous: true,
           leadership: dimensions.leadership,
           communication: dimensions.communication,
           teamwork: dimensions.teamwork,
