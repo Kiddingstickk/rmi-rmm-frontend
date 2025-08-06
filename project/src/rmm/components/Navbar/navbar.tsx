@@ -40,12 +40,7 @@ const ResponsiveNavbar: React.FC<NavbarProps> = ({ isLoggedIn, onLogout }) => {
 
           {isLoggedIn ? (
             <>
-              <Link
-                to="/profile"
-                className="text-sm bg-pastelBlue text-white px-4 py-2 rounded-md hover:bg-blue-200 transition"
-              >
-                
-              </Link>
+             
               <button
                 onClick={onLogout}
                 className="text-sm bg-pastelBlue text-white px-4 py-2 rounded-md hover:bg-blue-200 transition"
