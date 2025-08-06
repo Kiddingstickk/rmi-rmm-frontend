@@ -40,3 +40,38 @@ export const getAllCompanies = async (req, res) => {
     res.status(500).json({ error: 'Server error' });
   }
 };
+
+
+// GET /api/search/company/:name/:id
+export const getCompanyById = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const company = await Company.findById(id).populate({
+      path: 'managers',
+      select: 'name position averageRating',
+    });
+
+    if (!company) {
+      return res.status(404).json({ message: 'Company not found' });
+    }
+
+    const avgRating =
+      company.managers.length > 0
+        ? company.managers.reduce((sum, m) => sum + (m.averageRating || 0), 0) / company.managers.length
+        : 0;
+
+    res.json({
+      company: {
+        _id: company._id,
+        name: company.name,
+        description: company.description,
+        avgRating: avgRating.toFixed(1),
+      },
+      managers: company.managers,
+    });
+  } catch (err) {
+    console.error('Error fetching company by ID:', err);
+    res.status(500).json({ error: 'Server error' });
+  }
+};

@@ -36,6 +36,7 @@ import RateManager from './rmm/pages/RateManager';
 import OurTeam from './rmm/pages/OurTeam';
 import PrivacyPolicy from './rmm/pages/PrivacyPolicy';
 import TermsOfService from './rmm/pages/TermsOfService';
+import CompanyProfile from "./rmm/pages/CompanyProfile";
 
 
 
@@ -95,6 +96,7 @@ const App = () => {
         <Route path="/team" element={<OurTeam />} />
         <Route path="/privacy" element={<PrivacyPolicy />} />
         <Route path="/terms" element={<TermsOfService />} />
+        <Route path="/companies/:id" element={<CompanyProfile />} />
 
        
 
