@@ -2,8 +2,10 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import api from "../../lib/api";
 import ReviewForm from "../components/departments/ReviewForm";
+import Navbar from '../components/Navbar/navbar';
+import { useAuth } from '../../rmi/lib/useAuth';
 
-
+const { isLoggedIn, logout } = useAuth();
 
 interface Review {
   _id: string;
@@ -153,13 +155,9 @@ const ManagerProfile = () => {
 
 
   return (
-    <div className="min-h-screen bg-gray-100">
-      <header className="bg-blue-400 flex justify-between items-center px-8 py-6 shadow-md">
-        <img src="/rmmlogo.png" alt="RMM Logo" className="w-12 h-12 rounded-full" />
-        <h1 className="text-xl md:text-2xl font-bold text-right text-gray-900 uppercase">
-          Manager Profile:
-        </h1>
-      </header>
+    <div className="bg-white min-h-screen">
+      <Navbar isLoggedIn={isLoggedIn} onLogout={logout} />
+
 
       <section className="max-w-5xl mx-auto px-6 py-10 bg-white rounded-xl shadow-lg mt-6">
         <div className="flex flex-col md:flex-row justify-between gap-8">
@@ -212,7 +210,7 @@ const ManagerProfile = () => {
             <h3 className="text-lg font-medium text-gray-700 mb-4">Rating Distribution</h3>
             <div className="space-y-3">
               {[5, 4, 3, 2, 1].map((star) => {
-                const label = ['Awful', 'OK', 'Good', 'Great', 'Awesome'][5 - star];
+                const label = ['Awesome', 'Great', 'Good', 'OK', 'Awful'][5 - star];
                 const count = manager?.reviews.filter((r) => r.rating === star).length || 0;
                 return (
                   <div key={star} className="flex items-center justify-between">

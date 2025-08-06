@@ -209,7 +209,7 @@ const InterviewerProfile = () => {
             <h3 className="text-lg font-medium text-gray-700 mb-4">Rating Breakdown</h3>
             <div className="space-y-3">
               {[5, 4, 3, 2, 1].map((stars) => {
-                const label = ['Awful', 'OK', 'Good', 'Great', 'Awesome'][5 - stars];
+                const label = ['Awesome', 'Great', 'Good', 'OK', 'Awful'][5 - stars];
                 const count = reviews.filter((r) => r.rating === stars).length;
                 return (
                   <div key={stars} className="flex items-center justify-between">
