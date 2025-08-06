@@ -45,7 +45,7 @@ export const submitReview = async (req, res) => {
       reviewLeadership: sanitizeText(reviewLeadership),
       reviewCommunicationText: sanitizeText(reviewCommunicationText),
       reviewSupport: sanitizeText(reviewSupport),    
-      anonymous,
+      anonymous: true,
     });
     
     await newReview.save();
@@ -164,12 +164,24 @@ export const getManagerReviews = async (req, res) => {
     if (!managerId) {
       return res.status(400).json({ message: 'Manager ID is required.' });
     }
+    const currentUserId = req.user?._id?.toString();
 
     const reviews = await ManagerReview.find({ managerId })
-      
-      .sort({ createdAt: -1 }); // newest first
+    .populate('userId', '_id name')
+    .sort({ createdAt: -1 })
+    .lean();
 
-    res.status(200).json(reviews);
+    const safeReviews = reviews.map((r) => {
+      const isOwnReview = r.userId?._id?.toString() === currentUserId;
+      return {
+        ...r,
+        userId: r.anonymous ? null : r.userId,
+        isOwnReview,
+      };
+    });
+
+
+    res.status(200).json(safeReviews);
   } catch (error) {
     console.error('Error fetching simple reviews:', error);
     res.status(500).json({ message: 'Server error while fetching simple reviews.' });
