@@ -1,4 +1,6 @@
 import React, { useEffect } from 'react';
+import ResponsiveNavbar from '../components/Navbar/navbar';
+import { useAuth } from '../../rmi/lib/useAuth';
 
 interface TeamMember {
   name: string;
@@ -6,6 +8,8 @@ interface TeamMember {
   image?: string;
   bio: string;
 }
+
+const { isLoggedIn, logout } = useAuth();
 
 const team: TeamMember[] = [
   {
@@ -46,6 +50,9 @@ const OurTeam = () => {
   }, []);
 
   return (
+    <div className="min-h-screen bg-gray-100 flex flex-col">
+    <ResponsiveNavbar isLoggedIn={isLoggedIn} onLogout={logout} />
+
     <main className="bg-white min-h-screen px-6 py-16 text-gray-800">
       <div className="max-w-5xl mx-auto text-center">
         <h1 className="text-4xl font-extrabold text-blue-700 mb-4">Meet the Team</h1>
@@ -84,6 +91,7 @@ const OurTeam = () => {
         </div>
       </div>
     </main>
+    </div>
   );
 };
 
