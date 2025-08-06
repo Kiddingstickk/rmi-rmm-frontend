@@ -4,6 +4,7 @@ import api from "../../lib/api";
 import ReviewForm from "../components/departments/ReviewForm";
 import Navbar from '../components/Navbar/navbar';
 import { useAuth } from '../../rmi/lib/useAuth';
+import { Link } from "react-router-dom";
 
 const { isLoggedIn, logout } = useAuth();
 
@@ -171,8 +172,18 @@ const ManagerProfile = () => {
               </p>
               <p>
                 <span className="font-medium">Company:</span>{' '}
-                <span className="text-yellow-700">{manager?.company?.name}</span>
+                {manager?.company?._id && manager.company.name ? (
+                  <Link
+                    to={`/companies/${manager.company._id}`}
+                    className="text-yellow-700 hover:underline"
+                  >
+                    {manager.company.name}
+                  </Link>
+                ) : (
+                  <span className="text-gray-500 italic">Unknown</span>
+                )}
               </p>
+
               <p>
                 <span className="font-medium">Branch:</span>{' '}
                 <span className="text-purple-700">

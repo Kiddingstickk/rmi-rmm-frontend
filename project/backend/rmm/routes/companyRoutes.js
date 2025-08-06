@@ -1,12 +1,13 @@
 import express from 'express';
-import { getAllCompanies, createCompany } from '../controllers/companyController.js';
+import { getAllCompanies, createCompany ,getCompanyById } from '../controllers/companyController.js';
 
 const router = express.Router();
 
-// GET /api/companies?search=...
+
 router.get('/', getAllCompanies);
 
-// POST /api/companies
+
 router.post('/', createCompany);
 
+router.get('/search/company/:name/:id', getCompanyById);
 export default router;
