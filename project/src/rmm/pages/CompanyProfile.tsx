@@ -29,7 +29,7 @@ export default function CompanyProfile() {
   const [data, setData] = useState<CompanyResponse | null>(null);
 
   useEffect(() => {
-    axios.get(`${import.meta.env.VITE_API_URL}/api/companies/${id}`).then(res => setData(res.data));
+    axios.get(`${import.meta.env.VITE_API_URL}/api/companies/search/company/_/${id}`).then(res => setData(res.data));
   }, [id]);
 
   if (!data) return <div className="p-8">Loading...</div>;
