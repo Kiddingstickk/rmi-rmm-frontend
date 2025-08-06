@@ -69,7 +69,7 @@ export const getManagerById = async (req, res) => {
 
 
     const reviews = await ManagerReview.find({ managerId: req.params.id })
-    .select('rating reviewText leadership communication teamwork empathy fairness createdAt')
+    .select('rating reviewText leadership communication teamwork empathy fairness reviewLeadership reviewCommunicationText reviewSupport createdAt')
     .sort({ createdAt: -1 })
     .lean();
     res.json({ manager: normalizedManager, reviews });
