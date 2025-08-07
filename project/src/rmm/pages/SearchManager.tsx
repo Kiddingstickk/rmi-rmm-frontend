@@ -81,7 +81,7 @@ const SearchManager = () => {
                             className="px-4 py-3 hover:bg-gray-100 border-b cursor-pointer"
                           >
                             <p className="font-medium">{person.Name || person.name}</p>
-                            <p className="text-sm text-gray-500">{person.Department || person.company.name}</p>
+                            <p className="text-sm text-gray-500">{person.Department || person.company?.name || 'No company assigned'}</p>
                           </div>
                         ))}
                         <div
