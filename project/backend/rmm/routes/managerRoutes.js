@@ -12,12 +12,31 @@ router.get('/search/:query', async (req, res) => {
     const { query } = req.params;
     const { searchMode } = req.query;
 
-    const regex = new RegExp(query, 'i'); 
-    const filter = searchMode === 'company'
-      ? { branch: regex }
-      : { name: regex };
+    const regex = new RegExp(query, 'i');
 
-    const managers = await Manager.find(filter).limit(10);
+    let managers;
+
+    if (searchMode === 'company') {
+      // First, find matching companies
+      const Company = (await import('../models/Company.js')).default;
+      const matchingCompanies = await Company.find({ name: regex }).select('_id');
+
+      if (matchingCompanies.length === 0) {
+        return res.status(200).json([]); // No matching companies
+      }
+
+      managers = await Manager.find({ company: { $in: matchingCompanies.map(c => c._id) } })
+        .populate('company', 'name')
+        .limit(10)
+        .lean();
+    } else {
+      // Search by manager name
+      managers = await Manager.find({ name: regex })
+        .populate('company', 'name')
+        .limit(10)
+        .lean();
+    }
+
     res.status(200).json(managers);
   } catch (err) {
     console.error('Error searching managers:', err);
