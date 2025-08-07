@@ -174,7 +174,7 @@ const ManagerProfile = () => {
                 <span className="font-medium">Company:</span>{' '}
                 {manager?.company?._id && manager.company.name ? (
                   <Link
-                    to={`/companies/${manager.company._id}`}
+                  to={`/companies/${manager.company.name.toLowerCase().replace(/\s+/g, "-")}/${manager.company._id}`}
                     className="text-yellow-700 hover:underline"
                   >
                     {manager.company.name}
