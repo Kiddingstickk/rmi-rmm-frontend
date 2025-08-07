@@ -15,7 +15,7 @@ export const searchRmm = async (req, res) => {
     const managerResults = await Manager.find({
       name: { $regex: searchRegex },
     }).populate("department", "name")
-    .populate("company", "name"); // ✅ populate department name
+    .populate("company", "name"); 
 
     res.json({
       departments: departmentResults,

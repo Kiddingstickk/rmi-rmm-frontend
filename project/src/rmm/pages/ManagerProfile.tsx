@@ -100,7 +100,7 @@ const ManagerProfile = () => {
         dislikes: Array.isArray(r.dislikes) ? r.dislikes.length : 0,
       }));
   
-      // Attach reviews to manager before setting state
+      
       const managerWithReviews = {
         ...data.manager,
         reviews

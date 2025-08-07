@@ -1,7 +1,7 @@
 import express from 'express';
 import { getAllManagers, getManagerById, createManager , updateManager, deleteManager } from '../controllers/managerController.js';
 import auth from '../../shared/middleware/auth.js';
-import Manager from '../models/Manager.js'; // ✅ Adjust path if needed
+import Manager from '../models/Manager.js'; 
 
 
 const router = express.Router();
@@ -12,7 +12,7 @@ router.get('/search/:query', async (req, res) => {
     const { query } = req.params;
     const { searchMode } = req.query;
 
-    const regex = new RegExp(query, 'i'); // case-insensitive
+    const regex = new RegExp(query, 'i'); 
     const filter = searchMode === 'company'
       ? { branch: regex }
       : { name: regex };
