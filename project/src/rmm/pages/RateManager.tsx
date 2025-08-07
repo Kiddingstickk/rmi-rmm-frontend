@@ -165,7 +165,14 @@ const RateManager = () => {
       });
 
       setMessage('✅ Submitted successfully!');
-      navigate(`/management/managers/${manager._id}`);
+
+      const slug = manager.name
+        .toLowerCase()
+        .trim()
+        .replace(/\s+/g, '-')
+        .replace(/[^\w-]/g, '');
+      
+      navigate(`/management/managers/${slug}/${manager._id}`);
     } catch (err) {
       console.error(err);
       setMessage('❌ Submission failed. Try again.');
