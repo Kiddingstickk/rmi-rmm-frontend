@@ -74,11 +74,14 @@ const SearchManager = () => {
                         {results.map((person, i) => (
                           <div
                             key={i}
-                            onClick={() => navigate(`/management/managers/${person._id}`)}
+                            onClick={() => {
+                              const slug = person.name.toLowerCase().replace(/\s+/g, '-').replace(/[^\w-]/g, '');
+                              navigate(`/management/managers/${slug}/${person._id}`);
+                            }}
                             className="px-4 py-3 hover:bg-gray-100 border-b cursor-pointer"
                           >
                             <p className="font-medium">{person.Name || person.name}</p>
-                            <p className="text-sm text-gray-500">{person.Department || person.company}</p>
+                            <p className="text-sm text-gray-500">{person.Department || person.company.name}</p>
                           </div>
                         ))}
                         <div
