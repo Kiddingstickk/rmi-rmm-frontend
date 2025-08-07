@@ -96,7 +96,7 @@ const App = () => {
         <Route path="/team" element={<OurTeam />} />
         <Route path="/privacy" element={<PrivacyPolicy />} />
         <Route path="/terms" element={<TermsOfService />} />
-        <Route path="/companies/:id" element={<CompanyProfile />} />
+        <Route path="/companies/:name/:id" element={<CompanyProfile />} />
 
        
 
