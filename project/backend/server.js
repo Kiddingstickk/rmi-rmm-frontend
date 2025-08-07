@@ -21,6 +21,9 @@ import managerReviewRoutes from './rmm/routes/managerReviewRoutes.js';
 import connectDB from './shared/config/db.js';
 import companyRoutes from './rmm/routes/companyRoutes.js';
 import branchRoutes from './rmm/routes/branchRoutes.js';
+import sitemapRoute from './rmm/routes/sitemap.js';
+
+
 
 
 
@@ -73,6 +76,8 @@ app.use('/api/search', searchRoutes);
 app.use('/api/manager-reviews', managerReviewRoutes);
 app.use('/api/companies', companyRoutes);
 app.use('/api/branches', branchRoutes);
+app.use('/', sitemapRoute);
+
 
 
 // MongoDB Connection

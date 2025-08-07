@@ -89,7 +89,7 @@ const App = () => {
        
         <Route path="/Home" element={<ManagementHome />} />
         <Route path="/management/departments/:name" element={<DepartmentPage />} />
-        <Route path="/management/managers/:id" element={<ManagerProfile />} />
+        <Route path="/management/managers/:name/:id" element={<ManagerProfile />} />
         <Route path="/searchresults" element={<RmmSearchResults />} />
         <Route path="/search-managers" element={<SearchManager />} />
         <Route path="/rate-manager" element={<ProtectedRoute><RateManager /></ProtectedRoute>}/>
