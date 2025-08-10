@@ -78,11 +78,16 @@ const getReviewAverage = (review: Review) => {
 
 
 const ManagerProfile = () => {
-  const { id } = useParams();
+  const { slug, id } = useParams();
   const [manager, setManager] = useState<Manager | null>(null);
   const userId = localStorage.getItem("userId") || '';
   const token = localStorage.getItem("token");
   const [showForm, setShowForm] = useState(false);
+  const [visibleCount, setVisibleCount] = useState(5);
+  const visibleReviews = manager?.reviews.slice(0, visibleCount);
+  
+
+
 
   useEffect(() => {
     if (id) fetchManager();
@@ -111,6 +116,59 @@ const ManagerProfile = () => {
       console.error("Failed to fetch manager", error);
     }
   };
+
+  useEffect(() => {
+    if (!manager || !id || !slug) return;
+  
+    // 🧠 Title
+    document.title = `${manager.name} – Anonymous Reviews | Rate My Management`;
+  
+    // 🧠 Meta Description
+    const metaDesc = document.querySelector("meta[name='description']");
+    if (metaDesc) {
+      metaDesc.setAttribute(
+        "content",
+        `Read anonymous reviews of ${manager.name}, ${manager.position} at ${manager.company?.name}. See ratings for leadership, communication, and more.`
+      );
+    } else {
+      const newMeta = document.createElement("meta");
+      newMeta.name = "description";
+      newMeta.content = `Read anonymous reviews of ${manager.name}, ${manager.position} at ${manager.company?.name}.`;
+      document.head.appendChild(newMeta);
+    }
+  
+    // 🧠 Canonical Tag
+    const canonicalUrl = `https://ratemymanagement.com/management/managers/${slug}/${id}`;
+    const canonical = document.querySelector("link[rel='canonical']");
+    if (canonical) {
+      canonical.setAttribute("href", canonicalUrl);
+    } else {
+      const link = document.createElement("link");
+      link.rel = "canonical";
+      link.href = canonicalUrl;
+      document.head.appendChild(link);
+    }
+  
+    // 🧠 Structured Data
+    const jsonLd = document.createElement("script");
+    jsonLd.type = "application/ld+json";
+    jsonLd.textContent = JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "Person",
+      "name": manager.name,
+      "jobTitle": manager.position,
+      "worksFor": {
+        "@type": "Organization",
+        "name": manager.company?.name
+      },
+      "url": canonicalUrl
+    });
+    document.head.appendChild(jsonLd);
+  
+    return () => {
+      document.head.removeChild(jsonLd);
+    };
+  }, [manager, slug, id]);
 
 
   const handleLike = async (reviewId: string) => {
@@ -318,7 +376,8 @@ const ManagerProfile = () => {
           </div>
         ))}
         <div className="flex justify-center pt-6">
-          <button className="bg-gray-200 hover:bg-gray-300 px-6 py-2 rounded font-medium">
+          <button onClick={() => setVisibleCount(prev => prev + 5)}
+          className="bg-gray-200 hover:bg-gray-300 px-6 py-2 rounded font-medium">
             See More
           </button>
         </div>

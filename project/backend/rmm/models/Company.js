@@ -18,6 +18,13 @@ const companySchema = new mongoose.Schema({
       ref: 'Manager'
     }
   ]
+,
+  companyReviews: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'CompanyReview'
+    }
+  ]
 
 }, { timestamps: true });
 
