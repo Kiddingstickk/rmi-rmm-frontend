@@ -4,12 +4,19 @@ import Company from '../models/Company.js';
 export const submitCompanyReview = async (req, res) => {
   try {
     const { companyId, ratings, reviewText, isAnonymous = true } = req.body;
+    const reviewerId = req.user._id;
+
+    const now = new Date();
+    const reviewPeriod = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`;
+
 
     const review = new CompanyReview({
       company: companyId,
+      reviewerId,
       ratings,
       reviewText,
-      isAnonymous
+      isAnonymous,
+      reviewPeriod
     });
 
     await review.save();
@@ -20,14 +27,17 @@ export const submitCompanyReview = async (req, res) => {
 
     res.status(201).json({ success: true, review });
   } catch (err) {
+    if (err.code === 11000) {
+      return res.status(409).json({ error: "You've already submitted a review for this company this month." });
+    }
     console.error('Error submitting company review:', err);
     res.status(500).json({ error: 'Failed to submit review' });
   }
 };
 
 export const getCompanyReviews = async (req, res) => {
-    try {
-      const { companyId } = req.params;
+    try { 
+      const { companyId } = req.params; 
       const reviews = await CompanyReview.find({ company: companyId }).sort({ createdAt: -1 });
       res.json(reviews);
     } catch (err) {
@@ -66,5 +76,22 @@ export const getCompanyReviews = async (req, res) => {
     } catch (err) {
       console.error('Error calculating company rating summary:', err);
       res.status(500).json({ error: 'Failed to calculate summary' });
+    }
+  };
+
+  export const getCompanyReviewsByMonth = async (req, res) => {
+    const { companyId } = req.params;
+    const { month } = req.query; 
+  
+    try {
+      const reviews = await CompanyReview.find({
+        company: companyId,
+        reviewPeriod: month
+      });
+  
+      res.json(reviews);
+    } catch (err) {
+      console.error('Error fetching monthly reviews:', err);
+      res.status(500).json({ error: 'Failed to fetch reviews' });
     }
   };
