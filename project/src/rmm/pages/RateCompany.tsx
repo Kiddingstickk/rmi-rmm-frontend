@@ -13,7 +13,7 @@ interface RateCompanyProps {
   
 
 const RateCompany : React.FC<RateCompanyProps>= ({ isLoggedIn, logout }) => {
-    const { companyId } = useParams(); // 🔥 Extract from route
+    const { id: companyId } = useParams();
     const [isEligible, setIsEligible] = useState(false);
     const [companyName, setCompanyName] = useState('');
     const [rating, setRating] = useState(0);
