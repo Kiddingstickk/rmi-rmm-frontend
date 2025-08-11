@@ -1,10 +1,45 @@
 import CompanyReview from '../models/CompanyReview.js';
 import Company from '../models/Company.js';
+import ManagerReview from '../models/ManagerReview.js';
+
+
+export const checkCompanyReviewEligibility = async (req, res) => {
+  try {
+    const { companyId } = req.params;
+    const reviewerId = req.user.userId || req.user.id;
+
+    const hasReviewedManager = await ManagerReview.exists({
+      reviewerId,
+      company: companyId
+    });
+
+    res.json({ eligible: !!hasReviewedManager });
+  } catch (err) {
+    console.error('Error checking eligibility:', err);
+    res.status(500).json({ error: 'Failed to check eligibility' });
+  }
+};
+
+
+
+
 
 export const submitCompanyReview = async (req, res) => {
   try {
-    const { companyId, ratings, reviews, isAnonymous = true } = req.body;
+    const { companyId, ratings, reviews } = req.body;
     const reviewerId = req.user.userId || req.user.id;
+
+    const hasReviewedManager = await ManagerReview.exists({
+      reviewerId,
+      company: companyId
+    });
+
+    if (!hasReviewedManager) {
+      return res.status(403).json({
+        error: 'You must review a manager in this company before submitting a company review.'
+      });
+    }
+
 
     const now = new Date();
     const reviewPeriod = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`;
@@ -15,7 +50,7 @@ export const submitCompanyReview = async (req, res) => {
       reviewerId,
       ratings,
       reviews,
-      isAnonymous,
+      isAnonymous: true,
       reviewPeriod
     });
 
