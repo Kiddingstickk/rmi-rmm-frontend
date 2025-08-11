@@ -37,6 +37,7 @@ import OurTeam from './rmm/pages/OurTeam';
 import PrivacyPolicy from './rmm/pages/PrivacyPolicy';
 import TermsOfService from './rmm/pages/TermsOfService';
 import CompanyProfile from "./rmm/pages/CompanyProfile";
+import RateCompany from "./rmm/pages/RateCompany";
 
 
 
@@ -44,6 +45,12 @@ import CompanyProfile from "./rmm/pages/CompanyProfile";
 
 // Tailwind CSS import (No need to change this)
 import "../tailwind.css";
+
+const RateCompanyWrapper = () => {
+  const { isLoggedIn, logout } = useAuth();
+  return <RateCompany isLoggedIn={isLoggedIn} logout={logout} />;
+};
+
 
 const ProtectedRoute = ({ children }: { children: JSX.Element }) => {
   const { isLoggedIn } = useAuth();
@@ -97,6 +104,15 @@ const App = () => {
         <Route path="/privacy" element={<PrivacyPolicy />} />
         <Route path="/terms" element={<TermsOfService />} />
         <Route path="/companies/:name/:id" element={<CompanyProfile />} />
+        <Route
+          path="/companies/:name/:id/rate-company"
+          element={
+            <ProtectedRoute>
+              <RateCompanyWrapper />
+            </ProtectedRoute>
+          }
+        />
+              
 
        
 

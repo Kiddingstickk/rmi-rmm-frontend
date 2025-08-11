@@ -3,8 +3,8 @@ import Company from '../models/Company.js';
 
 export const submitCompanyReview = async (req, res) => {
   try {
-    const { companyId, ratings, reviewText, isAnonymous = true } = req.body;
-    const reviewerId = req.user._id;
+    const { companyId, ratings, reviews, isAnonymous = true } = req.body;
+    const reviewerId = req.user.userId || req.user.id;
 
     const now = new Date();
     const reviewPeriod = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`;
@@ -14,7 +14,7 @@ export const submitCompanyReview = async (req, res) => {
       company: companyId,
       reviewerId,
       ratings,
-      reviewText,
+      reviews,
       isAnonymous,
       reviewPeriod
     });
@@ -54,11 +54,11 @@ export const getCompanyReviews = async (req, res) => {
       if (reviews.length === 0) return res.json({ average: null });
   
       const totals = {
+        facilities: 0,
+        colleagues: 0,
+        environment: 0,
         workLifeBalance: 0,
-        compensation: 0,
-        culture: 0,
-        careerGrowth: 0,
-        diversity: 0
+        salary: 0
       };
   
       reviews.forEach(r => {
@@ -92,6 +92,29 @@ export const getCompanyReviews = async (req, res) => {
       res.json(reviews);
     } catch (err) {
       console.error('Error fetching monthly reviews:', err);
+      res.status(500).json({ error: 'Failed to fetch reviews' });
+    }
+  };
+
+
+
+  export const getCompanyReviewsByOffset = async (req, res) => {
+    const { companyId } = req.params;
+    const { monthsAgo } = req.query; 
+  
+    try {
+      const now = new Date();
+      const target = new Date(now.getFullYear(), now.getMonth() - Number(monthsAgo), 1);
+      const next = new Date(target.getFullYear(), target.getMonth() + 1, 1);
+  
+      const reviews = await CompanyReview.find({
+        company: companyId,
+        createdAt: { $gte: target, $lt: next }
+      });
+  
+      res.json(reviews);
+    } catch (err) {
+      console.error('Error fetching offset reviews:', err);
       res.status(500).json({ error: 'Failed to fetch reviews' });
     }
   };
