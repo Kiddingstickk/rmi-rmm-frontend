@@ -18,9 +18,13 @@ const CompanyReviewSchema = new mongoose.Schema({
     careerGrowth: { type: Number, min: 1, max: 5, required: true },
     diversity: { type: Number, min: 1, max: 5, required: true }
   },
-  reviewText: {
-    type: String,
-    maxlength: 2000
+  reviews: {
+    treatment: { type: String, maxlength: 2000 },
+    careerGrowth: { type: String, maxlength: 2000 },
+    diversity: { type: String, maxlength: 2000 },
+    pros: { type: String, maxlength: 1000 },
+    cons: { type: String, maxlength: 1000 },
+    advice: { type: String, maxlength: 1000 }
   },
   isAnonymous: {
     type: Boolean,
@@ -35,6 +39,10 @@ const CompanyReviewSchema = new mongoose.Schema({
     default: Date.now
   }
 });
+
+
+CompanyReviewSchema.index({ reviewerId: 1, company: 1, reviewPeriod: 1 }, { unique: true });
+
 
 const CompanyReview = mongoose.model('CompanyReview', CompanyReviewSchema);
 export default CompanyReview;

@@ -1,6 +1,7 @@
 import { useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 interface Manager {
   _id: string;
@@ -24,6 +25,7 @@ interface CompanyResponse {
 export default function CompanyProfile() {
   const { id } = useParams();
   const [data, setData] = useState<CompanyResponse | null>(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     axios
@@ -91,6 +93,16 @@ export default function CompanyProfile() {
           Rate a Manager
         </button>
       </div>
+
+      <div className="mb-4 text-center">
+        <button
+          onClick={() => navigate(`/companies/${company.name}/${company._id}/rate-company`)}
+          className="bg-green-600 hover:bg-green-700 text-white font-semibold px-6 py-3 rounded-lg shadow"
+        >
+          Rate This Company
+        </button>
+      </div>
+
 
       {/* Trust Disclaimer */}
       <div className="text-sm text-green-600 text-center">
