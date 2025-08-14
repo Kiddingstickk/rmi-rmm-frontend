@@ -2,6 +2,7 @@ import Manager from '../models/Manager.js';
 import Department from '../models/Department.js';
 import Company from '../models/Company.js';
 import ManagerReview from '../models/ManagerReview.js';
+import Branch from '../models/Branch.js';
 //import {notifyGoogleManager} from '../google-indexing/index.js';
 
 
