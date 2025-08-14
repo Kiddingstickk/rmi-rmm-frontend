@@ -53,6 +53,7 @@ export const getManagerById = async (req, res) => {
     const manager = await Manager.findById(req.params.id)
     .populate('company', 'name')
     .populate('department', 'name')
+    .populate('branch', 'city location') 
     .lean();
     
     if (!manager) return res.status(404).json({ message: 'Manager not found' });
@@ -64,7 +65,15 @@ export const getManagerById = async (req, res) => {
         : undefined,
       department: manager.department?.name
         ? { _id: manager.department._id, name: manager.department.name }
-        : undefined
+        : undefined,
+      branch: manager.branch?.city
+        ? {
+            _id: manager.branch._id,
+            city: manager.branch.city,
+            location: manager.branch.location
+          }
+        : undefined,
+
     };
 
 

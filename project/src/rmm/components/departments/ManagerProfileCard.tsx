@@ -24,7 +24,7 @@ interface ManagerProfileCardProps {
   reviews: Review[];
   userReviewForm: React.ReactNode;
   currentUserId: string;
-  managerId: string; // pass this from parent component
+  managerId: string; 
   onReviewDeleted?: (deletedReviewId: string) => void;
 }
 
@@ -57,7 +57,7 @@ const ManagerProfileCard: React.FC<ManagerProfileCardProps> = ({
 
      
 
-      // Optionally update the UI by calling the callback
+     
       if (onReviewDeleted) onReviewDeleted(reviewId);
 
       alert("Review deleted successfully.");
@@ -73,7 +73,7 @@ const ManagerProfileCard: React.FC<ManagerProfileCardProps> = ({
     try {
       const res = await api.post(
         `${import.meta.env.VITE_API_URL}/manager-reviews/flag/${managerId}`,
-        {}, // no body
+        {}, 
         {
           headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
         }
