@@ -172,6 +172,10 @@ export const createManager = async (req, res) => {
       });
     }
     const branch = await Branch.findById(branchId);
+    if (!Array.isArray(branch.company)) {
+      branch.company = [branch.company];
+    }
+    
     if (!branch.company.includes(company)) {
       branch.company.push(company);
     }

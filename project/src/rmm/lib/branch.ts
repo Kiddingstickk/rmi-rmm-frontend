@@ -51,7 +51,8 @@ export const findOrCreateBranch = async (
 
   const match = branches.find(
     (b: any) =>
-      b.company?._id === companyId &&
+      Array.isArray(b.company) &&
+      b.company.some((c: any) => c._id === companyId)&&
       b.city.toLowerCase() === city.toLowerCase() &&
       b.location.toLowerCase() === location.toLowerCase()
   );
