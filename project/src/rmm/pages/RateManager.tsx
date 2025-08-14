@@ -155,7 +155,7 @@ const RateManager = () => {
       const managerPayload: any = {
         name,
         position,
-        branchId,
+        branchId: branch._id,
         company: compId,
       };
       
