@@ -66,7 +66,9 @@ const RateManager = () => {
   const [companyName, setCompanyName] = useState('');
   const [companyId, setCompanyId] = useState('');
   const [companySuggestions, setCompanySuggestions] = useState([]);
-  const [branchSuggestions, setBranchSuggestions] = useState([]);
+  const [branchSuggestions, setBranchSuggestions] = useState<
+  { _id: string; name: string; city: string; location?: string }[]
+>([]);
 
   const debounceTimer = useRef<NodeJS.Timeout | null>(null);
 
@@ -312,9 +314,18 @@ const RateManager = () => {
                 placeholder="Branch City"
                 value={branchCity}
                 onChange={(e) => {
-                  setBranchCity(e.target.value);
-                  setBranchId('');
-                }}
+                  const input = e.target.value;
+                  setBranchCity(input);
+                
+                  // Check if input matches any suggestion exactly
+                  const matchedBranch = branchSuggestions.find(
+                    (b) => b.city.toLowerCase() === input.trim().toLowerCase()
+                  );
+                
+                  if (!matchedBranch) {
+                    setBranchId(''); // Only reset if no match
+                  }
+                }}                
                 className="w-full border border-gray-300 rounded-md px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-300"
                 required
               />
