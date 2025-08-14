@@ -12,6 +12,10 @@ const managerReviewSchema = new mongoose.Schema({
     ref: 'Manager',
     required: true
   },
+  company: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Company'
+  },
   rating: {
     type: Number,
     required: true,

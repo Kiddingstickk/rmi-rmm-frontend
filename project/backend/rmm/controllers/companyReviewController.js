@@ -1,17 +1,31 @@
 import CompanyReview from '../models/CompanyReview.js';
 import Company from '../models/Company.js';
 import ManagerReview from '../models/ManagerReview.js';
-
+import mongoose from 'mongoose';
 
 export const checkCompanyReviewEligibility = async (req, res) => {
   try {
     const { companyId } = req.params;
+    console.log('Received request to check eligibility for companyId:', companyId);
+
     const reviewerId = req.user.userId || req.user.id;
+    console.log('Decoded token payload:', req.user);
+    console.log('Extracted reviewerId:', reviewerId);
+
+    if (!reviewerId || !companyId) {
+      return res.status(400).json({ error: 'Missing reviewerId or companyId' });
+    }
+
+    const reviewerObjectId = new mongoose.Types.ObjectId(reviewerId);
+    const companyObjectId = new mongoose.Types.ObjectId(companyId);
+
 
     const hasReviewedManager = await ManagerReview.exists({
-      reviewerId,
-      company: companyId
+      userId: reviewerObjectId,
+      company: companyObjectId
     });
+    console.log('Manager review exists:', hasReviewedManager);
+
 
     res.json({ eligible: !!hasReviewedManager });
   } catch (err) {
