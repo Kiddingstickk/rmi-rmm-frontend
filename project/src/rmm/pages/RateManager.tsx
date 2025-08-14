@@ -5,7 +5,7 @@ import { useAuth } from '../../rmi/lib/useAuth';
 import { createManager, submitManagerReview } from '../lib/managers';
 import { getDepartments, createDepartment } from '../lib/department';
 import { getCompanies, createCompany } from '../lib/company';
-import { findOrCreateBranch } from '../lib/branch';
+import { findOrCreateBranch , getBranches} from '../lib/branch';
 
 
 type DimensionRatingProps = {
@@ -97,6 +97,25 @@ const RateManager = () => {
       }
     }, 300);
   }, [companyName]);
+
+
+  useEffect(() => {
+    if (!branchCity.trim()) return setBranchSuggestions([]);
+    if (debounceTimer.current) clearTimeout(debounceTimer.current);
+  
+    debounceTimer.current = setTimeout(async () => {
+      try {
+        const query = `${branchCity}`.trim(); // You could add location if needed
+        const results = await getBranches(query);
+        const filtered = results.filter(
+          (b: any) => b.company?._id === companyId
+        );
+        setBranchSuggestions(filtered || []);
+      } catch (err) {
+        console.error('Failed to fetch branches:', err);
+      }
+    }, 300);
+  }, [branchCity, companyId]);
 
   const handleDepartmentSelect = (dept: any) => {
     setDepartmentName(dept.name);

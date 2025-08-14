@@ -65,3 +65,29 @@ export const createBranch = async (req, res) => {
     res.status(500).json({ error: 'Server error' });
   }
 };
+
+
+export const getBranches = async (req, res) => {
+  const { search = '', companyId } = req.query;
+
+  const filter = {
+    ...(search.trim() && {
+      $or: [
+        { name: new RegExp(search.trim(), 'i') },
+        { city: new RegExp(search.trim(), 'i') },
+        { location: new RegExp(search.trim(), 'i') },
+      ],
+    }),
+    ...(companyId && { company: companyId }),
+  };
+
+  try {
+    const branches = await Branch.find(filter)
+      .populate('company', 'name') // optional
+      .sort({ city: 1, name: 1 });
+    res.json(branches);
+  } catch (err) {
+    console.error('Error fetching branches:', err);
+    res.status(500).json({ error: 'Server error' });
+  }
+};
