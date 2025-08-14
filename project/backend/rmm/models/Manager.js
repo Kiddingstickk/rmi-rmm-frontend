@@ -47,11 +47,10 @@ const managerSchema = new mongoose.Schema({
     type: Date,
     default: Date.now
   },
-  branch: {
-    type: String,
+  branchId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref : 'Branch',
     required: false,
-    trim: true,
-    default: "Head Office" // Or use "Unknown" if you'd prefer ambiguity
   },
 
   company: {

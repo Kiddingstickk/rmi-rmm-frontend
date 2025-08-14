@@ -43,7 +43,7 @@ export const createBranch = async (req, res) => {
     const existing = await Branch.findOne({
       name: new RegExp(`^${name}$`, 'i'),
       city: new RegExp(`^${city}$`, 'i'),
-      company: companyId,
+      company: { $in: [companyId] } ,
       location: new RegExp(`^${location}$`, 'i')
     });
 
@@ -53,7 +53,7 @@ export const createBranch = async (req, res) => {
 
     const branch = new Branch({
       name: name.trim(),
-      company: companyId,
+      company: [companyId],
       city: city.trim(),
       location: location.trim()
     });
@@ -78,7 +78,7 @@ export const getBranches = async (req, res) => {
         { location: new RegExp(search.trim(), 'i') },
       ],
     }),
-    ...(companyId && { company: companyId }),
+    ...(companyId && { company: { $in: [companyId] } }),
   };
 
   try {

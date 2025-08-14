@@ -107,11 +107,7 @@ const RateManager = () => {
       try {
         const query = `${branchCity}`.trim(); 
         const results = await getBranches(query);
-        const filtered = companyId
-          ? results.filter((b: any) => b.company?._id === companyId)
-          : results;
-        console.log('Filtered branches:', filtered);
-        setBranchSuggestions(filtered || []);
+        setBranchSuggestions(results || []);
       } catch (err) {
         console.error('Failed to fetch branches:', err);
       }
@@ -157,7 +153,7 @@ const RateManager = () => {
       const managerPayload: any = {
         name,
         position,
-        branch: branchId,
+        branchId,
         company: compId,
       };
       
@@ -335,8 +331,8 @@ const RateManager = () => {
                       }}
                       className="px-4 py-2 hover:bg-yellow-100 cursor-pointer text-sm"
                     >
-                      {branch.name}({branch.company?.name || 'Unknown'})
-                    </li>
+                      {branch.name}
+                  </li>
                   ))}
                 </ul>
               )}
