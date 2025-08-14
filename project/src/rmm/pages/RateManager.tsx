@@ -105,11 +105,12 @@ const RateManager = () => {
   
     debounceTimer.current = setTimeout(async () => {
       try {
-        const query = `${branchCity}`.trim(); // You could add location if needed
+        const query = `${branchCity}`.trim(); 
         const results = await getBranches(query);
         const filtered = results.filter(
           (b: any) => b.company?._id === companyId
         );
+        console.log('Filtered branches:', filtered);
         setBranchSuggestions(filtered || []);
       } catch (err) {
         console.error('Failed to fetch branches:', err);
