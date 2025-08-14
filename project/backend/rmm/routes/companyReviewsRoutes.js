@@ -4,11 +4,13 @@ import {
   submitCompanyReview,
   getCompanyReviews,
   getCompanyRatingSummary,
-  getCompanyReviewsByMonth
+  getCompanyReviewsByMonth,
+  checkCompanyReviewEligibility
 } from '../controllers/companyReviewController.js';
 
 const router = express.Router();
 
+router.get('/check-eligibility/:companyId', auth, checkCompanyReviewEligibility);
 router.post('/submit', auth, submitCompanyReview);
 router.get('/:companyId', getCompanyReviews);
 router.get('/summary/:companyId', getCompanyRatingSummary);
