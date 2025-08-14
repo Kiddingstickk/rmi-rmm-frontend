@@ -107,9 +107,9 @@ const RateManager = () => {
       try {
         const query = `${branchCity}`.trim(); 
         const results = await getBranches(query);
-        const filtered = results.filter(
-          (b: any) => b.company?._id === companyId
-        );
+        const filtered = companyId
+          ? results.filter((b: any) => b.company?._id === companyId)
+          : results;
         console.log('Filtered branches:', filtered);
         setBranchSuggestions(filtered || []);
       } catch (err) {
