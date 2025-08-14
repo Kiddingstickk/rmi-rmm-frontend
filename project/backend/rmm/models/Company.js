@@ -24,8 +24,13 @@ const companySchema = new mongoose.Schema({
       type: mongoose.Schema.Types.ObjectId,
       ref: 'CompanyReview'
     }
+  ],
+  branches: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Branch'
+    }
   ]
-
 }, { timestamps: true });
 
 const Company = mongoose.model('Company', companySchema);

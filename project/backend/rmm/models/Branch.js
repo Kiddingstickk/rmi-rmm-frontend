@@ -6,11 +6,11 @@ const branchSchema = new mongoose.Schema({
     required: true,
     trim: true
   },
-  company: {
+  company: [{
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Company',
     required: true
-  },
+  }],
   city: {
     type: String,
     required: true

@@ -50,7 +50,8 @@ export const getCompanyById = async (req, res) => {
     const company = await Company.findById(id).populate({
       path: 'managers',
       select: 'name position averageRating',
-    });
+    })
+    .populate('branches', 'name city location');
 
     if (!company) {
       return res.status(404).json({ message: 'Company not found' });

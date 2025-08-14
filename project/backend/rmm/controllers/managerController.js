@@ -27,6 +27,7 @@ export const getAllManagers = async (req, res) => {
         select: 'name',
         options: { strictPopulate: false } // ✅ prevents errors if company is missing
       })
+      .populate('branchId', 'city location')
       .populate('department', 'name')
       .lean(); 
       console.log('📦 Raw managers after populate:', JSON.stringify(managers, null, 2));
@@ -53,7 +54,7 @@ export const getManagerById = async (req, res) => {
     const manager = await Manager.findById(req.params.id)
     .populate('company', 'name')
     .populate('department', 'name')
-    .populate('branch', 'city location') 
+    .populate('branchId', 'city location') 
     .lean();
     
     if (!manager) return res.status(404).json({ message: 'Manager not found' });
@@ -66,11 +67,11 @@ export const getManagerById = async (req, res) => {
       department: manager.department?.name
         ? { _id: manager.department._id, name: manager.department.name }
         : undefined,
-      branch: manager.branch?.city
+      branch: manager.branchId?.city
         ? {
-            _id: manager.branch._id,
-            city: manager.branch.city,
-            location: manager.branch.location
+            _id: manager.branchId._id,
+            city: manager.branchId.city,
+            location: manager.branchId.location
           }
         : undefined,
 
@@ -136,7 +137,7 @@ export const deleteManager = async (req, res) => {
 
 // Create a new manager (admin-only)
 export const createManager = async (req, res) => {
-  const { name, departmentId, position, bio, branch, company } = req.body;
+  const { name, departmentId, position, bio, branchId, company } = req.body;
 
   try {
     let department = null;
@@ -150,7 +151,7 @@ export const createManager = async (req, res) => {
       name,
       position,
       bio,
-      branch,
+      branchId,
       company,
       averageRating: 0,
       ...(department && { department: department._id }) 
@@ -166,10 +167,16 @@ export const createManager = async (req, res) => {
 
     if (company) {
       await Company.findByIdAndUpdate(company, {
-        $addToSet: { managers: manager._id }
+        $addToSet: { managers: manager._id, branches: branchId }
       });
     }
-   
+    const branch = await Branch.findById(branchId);
+    if (!branch.company.includes(company)) {
+      branch.company.push(company);
+    }
+    branch.managers.push(manager._id);
+    await branch.save();
+    
 
     res.status(201).json(manager);
   } catch (err) {
