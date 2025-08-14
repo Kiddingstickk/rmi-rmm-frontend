@@ -334,7 +334,7 @@ const RateManager = () => {
                       }}
                       className="px-4 py-2 hover:bg-yellow-100 cursor-pointer text-sm"
                     >
-                      {branch.name}
+                      {branch.name}({branch.company?.name || 'Unknown'})
                     </li>
                   ))}
                 </ul>
