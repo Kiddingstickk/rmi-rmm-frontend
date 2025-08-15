@@ -226,7 +226,7 @@ const ManagerProfile = () => {
     if (navigator.share) {
       navigator.share({
         title: `Review for ${manager.name}`,
-        text: `Check out this manager review on Rate My Management.`,
+        text: `Check out ${manager.name} review on Rate My Management.`,
         url,
       }).catch((err) => console.error('Share failed:', err));
     } else {
