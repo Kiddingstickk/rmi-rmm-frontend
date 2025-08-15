@@ -212,7 +212,28 @@ const ManagerProfile = () => {
     'fairness'
   ];
 
-
+  const handleShare = () => {
+    if (!manager) return;
+  
+    const slug = manager.name
+      .toLowerCase()
+      .trim()
+      .replace(/\s+/g, '-')
+      .replace(/[^\w-]/g, '');
+  
+    const url = `${window.location.origin}/management/managers/${slug}/${manager._id}`;
+  
+    if (navigator.share) {
+      navigator.share({
+        title: `Review for ${manager.name}`,
+        text: `Check out this manager review on Rate My Management.`,
+        url,
+      }).catch((err) => console.error('Share failed:', err));
+    } else {
+      navigator.clipboard.writeText(url);
+      alert('🔗 Link copied to clipboard!');
+    }
+  };
 
   return (
     <div className="bg-white min-h-screen">
@@ -270,8 +291,12 @@ const ManagerProfile = () => {
                 {userReview ? "Edit Review" : "Rate"}
               </button>
             )}
-              <button className="bg-gray-200 px-6 py-2 rounded-md font-semibold hover:bg-gray-300">
-                Save
+              <button
+                onClick={handleShare}
+                disabled={!manager}
+                className="bg-gray-200 px-6 py-2 rounded-md font-semibold hover:bg-gray-300 disabled:opacity-50"
+              >
+                Share
               </button>
             </div>
           </div>
