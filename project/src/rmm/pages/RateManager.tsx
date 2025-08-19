@@ -153,10 +153,17 @@ const RateManager = () => {
       if (branchId) {
         branch = branchSuggestions.find(b => b._id === branchId);
         console.log('[Submit] 🔁 Using selected branch:', branch);
+      
+        if (!branch) {
+          console.warn('[Submit] ⚠️ branchId provided but no matching branch found. Falling back to findOrCreateBranch.');
+          branch = await findOrCreateBranch(compId, branchCity, branchLocation);
+          if (!branch?._id) throw new Error('Branch creation failed');
+          setBranchId(branch._id);
+        }
       } else {
         branch = await findOrCreateBranch(compId, branchCity, branchLocation);
-        console.log('[Submit] ✅ Resolved branch:', branch);
-        if (!branch?._id) throw new Error('Branch creation failed');  
+        console.log('[Submit] ✅ Created branch:', branch);
+        if (!branch?._id) throw new Error('Branch creation failed');
         setBranchId(branch._id);
       }
       
