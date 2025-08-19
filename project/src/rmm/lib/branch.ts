@@ -41,35 +41,57 @@ export const createBranch = async ({
 
 
 
-
 export const findOrCreateBranch = async (
   companyId: string,
   city: string,
   location: string
 ) => {
- const branches = await getBranches(city.trim());
+  console.log('[Branch] 🔍 Searching for branches with city:', city);
 
- const match = branches.find(
-  (b: any) => b.city.toLowerCase() === city.toLowerCase()
-);
+  let branches;
+  try {
+    branches = await getBranches(city.trim());
+    console.log('[Branch] ✅ Fetched branches:', branches);
+  } catch (err) {
+    console.error('[Branch] ❌ Failed to fetch branches:', err);
+    throw new Error('Branch fetch failed');
+  }
 
+  const match = branches.find(
+    (b: any) => b.city.toLowerCase() === city.toLowerCase()
+  );
 
-if (match) {
-  // If company not linked yet, backend will append it
-  return await createBranch({
-    name: match.name,
-    companyId,
-    city: match.city,
-    location,
-  });
-}
+  if (match) {
+    console.log('[Branch] 🔁 Found existing branch:', match);
 
+    try {
+      const updatedBranch = await createBranch({
+        name: match.name,
+        companyId,
+        city: match.city,
+        location,
+      });
+      console.log('[Branch] ✅ Updated existing branch with company/location:', updatedBranch);
+      return updatedBranch;
+    } catch (err) {
+      console.error('[Branch] ❌ Failed to update existing branch:', err);
+      throw new Error('Branch update failed');
+    }
+  }
 
-  // Create if not found
-  return await createBranch({
-    name: `${city}${location ? ' - ' + location : ''}`,
-    companyId,
-    city,
-    location,
-  });
+  console.log('[Branch] 🆕 No branch found — creating new one');
+
+  try {
+    const newBranch = await createBranch({
+      name: `${city}${location ? ' - ' + location : ''}`,
+      companyId,
+      city,
+      location,
+    });
+    console.log('[Branch] ✅ Created new branch:', newBranch);
+    return newBranch;
+  } catch (err) {
+    console.error('[Branch] ❌ Failed to create new branch:', err);
+    throw new Error('Branch creation failed');
+  }
 };
