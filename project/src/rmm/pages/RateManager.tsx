@@ -144,14 +144,19 @@ const RateManager = () => {
       let compId = companyId;
       if (!compId) {
         const newCompany = await createCompany({ name: companyName });
+        console.log('[Submit] ✅ Created company:', newCompany);
+        if (!newCompany?._id) throw new Error('Company creation failed');  
         compId = newCompany._id;
       }
 
       let branch;
       if (branchId) {
         branch = branchSuggestions.find(b => b._id === branchId);
+        console.log('[Submit] 🔁 Using selected branch:', branch);
       } else {
         branch = await findOrCreateBranch(compId, branchCity, branchLocation);
+        console.log('[Submit] ✅ Resolved branch:', branch);
+        if (!branch?._id) throw new Error('Branch creation failed');  
         setBranchId(branch._id);
       }
       
@@ -171,9 +176,13 @@ const RateManager = () => {
       if (deptId) {
         managerPayload.departmentId = deptId;
       }
-      
-      const manager = await createManager(managerPayload);
+      console.log('[Submit] 📦 Manager payload:', managerPayload);
 
+
+      const manager = await createManager(managerPayload);
+      console.log('[Submit] ✅ Created manager:', manager);
+      if (!manager?._id) throw new Error('Manager creation failed');
+  
       
 
       await submitManagerReview({
