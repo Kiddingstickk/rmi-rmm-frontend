@@ -47,18 +47,23 @@ export const findOrCreateBranch = async (
   city: string,
   location: string
 ) => {
-  const query = `${city} ${location}`.trim(); // Broad fuzzy match
-  const branches = await getBranches(query);
+ const branches = await getBranches(city.trim());
 
-  const match = branches.find(
-    (b: any) =>
-      Array.isArray(b.company) &&
-      b.company.some((c: any) => c._id === companyId)&&
-      b.city.toLowerCase() === city.toLowerCase() &&
-      b.city.toLowerCase() === city.toLowerCase()
-  );
+ const match = branches.find(
+  (b: any) => b.city.toLowerCase() === city.toLowerCase()
+);
 
-  if (match) return match;
+
+if (match) {
+  // If company not linked yet, backend will append it
+  return await createBranch({
+    name: match.name,
+    companyId,
+    city: match.city,
+    location,
+  });
+}
+
 
   // Create if not found
   return await createBranch({

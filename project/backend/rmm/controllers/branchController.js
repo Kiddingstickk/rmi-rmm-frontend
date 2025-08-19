@@ -28,45 +28,64 @@ export const getAllBranches = async (req, res) => {
   };
 
 
-
-
-
-export const createBranch = async (req, res) => {
-  const { name, city, companyId, location = '' } = req.body;
-
-  if (!name || !city || !companyId) {
-    return res.status(400).json({ message: 'Name, city, and company ID are required' });
-  }
-
-  try {
-    // Check if branch with same name, city, and company already exists
-    const existing = await Branch.findOne({
-      name: new RegExp(`^${name}$`, 'i'),
-      city: new RegExp(`^${city}$`, 'i'),
-      company: { $in: [companyId] } ,
-      location: new RegExp(`^${location}$`, 'i')
-    });
-
-    if (existing) {
-      return res.status(400).json({ message: 'Branch already exists' });
+  export const createBranch = async (req, res) => {
+    const { name, city, companyId, location = '' } = req.body;
+  
+    if (!name || !city || !companyId) {
+      return res.status(400).json({ message: 'Name, city, and company ID are required' });
     }
+  
+    try {
+      const normalizedCity = city.trim().toLowerCase();
+      const normalizedLocation = Array.isArray(location)
+        ? location.map(loc => loc.trim())
+        : [location.trim()];
+  
+      // Find branch by city only — global uniqueness
+      let branch = await Branch.findOne({
+        city: new RegExp(`^${normalizedCity}$`, 'i')
+      });
+  
+      if (branch) {
+        // Add companyId if not already present
+        const alreadyLinked = branch.company.some(
+          id => id.toString() === companyId.toString()
+        );
+  
+        if (!alreadyLinked) {
+          branch.company.push(companyId);
+        }
+  
+        // Add new locations if needed
+        const existingLocations = branch.location.map(loc => loc.toLowerCase());
+        const newLocations = normalizedLocation.filter(
+          loc => loc && !existingLocations.includes(loc.toLowerCase())
+        );
+  
+        if (newLocations.length > 0) {
+          branch.location.push(...newLocations);
+        }
+  
+        await branch.save();
+        return res.status(200).json(branch);
+      }
+  
+      // No branch with this city exists — create new one
+      const newBranch = new Branch({
+        name: name.trim(),
+        company: [companyId],
+        city: normalizedCity,
+        location: normalizedLocation
+      });
+  
+      await newBranch.save();
+      res.status(201).json(newBranch);
+    } catch (err) {
+      console.error('Error creating branch:', err);
+      res.status(500).json({ error: 'Server error' });
+    }
+  };
 
-    const branch = new Branch({
-      name: name.trim(),
-      company: [companyId],
-      city: city.trim(),
-      location: Array.isArray(location)
-      ? location.map(loc => loc.trim())
-      : [location.trim()]
-    });
-
-    await branch.save();
-    res.status(201).json(branch);
-  } catch (err) {
-    console.error('Error creating branch:', err);
-    res.status(500).json({ error: 'Server error' });
-  }
-};
 
 
 export const getBranches = async (req, res) => {
