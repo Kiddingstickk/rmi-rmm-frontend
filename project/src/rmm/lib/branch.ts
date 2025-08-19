@@ -31,7 +31,8 @@ export const createBranch = async ({
       'Content-Type': 'application/json',
       Authorization: `Bearer ${localStorage.getItem('token')}`,
     },
-    body: JSON.stringify({ name, companyId, city, location }),
+    body: JSON.stringify({ name, companyId, city, location: Array.isArray(location) ? location : [location]
+    }),
   });
 
   if (!res.ok) throw new Error('Failed to create branch');
@@ -54,7 +55,7 @@ export const findOrCreateBranch = async (
       Array.isArray(b.company) &&
       b.company.some((c: any) => c._id === companyId)&&
       b.city.toLowerCase() === city.toLowerCase() &&
-      b.location.toLowerCase() === location.toLowerCase()
+      b.city.toLowerCase() === city.toLowerCase()
   );
 
   if (match) return match;

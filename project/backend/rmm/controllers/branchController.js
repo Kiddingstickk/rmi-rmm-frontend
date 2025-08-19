@@ -55,7 +55,9 @@ export const createBranch = async (req, res) => {
       name: name.trim(),
       company: [companyId],
       city: city.trim(),
-      location: location.trim()
+      location: Array.isArray(location)
+      ? location.map(loc => loc.trim())
+      : [location.trim()]
     });
 
     await branch.save();
@@ -88,6 +90,37 @@ export const getBranches = async (req, res) => {
     res.json(branches);
   } catch (err) {
     console.error('Error fetching branches:', err);
+    res.status(500).json({ error: 'Server error' });
+  }
+};
+
+
+
+export const updateBranchLocations = async (req, res) => {
+  const { location = [] } = req.body;
+  const { id } = req.params;
+
+  if (!Array.isArray(location)) {
+    return res.status(400).json({ message: 'Location must be an array' });
+  }
+
+  try {
+    const branch = await Branch.findById(id);
+    if (!branch) return res.status(404).json({ message: 'Branch not found' });
+
+    const existing = branch.location.map(loc => loc.toLowerCase());
+    const newLocations = location
+      .map(loc => loc.trim())
+      .filter(loc => loc && !existing.includes(loc.toLowerCase()));
+
+    if (newLocations.length > 0) {
+      branch.location.push(...newLocations);
+      await branch.save();
+    }
+
+    res.json(branch);
+  } catch (err) {
+    console.error('Error updating branch locations:', err);
     res.status(500).json({ error: 'Server error' });
   }
 };

@@ -2,6 +2,7 @@ import { useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 interface Manager {
   _id: string;
@@ -61,7 +62,7 @@ export default function CompanyProfile() {
       <div className="grid grid-cols-3 gap-6 mb-8">
         {[
           { label: 'Managers', value: managers.length, icon: '👥' },
-          { label: 'Avg Rating', value: `⭐ ${company.avgRating}`, icon: '📊' },
+          { label: 'Avg Rating', value: `${company.avgRating}`, icon: '📊' },
           { label: 'Reviews', value: '—', icon: '📝' },
         ].map(stat => (
           <div
@@ -85,14 +86,16 @@ export default function CompanyProfile() {
         </div>
       </div>
 
-      {/* CTA Buttons */}
+      
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8 text-center">
-        <button className="bg-blue-700 hover:bg-blue-800 text-white font-semibold px-6 py-3 rounded-lg shadow w-full">
+        <button
+        onClick={() => navigate(`/rate-manager`)}
+         className="bg-blue-700 hover:bg-blue-800 text-white font-semibold px-6 py-3 rounded-lg shadow w-full">
           ⭐ Rate a Manager
         </button>
         <button
           onClick={() => navigate(`/companies/${company.name}/${company._id}/rate-company`)}
-          className="bg-green-600 hover:bg-green-700 text-white font-semibold px-6 py-3 rounded-lg shadow w-full"
+          className="bg-black-500 hover:bg-black-200 text-white font-semibold px-6 py-3 rounded-lg shadow w-full"
         >
           🏢 Rate This Company
         </button>
@@ -107,9 +110,10 @@ export default function CompanyProfile() {
       <h2 className="text-2xl font-bold text-blue-800 mb-4">Leadership Team</h2>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {managers.map(m => (
-          <div
-            key={m._id}
-            className="bg-white border rounded-lg p-4 shadow-sm hover:shadow-md transition"
+          <Link
+          key={m._id}
+            to={`/management/managers/${m.name.toLowerCase().replace(/\s+/g, '-')}/${m._id}`}
+            className="block bg-white border rounded-lg p-4 shadow-sm hover:shadow-md transition"
           >
             <div className="flex items-center gap-4">
               <div className="w-12 h-12 rounded-full bg-blue-100 text-blue-800 flex items-center justify-center font-bold">
@@ -121,7 +125,7 @@ export default function CompanyProfile() {
               </div>
             </div>
             <div className="mt-2 text-blue-700 text-sm">Rating: ⭐ {m.averageRating}</div>
-          </div>
+          </Link>
         ))}
       </div>
     </div>

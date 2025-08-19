@@ -16,8 +16,8 @@ const branchSchema = new mongoose.Schema({
     required: true
   },
   location: {
-    type: String,
-    default: '' // Optional — e.g. "Saket Nagar", "Sector 21"
+    type: [String],
+    default: []
   },
   managers: [
     {
