@@ -147,8 +147,17 @@ const RateManager = () => {
         compId = newCompany._id;
       }
 
-      const branch = await findOrCreateBranch(compId, branchCity, branchLocation);
-      setBranchId(branch._id);
+      let branch;
+      if (branchId) {
+        branch = branchSuggestions.find(b => b._id === branchId);
+      } else {
+        branch = await findOrCreateBranch(compId, branchCity, branchLocation);
+        setBranchId(branch._id);
+      }
+      
+
+      //const branch = await findOrCreateBranch(compId, branchCity, branchLocation);
+      //setBranchId(branch._id);
       
 
 
