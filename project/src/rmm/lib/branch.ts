@@ -66,7 +66,7 @@ export const findOrCreateBranch = async (
 
     try {
       const updatedBranch = await createBranch({
-        name: match.name,
+        name: match.city.trim(),
         companyId,
         city: match.city,
         location,
@@ -83,7 +83,7 @@ export const findOrCreateBranch = async (
 
   try {
     const newBranch = await createBranch({
-      name: `${city}${location ? ' - ' + location : ''}`,
+      name: city.trim(),
       companyId,
       city,
       location,
