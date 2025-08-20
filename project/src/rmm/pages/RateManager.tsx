@@ -361,7 +361,7 @@ const RateManager = () => {
                       key={branch._id}
                       onClick={() => {
                         setBranchCity(branch.city);
-                        setBranchLocation(branch.location || '');
+                        setBranchLocation('');
                         setBranchId(branch._id);
                         setBranchSuggestions([]);
                       }}
