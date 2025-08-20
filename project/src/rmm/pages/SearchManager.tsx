@@ -128,7 +128,7 @@ const SearchManager = () => {
           </p>
         </section>
 
-       {/* ✅ Popular Companies */}
+       {/* ✅ Popular Companies 
       <section className="py-12 px-6 max-w-6xl mx-auto text-gray-800">
         <h2 className="text-2xl font-bold mb-6">Popular Companies</h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
@@ -143,9 +143,9 @@ const SearchManager = () => {
             </a>
           ))}
         </div>
-      </section>
+      </section> */}
 
-      {/* ✅ Popular Managers */}
+      {/* ✅ Popular Managers 
       <section className="py-12 px-6 max-w-6xl mx-auto text-gray-800">
         <h2 className="text-2xl font-bold mb-6">Popular Managers</h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
@@ -167,9 +167,9 @@ const SearchManager = () => {
             </a>
           ))}
         </div>
-      </section>
+      </section> */}
 
-      {/* ✅ Trending Searches */}
+      {/* ✅ Trending Searches 
       <section className="py-12 px-6 max-w-6xl mx-auto text-gray-800">
         <h2 className="text-2xl font-bold mb-6">Trending Searches</h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
@@ -191,7 +191,7 @@ const SearchManager = () => {
             </a>
           ))}
         </div>
-      </section>    
+      </section>   */} 
 
       </main>
 
