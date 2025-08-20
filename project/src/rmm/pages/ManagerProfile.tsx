@@ -267,7 +267,6 @@ const ManagerProfile = () => {
                 <span className="font-medium">Branch:</span>{' '}
                 <span className="text-purple-700">
                   {manager?.branch?.city}
-                  {manager?.branch?.location ? ` – ${manager.branch.location}` : ''}
                 </span>
               </p>
             </div>
