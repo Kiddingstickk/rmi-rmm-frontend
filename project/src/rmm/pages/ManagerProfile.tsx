@@ -304,7 +304,7 @@ const ManagerProfile = () => {
             <h3 className="text-lg font-medium text-gray-700 mb-4">Rating Distribution</h3>
             <div className="space-y-3">
               {[5, 4, 3, 2, 1].map((star) => {
-                const label = ['Awesome', 'Great', 'Good', 'OK', 'Awful'][5 - star];
+                const label = ['Excellent', 'Good', 'OK', 'Weak', 'Poor'][5 - star];
                 const count = manager?.reviews.filter((r) => r.rating === star).length || 0;
                 return (
                   <div key={star} className="flex items-center justify-between">
