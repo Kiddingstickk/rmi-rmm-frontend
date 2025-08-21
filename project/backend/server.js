@@ -23,6 +23,8 @@ import companyRoutes from './rmm/routes/companyRoutes.js';
 import branchRoutes from './rmm/routes/branchRoutes.js';
 import sitemapRoute from './rmm/routes/sitemap.js';
 import companyReviewRoutes from './rmm/routes/companyReviewsRoutes.js'
+import geocodeRoutes from './rmm/routes/geocodeRoutes.js';
+
 
 
 
@@ -80,6 +82,8 @@ app.use('/api/companies', companyRoutes);
 app.use('/api/branches', branchRoutes);
 app.use('/', sitemapRoute);
 app.use('/api/company-reviews', companyReviewRoutes);
+app.use('/api/geocode', geocodeRoutes);
+
 
 
 

@@ -38,6 +38,7 @@ import PrivacyPolicy from './rmm/pages/PrivacyPolicy';
 import TermsOfService from './rmm/pages/TermsOfService';
 import CompanyProfile from "./rmm/pages/CompanyProfile";
 import RateCompany from "./rmm/pages/RateCompany";
+import AllCompanies from './rmm/pages/AllCompanies';
 
 
 
@@ -112,6 +113,7 @@ const App = () => {
             </ProtectedRoute>
           }
         />
+        <Route path="/All-Companies" element={<AllCompanies />} />
               
 
        
