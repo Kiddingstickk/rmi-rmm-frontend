@@ -7,6 +7,9 @@ import { useAuth } from '../../lib/useAuth';
 
 
 const { isLoggedIn, logout } = useAuth();
+const [isLoading, setIsLoading] = useState(false);
+const [isSuccess, setIsSuccess] = useState(false);
+
 
 const Register = () => {
   const [name, setName] = useState('');
@@ -17,6 +20,10 @@ const Register = () => {
 
   const handleRegister = async (e: React.FormEvent) => {
     e.preventDefault();
+    setError(null);
+    setIsLoading(true);
+    setIsSuccess(false);
+  
   
     // 🚀 Navigate immediately to OTP page
     //localStorage.setItem('pendingEmail', email);
@@ -26,8 +33,14 @@ const Register = () => {
     try {
       const response = await api.post('/auth/rmi/register', { name, email, password });
       if (response.status === 201 || response.status === 200) {
-        // ✅ Redirect to login page after successful registration
-        navigate('/signin');
+        setIsSuccess(true);
+        setIsLoading(false);
+  
+        // ⏳ Delay navigation by 2 seconds
+        setTimeout(() => {
+          navigate('/signin');
+        }, 2000);
+  
       } else {
         setError('Unexpected response. Please try again.');
       }
