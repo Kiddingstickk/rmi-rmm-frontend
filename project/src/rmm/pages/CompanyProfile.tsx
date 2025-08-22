@@ -44,8 +44,11 @@ export default function CompanyProfile() {
   const { company, managers } = data;
 
   return (
+    <div className="bg-white min-h-screen">
+      <ResponsiveNavbar isLoggedIn={isLoggedIn} onLogout={logout} />
+
     <div className="max-w-6xl mx-auto p-6 text-gray-800">
-            <ResponsiveNavbar isLoggedIn={isLoggedIn} onLogout={logout} />
+            
       {/* Hero Section */}
       <div className="relative bg-gradient-to-r from-blue-50 to-white rounded-xl p-6 mb-8 shadow-sm">
         <div className="flex items-center gap-6">
@@ -133,6 +136,7 @@ export default function CompanyProfile() {
           </Link>
         ))}
       </div>
+    </div>
     </div>
   );
 }
