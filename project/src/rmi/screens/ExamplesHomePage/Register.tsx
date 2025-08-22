@@ -24,7 +24,14 @@ const Register = () => {
   
     // 🔄 Fire OTP request in the background
     try {
-      await api.post('/auth/rmi/register', { name, email, password });
+      const response = await api.post('/auth/rmi/register', { name, email, password });
+      if (response.status === 201 || response.status === 200) {
+        // ✅ Redirect to login page after successful registration
+        navigate('/signin');
+      } else {
+        setError('Unexpected response. Please try again.');
+      }
+  
      
     } catch (err) {
       console.error('Registration failed:', err);

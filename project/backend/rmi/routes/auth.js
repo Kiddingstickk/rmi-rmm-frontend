@@ -1,5 +1,5 @@
 import express from 'express';
-//import bcrypt from 'bcryptjs';
+import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import crypto from 'crypto';
 import PendingUser from '../models/pendingUser.js';
@@ -38,11 +38,25 @@ router.post('/register', async (req, res) => {
       password,
       //otp,
       //otpExpiry,
-      isVerified: false, // Not verified yet
+      isVerified: true, // Not verified yet
     });
 
     // Save to PendingUser collection
     await newPendingUser.save();
+
+
+    const newUser = new User({
+      name: newPendingUser.name,
+      email: newPendingUser.email,
+      password: newPendingUser.password, // Password already hashed
+      //isVerified: true,
+      //skipHashing: true,
+    });
+
+    await newUser.save();
+    const subject = 'Registration Successful';
+    const text = 'Your account has been successfully verified. You can now log in.';
+    await sendEmail(newPendingUser.email, subject, text);
 
     // Send OTP email
     //const subject = 'OTP Verification';
@@ -123,16 +137,16 @@ router.post('/login', async (req, res) => {
   try {
     const user = await User.findOne({ email });
     console.log('User found:', user);
-    if (!user) return res.status(400).json({ message: 'Invalid email or password' });
+    if (!user) return res.status(400).json({ message: 'Invalid email ' });
 
-    if (!user.isVerified) {
-      return res.status(403).json({ message: 'Please verify your email before logging in' });
-    }
-    const isMatch = password === user.password;
+    //if (!user.isVerified) {
+      //return res.status(403).json({ message: 'Please verify your email before logging in' });
+    //}
+    //const isMatch = password === user.password;
 
-    //const isMatch = await bcrypt.compare(password, user.password);
+    const isMatch = await bcrypt.compare(password, user.password);
     console.log('Password match:', isMatch);
-    if (!isMatch) return res.status(400).json({ message: 'Invalid email or password' });
+    if (!isMatch) return res.status(400).json({ message: 'Invalid password' });
 
     const token = jwt.sign({ userId: user._id, name: user.name }, process.env.JWT_SECRET, {
       expiresIn: '7d',
