@@ -3,6 +3,11 @@ import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
+import ResponsiveNavbar from '../components/Navbar/navbar';
+import { useAuth } from '../../rmi/lib/useAuth';
+
+const { isLoggedIn, logout } = useAuth();
+
 
 interface Manager {
   _id: string;
@@ -40,16 +45,16 @@ export default function CompanyProfile() {
 
   return (
     <div className="max-w-6xl mx-auto p-6 text-gray-800">
+            <ResponsiveNavbar isLoggedIn={isLoggedIn} onLogout={logout} />
       {/* Hero Section */}
       <div className="relative bg-gradient-to-r from-blue-50 to-white rounded-xl p-6 mb-8 shadow-sm">
         <div className="flex items-center gap-6">
-          <div className="w-28 h-28 rounded-full bg-white border shadow flex items-center justify-center text-gray-500 text-sm">
-            Logo
-          </div>
+        <div className="w-28 h-28 rounded-full bg-blue-100 border shadow flex items-center justify-center text-blue-800 text-4xl font-bold">
+          {company.name.charAt(0).toUpperCase()}
+        </div>
           <div>
             <h1 className="text-4xl font-bold text-blue-900 flex items-center gap-2">
               {company.name}
-              <span className="bg-blue-100 text-blue-700 text-xs px-2 py-1 rounded-full font-semibold">Verified</span>
             </h1>
             <p className="text-gray-600 mt-2 italic">
               {company.description || 'No description available yet.'}
