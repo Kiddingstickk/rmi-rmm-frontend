@@ -61,6 +61,12 @@ const Register = () => {
 
       <ResponsiveNavbar isLoggedIn={isLoggedIn} onLogout={logout} />
 
+      {isSuccess && (
+        <p className="text-green-600 text-center font-medium">
+          🎉 Registration successful! Redirecting to login...
+        </p>
+      )}
+
       {/* 🧠 Form Section */}
       <main className="flex-grow flex items-center justify-center px-6 py-12">
         <form
