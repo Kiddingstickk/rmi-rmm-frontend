@@ -2,6 +2,11 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import api from '../../../lib/api';
+import ResponsiveNavbar from '../../../rmm/components/Navbar/navbar';
+import { useAuth } from '../../lib/useAuth';
+
+
+const { isLoggedIn, logout } = useAuth();
 
 const Register = () => {
   const [name, setName] = useState('');
@@ -14,8 +19,8 @@ const Register = () => {
     e.preventDefault();
   
     // 🚀 Navigate immediately to OTP page
-    localStorage.setItem('pendingEmail', email);
-    navigate('/verifyotp');
+    //localStorage.setItem('pendingEmail', email);
+    //navigate('/verifyotp');
   
     // 🔄 Fire OTP request in the background
     try {
@@ -30,10 +35,8 @@ const Register = () => {
   return (
     <div className="min-h-screen bg-gray-100 flex flex-col">
       {/* 🔶 Header */}
-      <header className="bg-pastelBlue flex items-center justify-between px-8 py-6 shadow-md">
-        <img src="/rmmlogo.png" alt="RMI Logo" className="w-12 h-12 rounded-full" />
-        <h1 className="text-xl font-bold text-black">REGISTER:</h1>
-      </header>
+
+      <ResponsiveNavbar isLoggedIn={isLoggedIn} onLogout={logout} />
 
       {/* 🧠 Form Section */}
       <main className="flex-grow flex items-center justify-center px-6 py-12">

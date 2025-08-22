@@ -24,10 +24,9 @@ router.post('/register', async (req, res) => {
     }
 
     // Generate OTP
-    const otp = crypto.randomBytes(3).toString('hex'); // Generate a random 6-digit OTP
+    //const otp = crypto.randomBytes(3).toString('hex'); 
 
-    // Set OTP expiration (valid for 10 minutes)
-    const otpExpiry = Date.now() + 10 * 60 * 1000;
+    //const otpExpiry = Date.now() + 10 * 60 * 1000;
 
     // Hash password
     //const hashedPassword = await bcrypt.hash(password, 10);
@@ -37,8 +36,8 @@ router.post('/register', async (req, res) => {
       name,
       email,
       password,
-      otp,
-      otpExpiry,
+      //otp,
+      //otpExpiry,
       isVerified: false, // Not verified yet
     });
 
@@ -46,9 +45,9 @@ router.post('/register', async (req, res) => {
     await newPendingUser.save();
 
     // Send OTP email
-    const subject = 'OTP Verification';
-    const text = `Your OTP for registration is: ${otp}. It will expire in 10 minutes.`;
-    await sendEmail(email, subject, text);
+    //const subject = 'OTP Verification';
+    //const text = `Your OTP for registration is: ${otp}. It will expire in 10 minutes.`;
+    //await sendEmail(email, subject, text);
 
     // Respond with message to prompt OTP verification
     res.status(200).json({ message: 'Registration successful. Please verify your OTP.' });
@@ -63,56 +62,56 @@ router.post('/register', async (req, res) => {
 
 
 // VERIFY OTP Route
-router.post('/verify-otp', async (req, res) => {
-  const { email, otp } = req.body;
+//router.post('/verify-otp', async (req, res) => {
+  //const { email, otp } = req.body;
 
-  try {
+  //try {
     // Find the pending user by email
-    const pendingUser = await PendingUser.findOne({ email });
-    if (!pendingUser) {
-      return res.status(400).json({ message: 'No pending registration found for this email.' });
-    }
+    //const pendingUser = await PendingUser.findOne({ email });
+    //if (!pendingUser) {
+      //return res.status(400).json({ message: 'No pending registration found for this email.' });
+    //}
 
     // Check if the OTP has expired
-    if (pendingUser.otpExpiry < Date.now()) {
-      return res.status(400).json({ message: 'OTP has expired. Please request a new one.' });
-    }
+    //if (pendingUser.otpExpiry < Date.now()) {
+      //return res.status(400).json({ message: 'OTP has expired. Please request a new one.' });
+    //}
 
     // Check if the OTP matches
-    if (pendingUser.otp !== otp) {
-      return res.status(400).json({ message: 'Invalid OTP. Please try again.' });
-    }
+    //if (pendingUser.otp !== otp) {
+      //return res.status(400).json({ message: 'Invalid OTP. Please try again.' });
+    //}
 
     // OTP is valid, now create the user
-    const newUser = new User({
-      name: pendingUser.name,
-      email: pendingUser.email,
-      password: pendingUser.password, // Password already hashed
-      isVerified: true,
-      skipHashing: true,
-    });
+    //const newUser = new User({
+      //name: pendingUser.name,
+      //email: pendingUser.email,
+      //password: pendingUser.password, // Password already hashed
+      //isVerified: true,
+      //skipHashing: true,
+    //});
 
     // Save the new user
-    await newUser.save();
+    //await newUser.save();
 
-    newUser.skipHashing = true;
+    //newUser.skipHashing = true;
 
     // Delete the pending user from PendingUser collection
-    await PendingUser.deleteOne({ email });
+    //await PendingUser.deleteOne({ email });
 
     // Optionally, you can send a success email
-    const subject = 'Registration Successful';
-    const text = 'Your account has been successfully verified. You can now log in.';
-    await sendEmail(pendingUser.email, subject, text);
+    //const subject = 'Registration Successful';
+    //const text = 'Your account has been successfully verified. You can now log in.';
+    //await sendEmail(pendingUser.email, subject, text);
 
     // Respond with success message and guide to SignIn
-    res.status(200).json({ message: 'OTP verified successfully. You can now log in.' });
+    //res.status(200).json({ message: 'OTP verified successfully. You can now log in.' });
 
-  } catch (error) {
-    console.error('Error verifying OTP:', error);
-    res.status(500).json({ message: 'Verification failed. Please try again later.' });
-  }
-});
+  //} catch (error) {
+    //console.error('Error verifying OTP:', error);
+    //res.status(500).json({ message: 'Verification failed. Please try again later.' });
+  //}
+//});
 
 
 
