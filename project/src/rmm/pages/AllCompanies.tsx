@@ -86,7 +86,8 @@ const CompanyCard = ({ company }: { company: Company }) => (
       {company.totalReviews} reviews • {company.totalManagers} managers
     </div>
     <div className="mt-1 text-sm font-medium text-blue-600">
-      ⭐ {company.rating.toFixed(1)}
+      ⭐ {company.rating ? company.rating.toFixed(1) : 'No rating yet'}
+
     </div>
     <a
       href={`/management/companies/${company.slug}/${company._id}`}
