@@ -1,5 +1,7 @@
 import { useState } from 'react';
 import axios from 'axios';
+import ResponsiveNavbar from '../../../rmm/components/Navbar/navbar';
+import { useAuth } from '../../lib/useAuth';
 
 const ContactPage = () => {
   const [name, setName] = useState('');
@@ -7,6 +9,7 @@ const ContactPage = () => {
   const [subject, setSubject] = useState('');
   const [message, setMessage] = useState('');
   const [status, setStatus] = useState<string | null>(null);
+  const { isLoggedIn, logout } = useAuth();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -33,10 +36,7 @@ const ContactPage = () => {
   return (
     <div className="min-h-screen bg-gray-100 flex flex-col">
       {/* 🔶 Header */}
-      <header className="bg-pastelYellow flex items-center justify-between px-8 py-6 shadow-md">
-        <img src="/rmmlogo.png" alt="RMI Logo" className="w-12 h-12 rounded-full" />
-        <h1 className="text-xl font-bold text-black">CONTACT US:</h1>
-      </header>
+      <ResponsiveNavbar isLoggedIn={isLoggedIn} onLogout={logout} />
 
       {/* ✉️ Form Section */}
       <main className="flex-grow flex items-center justify-center px-6 py-12">
@@ -53,7 +53,7 @@ const ContactPage = () => {
             placeholder="Your name"
             value={name}
             onChange={(e) => setName(e.target.value)}
-            className="w-full border border-gray-300 rounded-md p-3 text-sm focus:outline-none focus:ring-2 focus:ring-yellow-400"
+            className="w-full border border-gray-300 rounded-md p-3 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
             required
           />
 
@@ -62,7 +62,7 @@ const ContactPage = () => {
             placeholder="Your email address"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            className="w-full border border-gray-300 rounded-md p-3 text-sm focus:outline-none focus:ring-2 focus:ring-yellow-400"
+            className="w-full border border-gray-300 rounded-md p-3 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
             required
           />
 
@@ -71,7 +71,7 @@ const ContactPage = () => {
             placeholder="Subject"
             value={subject}
             onChange={(e) => setSubject(e.target.value)}
-            className="w-full border border-gray-300 rounded-md p-3 text-sm focus:outline-none focus:ring-2 focus:ring-yellow-400"
+            className="w-full border border-gray-300 rounded-md p-3 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
             required
           />
 
@@ -80,13 +80,13 @@ const ContactPage = () => {
             value={message}
             onChange={(e) => setMessage(e.target.value)}
             rows={5}
-            className="w-full border border-gray-300 rounded-md p-3 text-sm resize-none focus:outline-none focus:ring-2 focus:ring-yellow-400"
+            className="w-full border border-gray-300 rounded-md p-3 text-sm resize-none focus:outline-none focus:ring-2 focus:ring-blue-400"
             required
           />
 
           <button
             type="submit"
-            className="w-full bg-pastelYellow hover:bg-yellow-500 text-black font-semibold py-3 rounded-md transition"
+            className="w-full bg-pastelBlue hover:bg-blue-500 text-black font-semibold py-3 rounded-md transition"
           >
             Send Message
           </button>

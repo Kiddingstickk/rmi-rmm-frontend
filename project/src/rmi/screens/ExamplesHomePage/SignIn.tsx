@@ -2,12 +2,15 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import api from '../../../lib/api';
+import ResponsiveNavbar from '../../../rmm/components/Navbar/navbar';
+import { useAuth } from '../../lib/useAuth';
 
 const SignIn = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
+  const { isLoggedIn, logout } = useAuth();
 
   useEffect(() => {
     if (localStorage.getItem('token')) {
@@ -41,10 +44,7 @@ const SignIn = () => {
   return (
     <div className="min-h-screen bg-gray-100 flex flex-col">
       {/* 🔶 Header */}
-      <header className="bg-pastelBlue flex items-center justify-between px-8 py-6 shadow-md">
-        <img src="/rmmlogo.png" alt="RMI Logo" className="w-12 h-12 rounded-full" />
-        <h1 className="text-xl font-bold text-black">LOGIN:</h1>
-      </header>
+      <ResponsiveNavbar isLoggedIn={isLoggedIn} onLogout={logout} />
 
       {/* 🧠 Form Section */}
       <main className="flex-grow flex items-center justify-center px-6 py-12">

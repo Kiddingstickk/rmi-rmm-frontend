@@ -105,7 +105,7 @@ const AllCompaniesPage = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch("/api/companies")
+    fetch("https://backend-p0ja.onrender.com/api/companies")
       .then((res) => res.json())
       .then(async (data: Company[]) => {
         setCompanies(data);
