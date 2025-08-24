@@ -1,7 +1,17 @@
 import React from 'react';
 
+import ResponsiveNavbar from '../components/Navbar/navbar';
+import { useAuth } from '../../rmi/lib/useAuth';
+
+
+
 const PrivacyPolicy = () => {
+  const { isLoggedIn, logout } = useAuth();
+  
   return (
+    <div className="bg-white min-h-screen">
+    <ResponsiveNavbar isLoggedIn={isLoggedIn} onLogout={logout} />
+
     <main className="min-h-screen bg-white text-gray-800 px-6 py-12 max-w-4xl mx-auto">
       <h1 className="text-3xl font-bold mb-6">Privacy Policy</h1>
 
@@ -70,6 +80,7 @@ const PrivacyPolicy = () => {
         </p>
       </section>
     </main>
+    </div>
   );
 };
 
