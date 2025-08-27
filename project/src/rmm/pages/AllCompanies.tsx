@@ -108,7 +108,7 @@ const AllCompaniesPage = () => {
   useEffect(() => {
     const loadGoogleMapsScript = async () => {
       try {
-        const res = await fetch("https://backend-p0ja.onrender.com/api/maps/script");
+        const res = await fetch("https://backend-p0ja.onrender.com/api/geocode/script");
         const { scriptUrl } = await res.json();
     
         if (!document.querySelector(`script[src="${scriptUrl}"]`)) {
