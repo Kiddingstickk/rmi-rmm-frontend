@@ -31,4 +31,14 @@ router.post('/', async (req, res) => {
   }
 });
 
+
+
+router.get("/script", (req, res) => {
+  const apiKey = process.env.GOOGLE_MAPS_API_KEY;
+  const scriptUrl = `https://maps.googleapis.com/maps/api/js?key=${apiKey}`;
+  res.json({ scriptUrl });
+});
+
+
+
 export default router;
