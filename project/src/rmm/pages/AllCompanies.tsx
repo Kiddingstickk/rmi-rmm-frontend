@@ -106,15 +106,23 @@ const AllCompaniesPage = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const loadGoogleMapsScript = () => {
-      if (!window.google) {
-        const script = document.createElement("script");
-        script.src = `https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY`;
-        script.async = true;
-        script.defer = true;
-        document.head.appendChild(script);
+    const loadGoogleMapsScript = async () => {
+      try {
+        const res = await fetch("https://backend-p0ja.onrender.com/api/maps/script");
+        const { scriptUrl } = await res.json();
+    
+        if (!document.querySelector(`script[src="${scriptUrl}"]`)) {
+          const script = document.createElement("script");
+          script.src = scriptUrl;
+          script.async = true;
+          script.defer = true;
+          document.head.appendChild(script);
+        }
+      } catch (err) {
+        console.error("Failed to load Google Maps script:", err);
       }
     };
+    
 
     const loadCompanies = async () => {
       try {
