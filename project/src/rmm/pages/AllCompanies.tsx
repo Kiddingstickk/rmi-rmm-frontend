@@ -106,11 +106,21 @@ const AllCompaniesPage = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch("https://backend-p0ja.onrender.com/api/companies")
-      .then((res) => res.json())
-      .then(async (data: Company[]) => {
+    const loadGoogleMapsScript = () => {
+      if (!window.google) {
+        const script = document.createElement("script");
+        script.src = `https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY`;
+        script.async = true;
+        script.defer = true;
+        document.head.appendChild(script);
+      }
+    };
+
+    const loadCompanies = async () => {
+      try {
+        const res = await fetch("https://backend-p0ja.onrender.com/api/companies");
+        const data: Company[] = await res.json();
         setCompanies(data);
-        setLoading(false);
 
         const allLocations: {
           company: string;
@@ -140,7 +150,15 @@ const AllCompaniesPage = () => {
         }
 
         setLocations(allLocations);
-      });
+      } catch (err) {
+        console.error("Error loading companies:", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadGoogleMapsScript();
+    loadCompanies();
   }, []);
 
   const topRated = [...companies]
