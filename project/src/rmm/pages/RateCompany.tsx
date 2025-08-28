@@ -93,7 +93,9 @@ const RateCompany : React.FC<RateCompanyProps>= ({ isLoggedIn, logout }) => {
   useEffect(() => {
     const checkEligibility = async () => {
       try {
-        const res = await axios.get(`/api/company-reviews/check-eligibility/${companyId}`);
+        const res = await axios.get(`/api/company-reviews/check-eligibility/${companyId}`, {
+          withCredentials: true
+        });        
         setIsEligible(res.data.eligible);
       } catch (err) {
         console.error('Error checking eligibility:', err);
