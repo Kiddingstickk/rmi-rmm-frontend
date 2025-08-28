@@ -9,6 +9,6 @@ export const useAuth = () => {
       window.location.href = '/'; // or use navigate if using React Router
     };
   
-    return { isLoggedIn, logout };
+    return { isLoggedIn, logout , token };
   };
   
