@@ -96,7 +96,7 @@ const RateCompany : React.FC<RateCompanyProps>= ({ isLoggedIn, logout }) => {
   useEffect(() => {
     const checkEligibility = async () => {
       try {
-        const res = await axios.get(`/api/company-reviews/check-eligibility/${companyId}`, {
+        const res = await axios.get(`${import.meta.env.VITE_API_URL}/api/company-reviews/check-eligibility/${companyId}`, {
           headers: {
             Authorization: `Bearer ${token}`
           }
