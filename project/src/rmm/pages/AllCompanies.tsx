@@ -26,16 +26,20 @@ interface Company {
 }
 
 const { isLoggedIn, logout } = useAuth();
+const [mapsReady, setMapsReady] = useState(false);
 
 const CompanyMap = ({
   locations,
+  mapsReady,
+
 }: {
   locations: { company: string; city: string; lat: number; lng: number }[];
+  mapsReady: boolean;
 }) => {
   const mapRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (!window.google || !mapRef.current) return;
+    if (!mapsReady ||!window.google || !mapRef.current) return;
 
     const map = new window.google.maps.Map(mapRef.current, {
       center: { lat: 20, lng: 78 },
@@ -49,7 +53,7 @@ const CompanyMap = ({
         title: `${company} — ${city}`,
       });
     });
-  }, [locations]);
+  }, [locations, mapsReady]);
 
   return <div ref={mapRef} style={{ height: "100%", width: "100%" }} />;
 };
@@ -116,8 +120,13 @@ const AllCompaniesPage = () => {
           script.src = scriptUrl;
           script.async = true;
           script.defer = true;
+          script.onload = () => {
+            setMapsReady(true); 
+          };    
           document.head.appendChild(script);
-        }
+        } else {
+          setMapsReady(true); 
+        }    
       } catch (err) {
         console.error("Failed to load Google Maps script:", err);
       }
@@ -220,7 +229,7 @@ const AllCompaniesPage = () => {
           Company Locations
         </h2>
         <div className="w-full h-96 rounded-lg overflow-hidden">
-          <CompanyMap locations={locations} />
+          <CompanyMap locations={locations} mapsReady={mapsReady} />
         </div>
       </section>
     </main>
