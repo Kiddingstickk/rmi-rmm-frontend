@@ -9,7 +9,7 @@ interface RateCompanyProps {
     logout: () => void;
   }
   
-
+  
   
 
 const RateCompany : React.FC<RateCompanyProps>= ({ isLoggedIn, logout }) => {
@@ -42,6 +42,9 @@ const RateCompany : React.FC<RateCompanyProps>= ({ isLoggedIn, logout }) => {
   const [message, setMessage] = useState('');
   const [loading, setLoading] = useState(false);
 
+  const {token} = useAuth();
+
+
 
 
   const StarRating = ({ value, onChange }: { value: number; onChange: (val: number) => void }) => {
@@ -59,7 +62,7 @@ const RateCompany : React.FC<RateCompanyProps>= ({ isLoggedIn, logout }) => {
       </div>
     );
   };
-  
+
 
   const DimensionRating = ({
     label,
@@ -94,8 +97,11 @@ const RateCompany : React.FC<RateCompanyProps>= ({ isLoggedIn, logout }) => {
     const checkEligibility = async () => {
       try {
         const res = await axios.get(`/api/company-reviews/check-eligibility/${companyId}`, {
-          withCredentials: true
-        });        
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        });
+        
         setIsEligible(res.data.eligible);
       } catch (err) {
         console.error('Error checking eligibility:', err);
