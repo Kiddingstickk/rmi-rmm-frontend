@@ -25,8 +25,6 @@ interface Company {
   branchIds?: string[];
 }
 
-const { isLoggedIn, logout } = useAuth();
-const [mapsReady, setMapsReady] = useState(false);
 
 const CompanyMap = ({
   locations,
@@ -108,6 +106,8 @@ const AllCompaniesPage = () => {
     { company: string; city: string; lat: number; lng: number }[]
   >([]);
   const [loading, setLoading] = useState(true);
+  const { isLoggedIn, logout } = useAuth();
+  const [mapsReady, setMapsReady] = useState(false);
 
   useEffect(() => {
     const loadGoogleMapsScript = async () => {
