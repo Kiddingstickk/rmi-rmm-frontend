@@ -138,7 +138,7 @@ const RateCompany : React.FC<RateCompanyProps>= ({ isLoggedIn, logout }) => {
     };
 
     try {
-      const res = await axios.post('/api/company-reviews/submit', payload);
+      const res = await axios.post(`${import.meta.env.VITE_API_URL}/api/company-reviews/submit`, payload);
       setMessage('Review submitted successfully!');
     } catch (err: unknown) {
         if (axios.isAxiosError(err)) {
