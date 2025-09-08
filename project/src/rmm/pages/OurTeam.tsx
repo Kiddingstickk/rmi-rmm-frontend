@@ -15,7 +15,7 @@ const team: TeamMember[] = [
   {
     name: 'Kaleab Asmamaw',
     role: 'Founder & CEO',
-    image: '/team/kaleab.jpg',
+    image: '/kaleab.jpg',
     bio: 'Kaleab Asmamaw is the Founder and CEO of Rate My Manager. He leads our mission to bring transparency and accountability to workplace leadership.',
   },
   {
