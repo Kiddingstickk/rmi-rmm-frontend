@@ -28,6 +28,16 @@ const RmmLanding = () => {
     };
   }, []);
 
+  
+    useEffect(() => {
+      fetch('https://backend-p0ja.onrender.com/api/ping')
+        .then(() => console.log('Backend warmed up'))
+        .catch(() => console.log('Ping failed'));
+    }, []);
+  
+
+
+
   return (
     <div className="bg-white min-h-screen">
       <Navbar isLoggedIn={isLoggedIn} onLogout={logout} />
