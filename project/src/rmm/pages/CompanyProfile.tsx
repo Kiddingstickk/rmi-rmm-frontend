@@ -103,7 +103,7 @@ export default function CompanyProfile() {
         </button>
         <button
           onClick={() => navigate(`/companies/${company.name}/${company._id}/rate-company`)}
-          className="bg-black-500 hover:bg-black-200 text-white font-semibold px-6 py-3 rounded-lg shadow w-full"
+          className="bg-green-300 hover:bg-green-500 text-white font-semibold px-6 py-3 rounded-lg shadow w-full"
         >
           🏢 Rate This Company
         </button>
