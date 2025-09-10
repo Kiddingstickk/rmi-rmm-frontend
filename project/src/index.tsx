@@ -39,6 +39,7 @@ import TermsOfService from './rmm/pages/TermsOfService';
 import CompanyProfile from "./rmm/pages/CompanyProfile";
 import RateCompany from "./rmm/pages/RateCompany";
 import AllCompanies from './rmm/pages/AllCompanies';
+import ToxicWorkplaceBlog from "./rmm/pages/ToxicWorkplaceBlog";
 
 
 
@@ -114,6 +115,7 @@ const App = () => {
           }
         />
         <Route path="/All-Companies" element={<AllCompanies />} />
+        <Route path = "/Toxic-Workplace-Blog" element = {<ToxicWorkplaceBlog/>}/>
               
 
        
