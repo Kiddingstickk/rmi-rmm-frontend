@@ -20,6 +20,9 @@ module.exports = {
         pastelYellow: '#F9E29C',
         pastelBlue: '#1C4BA0',
       },
+      fontFamily: {
+        sans: ['Poppins', 'Inter', 'sans-serif'],
+      },    
       keyframes: {
         'fade-up': {
           '0%': { opacity: 0, transform: 'translateY(20px)' },
