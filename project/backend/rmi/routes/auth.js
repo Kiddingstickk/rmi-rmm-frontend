@@ -56,7 +56,7 @@ router.post('/register', async (req, res) => {
     await newUser.save();
     const subject = 'Registration Successful';
     const text = 'Your account has been successfully verified. You can now log in.';
-    await sendEmail(newPendingUser.email, subject, text);
+    //await sendEmail(newPendingUser.email, subject, text);
 
     // Send OTP email
     //const subject = 'OTP Verification';

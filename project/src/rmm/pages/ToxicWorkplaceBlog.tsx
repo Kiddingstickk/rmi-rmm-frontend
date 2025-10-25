@@ -69,7 +69,7 @@ const ToxicWorkplaceBlog = () => {
   }, []);
 
   return (
-    <div className="bg-white min-h-screen font-['Inter']">
+    <div className="bg-white min-h-screen font-sans">
       <ResponsiveNavbar isLoggedIn={isLoggedIn} onLogout={logout} />
       <main className="blog-post prose prose-lg mx-auto py-8 text-gray-800">
         <article>

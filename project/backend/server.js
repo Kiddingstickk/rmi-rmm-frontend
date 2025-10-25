@@ -33,9 +33,11 @@ import experienceLevelRoutes from './rmm/routes/experienceLevelRoutes.js';
 import jobTypeRoutes from './rmm/routes/jobTypeRoutes.js';
 import jobApplicationRoutes from './rmm/routes/jobApplicationRoutes.js';
 import statusRoutes from './rmm/routes/statusRoute.js'
+import morgan from 'morgan';
 
 
-
+morgan.token('timestamp', () => new Date().toISOString());
+app.use(morgan(':timestamp :method :url :status :response-time ms'));
 
 
 dotenv.config();
