@@ -51,7 +51,7 @@ const RmmLanding = () => {
         <div className="relative z-10 text-center">
           <h1 className="text-4xl sm:text-6xl font-extrabold mb-6">RATE MY MANAGER</h1>
           <p className="text-lg max-w-3xl mx-auto text-gray-100 mb-10">
-          An Anonymous Way to Rate Your Manager in the Baltimore Restaurant Scene
+          An Anonymous Way to Rate Your Manager
           </p>
           <div className="flex justify-center gap-6 flex-wrap">
             <a href="/search-managers" className="bg-pastelBlue hover:bg-blue-600 text-white px-6 py-3 rounded-md font-semibold">
