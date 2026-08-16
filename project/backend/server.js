@@ -3,6 +3,7 @@ import express from 'express';
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 import cors from 'cors';
+import logger from './logger.js';
 
 import interviewersRoutes from './rmi/routes/interviewers.js';
 import rmiAuthRoutes from './rmi/routes/auth.js';
@@ -68,6 +69,28 @@ app.use(cors(corsOptions));
 app.options('*', cors(corsOptions)); 
 
 app.use(express.json());
+
+
+// 🔹 Winston logging middleware
+app.use((req, res, next) => {
+  const start = Date.now();
+
+  res.on('finish', () => {
+    const duration = Date.now() - start;
+    logger.info({
+      origin: req.headers.origin || 'unknown',
+      method: req.method,
+      url: req.originalUrl,
+      query: req.query,
+      body: req.body,
+      status: res.statusCode,
+      responseTime: `${duration}ms`,
+    });
+  });
+
+  next();
+});
+
 
 // Routes for RMI
 app.use('/api/interviewers', interviewersRoutes);

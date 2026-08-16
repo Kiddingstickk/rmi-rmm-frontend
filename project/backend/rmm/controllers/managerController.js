@@ -189,3 +189,105 @@ export const createManager = async (req, res) => {
     res.status(500).json({ error: 'Server error' });
   }
 };
+
+
+// Get recent managers and latest reviews for homepage
+export const getHomepageContent = async (req, res) => {
+  try {
+    const managerLimit = Math.min(
+      parseInt(req.query.managerLimit) || 6,
+      12
+    );
+
+    const reviewLimit = Math.min(
+      parseInt(req.query.reviewLimit) || 6,
+      12
+    );
+
+    // Get the latest reviews
+    const latestReviews = await ManagerReview.find({})
+      .select(
+        'managerId rating reviewText reviewLeadership reviewCommunicationText reviewSupport createdAt'
+      )
+      .populate({
+        path: 'managerId',
+        select: 'name position averageRating company branchId',
+        populate: [
+          {
+            path: 'company',
+            select: 'name'
+          },
+          {
+            path: 'branchId',
+            select: 'city location'
+          }
+        ]
+      })
+      .sort({ createdAt: -1 })
+      .limit(reviewLimit)
+      .lean();
+
+    // Get unique managers from the latest reviews
+    const recentManagerIds = [];
+
+    for (const review of latestReviews) {
+      if (!review.managerId?._id) continue;
+
+      const managerId = review.managerId._id.toString();
+
+      if (!recentManagerIds.includes(managerId)) {
+        recentManagerIds.push(managerId);
+      }
+
+      if (recentManagerIds.length >= managerLimit) break;
+    }
+
+    // Create recent manager cards
+    const recentManagers = recentManagerIds
+      .map(id => {
+        const review = latestReviews.find(
+          review =>
+            review.managerId?._id?.toString() === id
+        );
+
+        if (!review?.managerId) return null;
+
+        const manager = review.managerId;
+
+        return {
+          _id: manager._id,
+          name: manager.name,
+          position: manager.position,
+          averageRating: manager.averageRating,
+          company: manager.company
+            ? {
+                _id: manager.company._id,
+                name: manager.company.name
+              }
+            : undefined,
+          branch: manager.branchId
+            ? {
+                _id: manager.branchId._id,
+                city: manager.branchId.city,
+                location: manager.branchId.location
+              }
+            : undefined,
+          reviewCount: undefined,
+          recentlyReviewedAt: review.createdAt
+        };
+      })
+      .filter(Boolean);
+
+    res.json({
+      recentManagers,
+      latestReviews
+    });
+
+  } catch (err) {
+    console.error('Error fetching homepage content:', err);
+
+    res.status(500).json({
+      error: 'Server error while fetching homepage content'
+    });
+  }
+};

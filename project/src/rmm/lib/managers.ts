@@ -9,6 +9,36 @@ export interface Manager {
     department?: string;
     // add any other fields you want to render in search results
   }
+
+
+  
+  export interface HomepageManager {
+    _id: string;
+    name: string;
+    position: string;
+    averageRating: number;
+    company: {
+      _id: string;
+      name: string;
+    };
+    branch?: {
+      _id: string;
+      city: string;
+      location: string[];
+    };
+  }
+  
+  export interface LatestReview {
+    _id: string;
+    managerId: HomepageManager;
+    rating: number;
+    reviewText?: string;
+    reviewLeadership?: string;
+    reviewCommunicationText?: string;
+    reviewSupport?: string;
+    createdAt: string;
+  }
+
   
 
 
@@ -118,4 +148,22 @@ export const submitManagerReview = async ({
   
     if (!res.ok) throw new Error('Failed to submit review');
     return res.json();
+  };
+
+
+  export const getLatestReviews = async (): Promise<LatestReview[]> => {
+    try {
+      const res = await fetch(`${BASE_URL}/api/managers/homepage-content`);
+  
+      if (!res.ok) {
+        throw new Error(`Failed to fetch latest reviews: ${res.status}`);
+      }
+  
+      const data = await res.json();
+  
+      return data.latestReviews as LatestReview[];
+    } catch (error) {
+      console.error('Error fetching latest reviews:', error);
+      return [];
+    }
   };

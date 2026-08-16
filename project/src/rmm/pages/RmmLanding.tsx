@@ -1,11 +1,13 @@
-import React, { useEffect } from 'react';
+import  { useEffect , useState  } from 'react';
 import Navbar from '../components/Navbar/navbar';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../rmi/lib/useAuth';
+import { getLatestReviews, LatestReview } from '../lib/managers';
 
 const RmmLanding = () => {
   const navigate = useNavigate();
   const { isLoggedIn, logout } = useAuth();
+  const [latestReviews, setLatestReviews] = useState<LatestReview[]>([]);
 
   // 🧠 Inject structured data without Helmet
   useEffect(() => {
@@ -15,7 +17,7 @@ const RmmLanding = () => {
       "@context": "https://schema.org",
       "@type": "WebPage",
       "name": "Rate My Manager",
-      "description": "Explore and share anonymous interview reviews for hiring managers. Built for transparency, powered by real candidate insights.",
+      "description": "Rate My Manager lets employees anonymously review managers and explore workplace leadership experiences across companies and industries.",
       "url": "https://ratemymanagement.com/",
       "author": {
         "@type": "Organization",
@@ -34,7 +36,16 @@ const RmmLanding = () => {
         .then(() => console.log('Backend warmed up'))
         .catch(() => console.log('Ping failed'));
     }, []);
-  
+    
+
+    useEffect(() => {
+      const fetchLatestReviews = async () => {
+        const reviews = await getLatestReviews();
+        setLatestReviews(reviews);
+      };
+    
+      fetchLatestReviews();
+    }, []);
 
 
 
@@ -63,6 +74,111 @@ const RmmLanding = () => {
           </div>
         </div>
       </section>
+
+
+      {/* ✅ Latest Reviews */}
+      <section className="py-20 px-6 bg-white">
+        <div className="max-w-6xl mx-auto">
+
+          <div className="text-center mb-12">
+            <h2 className="text-3xl font-bold text-gray-800 mb-3">
+              Latest Manager Reviews
+            </h2>
+            <p className="text-gray-600 max-w-2xl mx-auto">
+              See what professionals are saying about their workplace managers.
+            </p>
+          </div>
+
+          {latestReviews.length > 0 ? (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+
+              {latestReviews.slice(0, 6).map((review) => (
+                <div
+                  key={review._id}
+                  className="bg-gray-50 border border-gray-200 rounded-xl p-6 shadow-sm hover:shadow-md transition-shadow"
+                >
+
+                  {/* Manager */}
+                  <div className="mb-4">
+                    <h3 className="text-lg font-bold text-gray-800">
+                      {review.managerId.name}
+                    </h3>
+
+                    <p className="text-sm text-gray-500">
+                      {review.managerId.position}
+                      {review.managerId.company?.name &&
+                        ` · ${review.managerId.company.name}`}
+                    </p>
+                  </div>
+
+                  {/* Rating */}
+                  <div className="flex items-center gap-2 mb-4">
+                    <div className="flex">
+                      {[1, 2, 3, 4, 5].map((star) => (
+                        <span
+                          key={star}
+                          className={
+                            star <= review.rating
+                              ? "text-yellow-400 text-lg"
+                              : "text-gray-300 text-lg"
+                          }
+                        >
+                          ★
+                        </span>
+                      ))}
+                    </div>
+
+                    <span className="text-sm font-semibold text-gray-700">
+                      {review.rating}/5
+                    </span>
+                  </div>
+
+                  {/* Review */}
+                  {review.reviewText && (
+                    <p className="text-sm text-gray-600 leading-relaxed line-clamp-5">
+                      "{review.reviewText}"
+                    </p>
+                  )}
+
+                  {/* View Manager */}
+                  <button
+                    onClick={() =>
+                      navigate(`/manager/${review.managerId._id}`)
+                    }
+                    className="mt-5 text-sm font-semibold text-blue-600 hover:text-blue-800"
+                  >
+                    View Manager →
+                  </button>
+
+                </div>
+              ))}
+
+            </div>
+          ) : (
+            <div className="text-center py-10">
+              <p className="text-gray-500">
+                No reviews available yet.
+              </p>
+            </div>
+          )}
+
+          {/* Search CTA */}
+          {latestReviews.length > 0 && (
+            <div className="text-center mt-10">
+              <button
+                onClick={() => navigate('/search-managers')}
+                className="bg-black hover:bg-gray-800 text-white px-6 py-3 rounded-md font-semibold"
+              >
+                Explore Managers
+              </button>
+            </div>
+          )}
+
+        </div>
+      </section>
+
+
+
 
       {/* ✅ How It Works */}
       <section className="py-20 px-6 bg-gray-50">

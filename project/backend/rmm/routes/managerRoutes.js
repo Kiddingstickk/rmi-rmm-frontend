@@ -1,5 +1,5 @@
 import express from 'express';
-import { getAllManagers, getManagerById, createManager , updateManager, deleteManager } from '../controllers/managerController.js';
+import { getAllManagers, getManagerById, createManager , getHomepageContent, updateManager, deleteManager } from '../controllers/managerController.js';
 import auth from '../../shared/middleware/auth.js';
 import Manager from '../models/Manager.js'; 
 
@@ -44,14 +44,15 @@ router.get('/search/:query', async (req, res) => {
   }
 });
 
-
+router.get('/homepage-content', getHomepageContent);
 
 
 router.get('/', getAllManagers);
 router.get('/:id', getManagerById);
 router.post('/', createManager); 
 router.put('/:id', updateManager);     
-router.delete('/:id', deleteManager);  
+router.delete('/:id', deleteManager); 
+
 
 
 
