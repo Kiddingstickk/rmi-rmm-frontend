@@ -143,7 +143,13 @@ const RmmLanding = () => {
                   {/* View Manager */}
                   <button
                     onClick={() =>
-                      navigate(`/manager/${review.managerId._id}`)
+                      navigate(
+                        `/management/managers/${review.managerId.name
+                          .toLowerCase()
+                          .trim()
+                          .replace(/\s+/g, '-')
+                          .replace(/[^a-z0-9-]/g, '')}/${review.managerId._id}`
+                      )
                     }
                     className="mt-5 text-sm font-semibold text-blue-600 hover:text-blue-800"
                   >
