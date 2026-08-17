@@ -1,218 +1,270 @@
-//import React from "react";
+//mport React from "react";
 import { useNavigate } from "react-router-dom";
 import Navbar from "../components/Navbar/navbar";
-import { useAuth } from '../../rmi/lib/useAuth';
+import {
+  Search,
+  UserRound,
+  Building2,
+  Star,
+  MessageSquareText,
+  UsersRound,
+  ArrowRight,
+  UserPlus,
+} from "lucide-react";
 
-const FindManager = () => {
+const FindYourManager = () => {
   const navigate = useNavigate();
-  const { isLoggedIn, logout } = useAuth();
 
   return (
     <div className="bg-white min-h-screen">
-      <Navbar isLoggedIn={isLoggedIn} onLogout={logout} />
+      <Navbar isLoggedIn={false} onLogout={() => {}} />
 
       {/* Hero */}
-      <section className="pt-32 pb-20 px-6 bg-gray-50">
+      <section className="bg-gray-50 pt-28 pb-20 px-6">
         <div className="max-w-4xl mx-auto text-center">
-          <h1 className="text-4xl sm:text-5xl font-extrabold text-gray-900 mb-6">
-            Find Your Manager
+          <div className="inline-flex items-center justify-center w-14 h-14 rounded-full bg-blue-100 text-blue-600 mb-6">
+            <Search size={28} />
+          </div>
+
+          <h1 className="text-4xl sm:text-5xl font-extrabold text-gray-900 mb-5">
+            How to Find Your Manager
           </h1>
 
           <p className="text-lg text-gray-600 max-w-2xl mx-auto leading-relaxed">
-            Looking for a manager you've worked with? Search Rate My Manager
-            by manager name or company to find their profile and explore
-            workplace reviews.
+            Looking for your manager on Rate My Manager? Search by their name
+            or company to find their profile and explore workplace feedback.
           </p>
-
-          <button
-            onClick={() => navigate("/search-managers")}
-            className="mt-8 bg-black hover:bg-gray-800 text-white px-7 py-3 rounded-md font-semibold transition"
-          >
-            Search Managers →
-          </button>
         </div>
       </section>
 
-      {/* How to Find Your Manager */}
+      {/* Search Section */}
       <section className="py-20 px-6">
         <div className="max-w-5xl mx-auto">
-          <div className="text-center mb-14">
+          <div className="text-center mb-10">
             <h2 className="text-3xl font-bold text-gray-900 mb-4">
-              How to Find Your Manager
+              Search for a Manager
             </h2>
 
             <p className="text-gray-600 max-w-2xl mx-auto">
-              Finding a manager on Rate My Manager only takes a few steps.
+              You can search Rate My Manager using your manager's name or the
+              company they work for.
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-
-            {/* Step 1 */}
-            <div className="bg-gray-50 border border-gray-200 rounded-xl p-7">
-              <div className="w-10 h-10 rounded-full bg-black text-white flex items-center justify-center font-bold mb-5">
-                1
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-10">
+            {/* Search by Name */}
+            <div className="border border-gray-200 rounded-xl p-7 bg-white shadow-sm">
+              <div className="w-12 h-12 rounded-lg bg-blue-100 text-blue-600 flex items-center justify-center mb-5">
+                <UserRound size={24} />
               </div>
 
-              <h3 className="text-xl font-bold text-gray-900 mb-3">
-                Search by Name
+              <h3 className="text-xl font-semibold text-gray-900 mb-3">
+                Search by Manager Name
               </h3>
 
               <p className="text-gray-600 leading-relaxed">
-                If you know your manager's name, start by searching for them
-                directly. Enter their name into the manager search and look
-                through the available results.
+                Enter your manager's first name, last name, or both to look
+                for their profile. If they are already listed on Rate My
+                Manager, their profile should appear in the search results.
               </p>
             </div>
 
-            {/* Step 2 */}
-            <div className="bg-gray-50 border border-gray-200 rounded-xl p-7">
-              <div className="w-10 h-10 rounded-full bg-black text-white flex items-center justify-center font-bold mb-5">
-                2
+            {/* Search by Company */}
+            <div className="border border-gray-200 rounded-xl p-7 bg-white shadow-sm">
+              <div className="w-12 h-12 rounded-lg bg-indigo-100 text-indigo-600 flex items-center justify-center mb-5">
+                <Building2 size={24} />
               </div>
 
-              <h3 className="text-xl font-bold text-gray-900 mb-3">
+              <h3 className="text-xl font-semibold text-gray-900 mb-3">
                 Search by Company
               </h3>
 
               <p className="text-gray-600 leading-relaxed">
-                Don't remember your manager's exact name? You can search by
-                company and explore the managers associated with that
+                Don't remember your manager's full name? Search for their
+                company instead and explore the managers associated with that
                 organization.
               </p>
             </div>
+          </div>
 
-            {/* Step 3 */}
-            <div className="bg-gray-50 border border-gray-200 rounded-xl p-7">
-              <div className="w-10 h-10 rounded-full bg-black text-white flex items-center justify-center font-bold mb-5">
-                3
-              </div>
-
-              <h3 className="text-xl font-bold text-gray-900 mb-3">
-                Check the Profile
-              </h3>
-
-              <p className="text-gray-600 leading-relaxed">
-                Once you find a potential match, check their name, position,
-                company, and other available information to make sure you've
-                found the right manager.
-              </p>
-            </div>
-
+          <div className="text-center">
+            <button
+              onClick={() => navigate("/search-managers")}
+              className="inline-flex items-center gap-2 bg-black hover:bg-gray-800 text-white px-7 py-3 rounded-md font-semibold transition"
+            >
+              Search Managers
+              <ArrowRight size={18} />
+            </button>
           </div>
         </div>
       </section>
 
-      {/* What You'll Find */}
+      {/* What to Expect */}
       <section className="py-20 px-6 bg-gray-50">
-        <div className="max-w-5xl mx-auto">
+        <div className="max-w-6xl mx-auto">
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold text-gray-900 mb-4">
               What Can You Find on a Manager Profile?
             </h2>
 
             <p className="text-gray-600 max-w-2xl mx-auto">
-              A manager profile brings together information and workplace
-              experiences shared by professionals.
+              Once you find a manager, their profile gives you a better idea
+              of how employees have experienced their leadership.
             </p>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {/* Rating */}
+            <div className="bg-white rounded-xl p-6 border border-gray-200 shadow-sm">
+              <div className="w-11 h-11 rounded-lg bg-yellow-100 text-yellow-600 flex items-center justify-center mb-5">
+                <Star size={22} />
+              </div>
 
-            <div className="bg-white border border-gray-200 rounded-xl p-6">
-              <h3 className="text-lg font-bold text-gray-900 mb-2">
-                ⭐ Overall Rating
+              <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                Overall Rating
               </h3>
 
-              <p className="text-gray-600">
-                See the manager's overall rating based on reviews submitted by
-                professionals.
+              <p className="text-sm text-gray-600 leading-relaxed">
+                See the manager's overall rating based on the reviews submitted
+                by employees.
               </p>
             </div>
 
-            <div className="bg-white border border-gray-200 rounded-xl p-6">
-              <h3 className="text-lg font-bold text-gray-900 mb-2">
-                📊 Leadership Ratings
+            {/* Manager Information */}
+            <div className="bg-white rounded-xl p-6 border border-gray-200 shadow-sm">
+              <div className="w-11 h-11 rounded-lg bg-blue-100 text-blue-600 flex items-center justify-center mb-5">
+                <UserRound size={22} />
+              </div>
+
+              <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                Manager Information
               </h3>
 
-              <p className="text-gray-600">
-                Explore ratings across different aspects of management,
+              <p className="text-sm text-gray-600 leading-relaxed">
+                Find information such as the manager's position, company, and
+                other profile details.
+              </p>
+            </div>
+
+            {/* Reviews */}
+            <div className="bg-white rounded-xl p-6 border border-gray-200 shadow-sm">
+              <div className="w-11 h-11 rounded-lg bg-green-100 text-green-600 flex items-center justify-center mb-5">
+                <MessageSquareText size={22} />
+              </div>
+
+              <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                Employee Reviews
+              </h3>
+
+              <p className="text-sm text-gray-600 leading-relaxed">
+                Read experiences shared by employees who have worked with the
+                manager.
+              </p>
+            </div>
+
+            {/* Leadership */}
+            <div className="bg-white rounded-xl p-6 border border-gray-200 shadow-sm">
+              <div className="w-11 h-11 rounded-lg bg-purple-100 text-purple-600 flex items-center justify-center mb-5">
+                <UsersRound size={22} />
+              </div>
+
+              <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                Leadership Feedback
+              </h3>
+
+              <p className="text-sm text-gray-600 leading-relaxed">
+                Explore feedback about different aspects of management,
                 including leadership, communication, teamwork, empathy, and
                 fairness.
               </p>
             </div>
 
-            <div className="bg-white border border-gray-200 rounded-xl p-6">
-              <h3 className="text-lg font-bold text-gray-900 mb-2">
-                🏢 Company & Position
+            {/* Company */}
+            <div className="bg-white rounded-xl p-6 border border-gray-200 shadow-sm">
+              <div className="w-11 h-11 rounded-lg bg-indigo-100 text-indigo-600 flex items-center justify-center mb-5">
+                <Building2 size={22} />
+              </div>
+
+              <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                Company Information
               </h3>
 
-              <p className="text-gray-600">
-                Check the company and position associated with the manager to
-                help distinguish them from people with similar names.
+              <p className="text-sm text-gray-600 leading-relaxed">
+                See which company the manager is associated with and explore
+                other managers from the same organization.
               </p>
             </div>
 
-            <div className="bg-white border border-gray-200 rounded-xl p-6">
-              <h3 className="text-lg font-bold text-gray-900 mb-2">
-                💬 Workplace Reviews
+            {/* Reviews & Ratings */}
+            <div className="bg-white rounded-xl p-6 border border-gray-200 shadow-sm">
+              <div className="w-11 h-11 rounded-lg bg-orange-100 text-orange-600 flex items-center justify-center mb-5">
+                <Star size={22} />
+              </div>
+
+              <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                Rating Breakdown
               </h3>
 
-              <p className="text-gray-600">
-                Read experiences shared by other professionals who have worked
-                with the manager.
+              <p className="text-sm text-gray-600 leading-relaxed">
+                Get more context than a single overall score by looking at the
+                different areas employees have rated.
               </p>
             </div>
-
           </div>
         </div>
       </section>
 
-      {/* Can't Find Manager */}
+      {/* Manager Not Found */}
       <section className="py-20 px-6">
-        <div className="max-w-3xl mx-auto text-center">
-          <h2 className="text-3xl font-bold text-gray-900 mb-5">
-            Can't Find Your Manager?
-          </h2>
+        <div className="max-w-4xl mx-auto">
+          <div className="bg-gray-900 text-white rounded-2xl p-8 sm:p-12 text-center">
+            <div className="w-14 h-14 rounded-full bg-white/10 flex items-center justify-center mx-auto mb-6">
+              <UserPlus size={27} />
+            </div>
 
-          <p className="text-gray-600 leading-relaxed mb-8">
-            Not every manager has a profile on Rate My Manager yet. If you've
-            searched by name and company and still can't find them, you can
-            create a new manager profile and then share your experience.
-          </p>
+            <h2 className="text-3xl font-bold mb-4">
+              Can't Find Your Manager?
+            </h2>
 
-          <button
-            onClick={() => navigate("/rate-manager")}
-            className="bg-indigo-600 hover:bg-indigo-700 text-white px-7 py-3 rounded-md font-semibold transition"
-          >
-            Create a Manager Profile →
-          </button>
+            <p className="text-gray-300 max-w-2xl mx-auto leading-relaxed mb-8">
+              If your manager isn't listed yet, you can create a manager
+              profile so employees can share their workplace experiences.
+            </p>
+
+            <button
+              onClick={() => navigate("/rate-manager")}
+              className="inline-flex items-center gap-2 bg-white text-gray-900 hover:bg-gray-100 px-7 py-3 rounded-md font-semibold transition"
+            >
+              Create a Manager Profile
+              <ArrowRight size={18} />
+            </button>
+          </div>
         </div>
       </section>
 
       {/* Final CTA */}
-      <section className="py-20 px-6 bg-gray-900 text-white text-center">
+      <section className="py-16 px-6 bg-gray-50 text-center">
         <div className="max-w-3xl mx-auto">
-          <h2 className="text-3xl font-bold mb-4">
-            Ready to Find Your Manager?
+          <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-4">
+            Ready to find your manager?
           </h2>
 
-          <p className="text-gray-300 mb-8">
-            Search by name or company and see what professionals are saying
-            about workplace leadership.
+          <p className="text-gray-600 mb-7">
+            Search Rate My Manager to discover manager profiles and workplace
+            experiences.
           </p>
 
           <button
             onClick={() => navigate("/search-managers")}
-            className="bg-white text-gray-900 hover:bg-gray-200 px-7 py-3 rounded-md font-semibold transition"
+            className="inline-flex items-center gap-2 bg-black hover:bg-gray-800 text-white px-7 py-3 rounded-md font-semibold transition"
           >
-            Search Managers →
+            Search Managers
+            <ArrowRight size={18} />
           </button>
         </div>
       </section>
-
     </div>
   );
 };
 
-export default FindManager;
+export default FindYourManager;

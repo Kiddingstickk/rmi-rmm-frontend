@@ -41,6 +41,7 @@ import RateCompany from "./rmm/pages/RateCompany";
 import AllCompanies from './rmm/pages/AllCompanies';
 import ToxicWorkplaceBlog from "./rmm/pages/ToxicWorkplaceBlog";
 import FindManager from './rmm/pages/FindManager';
+import ManagerNotListed from "./rmm/pages/CreateManager";
 
 
 
@@ -118,6 +119,7 @@ const App = () => {
         <Route path="/how-it-works/find-manager" element={<FindManager />} />
         <Route path="/All-Companies" element={<AllCompanies />} />
         <Route path = "/Toxic-Workplace-Blog" element = {<ToxicWorkplaceBlog/>}/>
+        <Route path="/how-it-works/create-manager" element={<ManagerNotListed />} />
               
 
        
