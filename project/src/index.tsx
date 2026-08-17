@@ -40,6 +40,7 @@ import CompanyProfile from "./rmm/pages/CompanyProfile";
 import RateCompany from "./rmm/pages/RateCompany";
 import AllCompanies from './rmm/pages/AllCompanies';
 import ToxicWorkplaceBlog from "./rmm/pages/ToxicWorkplaceBlog";
+import FindManager from './rmm/pages/FindManager';
 
 
 
@@ -114,6 +115,7 @@ const App = () => {
             </ProtectedRoute>
           }
         />
+        <Route path="/how-it-works/find-manager" element={<FindManager />} />
         <Route path="/All-Companies" element={<AllCompanies />} />
         <Route path = "/Toxic-Workplace-Blog" element = {<ToxicWorkplaceBlog/>}/>
               
