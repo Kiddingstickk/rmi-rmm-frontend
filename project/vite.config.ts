@@ -32,10 +32,11 @@ export default defineConfig(({ isSsrBuild }) => ({
 
   // Bundle React into the SSR output instead of leaving
   // unresolved external imports for Netlify.
-  ssr: {
+ssr: {
   noExternal: [
     "react",
     "react-dom",
+    "react-router",
     "react-router-dom",
     "@remix-run/router",
   ],
