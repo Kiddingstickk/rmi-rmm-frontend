@@ -66,6 +66,15 @@ ssr: {
     "function-bind",
     "get-intrinsic",
     "has-tostringtag",
+
+    "es-object-atoms",
+    "call-bind-apply-helpers",
+    "get-proto",
+    "gopd",
+    "has-symbols",
+    "math-intrinsics",
+    "dunder-proto",
+    "es-define-property",
   ],
 },
 
