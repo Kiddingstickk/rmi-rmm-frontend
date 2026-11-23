@@ -33,8 +33,12 @@ export default defineConfig(({ isSsrBuild }) => ({
   // Bundle React into the SSR output instead of leaving
   // unresolved external imports for Netlify.
   ssr: {
-    noExternal: ["react", "react-dom"],
-  },
+  noExternal: [
+    "react",
+    "react-dom",
+    "react-router-dom",
+  ],
+},
 
   build: {
     rollupOptions: {
