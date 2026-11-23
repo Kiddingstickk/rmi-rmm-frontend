@@ -40,6 +40,7 @@ ssr: {
     "react-router-dom",
     "@remix-run/router",
     "axios",
+    "form-data",
   ],
 },
 
