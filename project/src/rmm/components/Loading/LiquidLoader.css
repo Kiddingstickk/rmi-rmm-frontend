@@ -1,0 +1,139 @@
+
+.liquid-loader {
+  min-height: 240px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 30px;
+  background: #101010;
+  color: #fff;
+}
+
+.liquid-loader-fullscreen {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  min-height: 100vh;
+  background: #101010;
+}
+
+.liquid-loader-stage {
+  width: 150px;
+  height: 150px;
+  display: grid;
+  place-items: center;
+  margin-bottom: 14px;
+}
+
+.liquid-loader-blob {
+  position: relative;
+  width: 105px;
+  height: 105px;
+  background: linear-gradient(
+    145deg,
+    #ffffff 0%,
+    #d5d5d5 45%,
+    #777777 100%
+  );
+  border-radius: 38% 62% 65% 35% / 43% 38% 62% 57%;
+  animation: liquid-morph 5s ease-in-out infinite;
+  box-shadow:
+    0 0 22px rgba(255, 255, 255, 0.12),
+    inset -10px -12px 22px rgba(0, 0, 0, 0.16),
+    inset 7px 7px 16px rgba(255, 255, 255, 0.8);
+}
+
+.liquid-loader-highlight {
+  position: absolute;
+  width: 28px;
+  height: 12px;
+  top: 22%;
+  left: 23%;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.8);
+  filter: blur(7px);
+}
+
+.liquid-loader-message {
+  margin: 0;
+  color: #f5f5f5;
+  font-size: 15px;
+  font-weight: 500;
+  letter-spacing: 0.2px;
+  text-align: center;
+}
+
+.liquid-loader-caption {
+  color: #777;
+  font-size: 9px;
+  letter-spacing: 3px;
+}
+
+@keyframes liquid-morph {
+  0% {
+    border-radius: 38% 62% 65% 35% / 43% 38% 62% 57%;
+    transform: scale(1);
+  }
+
+  25% {
+    border-radius: 57% 43% 38% 62% / 55% 32% 68% 45%;
+    transform: scale(1.08, 0.94);
+  }
+
+  50% {
+    border-radius: 35% 65% 54% 46% / 61% 58% 42% 39%;
+    transform: scale(0.94, 1.08);
+  }
+
+  75% {
+    border-radius: 62% 38% 45% 55% / 37% 65% 35% 63%;
+    transform: scale(1.05, 0.97);
+  }
+
+  100% {
+    border-radius: 38% 62% 65% 35% / 43% 38% 62% 57%;
+    transform: scale(1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .liquid-loader-blob {
+    animation: none;
+  }
+}
+
+
+
+
+.liquid-loader-svg {
+  width: 165px;
+  height: 165px;
+  overflow: visible;
+  filter: none;
+}
+
+.liquid-loader-inner-text {
+  fill: #ffffff;
+  font-size: 23px;
+  font-weight: 800;
+  letter-spacing: 2px;
+  pointer-events: none;
+}
+
+.liquid-loader-stage {
+  display: grid;
+  place-items: center;
+  width: 170px;
+  height: 170px;
+}
+
+
+.liquid-loader-fullscreen {
+  background: rgba(12, 12, 18, 0.72);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+

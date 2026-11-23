@@ -105,7 +105,7 @@ const SearchManager = () => {
                 onClick={() =>
                   setSearchMode((prev) => (prev === 'name' ? 'company' : 'name'))
                 }
-                className="text-white bg-pastelBlue hover:bg-blue-600 font-semibold py-2 px-5 rounded-md text-sm"
+                className="text-white bg-[#213A6B] hover:bg-blue-600 font-semibold py-2 px-5 rounded-md text-sm"
               >
                 SEARCH BY {searchMode === 'name' ? 'WORKPLACE' : 'NAME'}
               </button>

@@ -4,13 +4,14 @@ import MainLayout from '../../components/ui/MainLayout';
 import { getInterviewers } from '../../lib/api';
 import { Button } from '../../components/ui/button';
 import MinimalLoader from "../../components/ui/AnimatedLoader";
+import { useAuth } from '../../lib/useAuth';
 
 const ExampleHomePage = (): JSX.Element => {
   const [searchQuery, setSearchQuery] = useState('');
   const [isSearching, setIsSearching] = useState(false);
   const [results, setResults] = useState<any[]>([]);
   const [searchMode, setSearchMode] = useState<'name' | 'company'>('name');
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const { isLoggedIn, logout } = useAuth();
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
 
@@ -36,16 +37,16 @@ const ExampleHomePage = (): JSX.Element => {
     };
   }, []);
 
-  useEffect(() => {
-    const token = localStorage.getItem('token');
-    setIsLoggedIn(!!token);
-  }, []);
+  //useEffect(() => {
+    //const token = localStorage.getItem('token');
+    //setIsLoggedIn(!!token);
+  //}, []);
 
-  const handleLogout = () => {
-    localStorage.removeItem('token');
-    setIsLoggedIn(false);
-    navigate('/');
-  };
+  //const handleLogout = () => {
+    //localStorage.removeItem('token');
+    //setIsLoggedIn(false);
+    //navigate('/');
+  //};
 
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) =>
     setSearchQuery(e.target.value);
@@ -81,7 +82,7 @@ const ExampleHomePage = (): JSX.Element => {
   };
 
   return (
-    <MainLayout isLoggedIn={isLoggedIn} onLogout={handleLogout}>
+    <MainLayout isLoggedIn={isLoggedIn} onLogout={logout}>
       <main className="w-full overflow-hidden">
 
         {/* ✅ Hero Section */}

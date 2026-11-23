@@ -2,6 +2,11 @@ import React, { useState , useEffect } from "react";
 import { Star } from "lucide-react";
 
 
+const API_BASE_URL =
+  import.meta.env.VITE_API_BASE_URL ||
+  "https://backend-p0ja.onrender.com";
+
+
 interface Review {
   _id: string;
   userId: {
@@ -100,7 +105,7 @@ const ReviewForm: React.FC<ReviewFormProps> = ({ managerId, onSuccess,  existing
     try {
       const token = localStorage.getItem("token");
       const res = await fetch(
-        `${import.meta.env.VITE_API_URL}/api/manager-reviews/${existingReview._id}`,
+        `${API_BASE_URL}/api/manager-reviews/${existingReview._id}`,
         {
           method: "DELETE",
           headers: {
@@ -138,8 +143,8 @@ const ReviewForm: React.FC<ReviewFormProps> = ({ managerId, onSuccess,  existing
     try {
       const token = localStorage.getItem("token");
       const url = existingReview
-        ? `${import.meta.env.VITE_API_URL}/api/manager-reviews/${existingReview._id}`
-        : `${import.meta.env.VITE_API_URL}/api/manager-reviews/submit`;
+        ? `${API_BASE_URL}/api/manager-reviews/${existingReview._id}`
+        : `${API_BASE_URL}/api/manager-reviews/submit`;
       const method = existingReview ? "PUT" : "POST";
       const res = await fetch(url, {
         method,

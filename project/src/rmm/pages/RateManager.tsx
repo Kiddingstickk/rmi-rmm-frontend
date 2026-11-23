@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import ResponsiveNavbar from '../components/Navbar/navbar';
 import { useAuth } from '../../rmi/lib/useAuth';
@@ -6,6 +6,9 @@ import { createManager, submitManagerReview } from '../lib/managers';
 import { getDepartments, createDepartment } from '../lib/department';
 import { getCompanies, createCompany } from '../lib/company';
 import { findOrCreateBranch , getBranches} from '../lib/branch';
+
+
+const RATE_MANAGER_DRAFT_KEY = 'rmm.pendingManagerDraft';
 
 
 type DimensionRatingProps = {
@@ -39,7 +42,7 @@ const DimensionRating: React.FC<DimensionRatingProps> = ({ label, value, onChang
 
 
 const RateManager = () => {
-  const { isLoggedIn, logout } = useAuth();
+  const { isLoggedIn, logout, isReady } = useAuth();
   const navigate = useNavigate();
 
   const [branchCity, setBranchCity] = useState('');
@@ -71,6 +74,53 @@ const RateManager = () => {
 >([]);
 
   const debounceTimer = useRef<NodeJS.Timeout | null>(null);
+  const [draftRestored, setDraftRestored] = useState(false);
+  const autoSubmitAttempted = useRef(false);
+
+  useEffect(() => {
+  const savedDraft = sessionStorage.getItem(RATE_MANAGER_DRAFT_KEY);
+
+  if (!savedDraft) {
+  setDraftRestored(true);
+  return;
+}
+
+  try {
+    const draft = JSON.parse(savedDraft);
+
+    setBranchCity(draft.branchCity || '');
+    setBranchLocation(draft.branchLocation || '');
+    setBranchId(draft.branchId || '');
+
+    setName(draft.name || '');
+    setPosition(draft.position || '');
+
+    setDepartmentName(draft.departmentName || '');
+    setDepartmentId(draft.departmentId || '');
+
+    setRating(draft.rating || 0);
+    setLeadership(draft.leadership || 0);
+    setCommunication(draft.communication || 0);
+    setTeamwork(draft.teamwork || 0);
+    setEmpathy(draft.empathy || 0);
+    setFairness(draft.fairness || 0);
+
+    setReviewLeadership(draft.reviewLeadership || '');
+    setReviewCommunicationText(draft.reviewCommunicationText || '');
+    setReviewSupport(draft.reviewSupport || '');
+    setReviewText(draft.reviewText || '');
+
+    setCompanyName(draft.companyName || '');
+    setCompanyId(draft.companyId || '');
+
+    setMessage('Your saved review has been restored.');
+    setDraftRestored(true);
+  } catch (error) {
+    console.error('Failed to restore Rate Manager draft:', error);
+    sessionStorage.removeItem(RATE_MANAGER_DRAFT_KEY);
+    setDraftRestored(true);
+  }
+}, []);
 
   useEffect(() => {
     if (!departmentName.trim()) return setDepartmentSuggestions([]);
@@ -122,16 +172,9 @@ const RateManager = () => {
     setDepartmentSuggestions([]);
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!isLoggedIn) return setMessage('You must be logged in to submit.');
 
-    if (!name || !position || !reviewText || rating < 1) {
-      setMessage('Please complete all required fields and provide a rating.');
-      return;
-    }
-
-
+  // This function contains the actual submission sequence.
+  const submitReview = useCallback(async () => {
     try {
       setLoading(true);
 
@@ -145,7 +188,8 @@ const RateManager = () => {
       if (!compId) {
         const newCompany = await createCompany({ name: companyName });
         console.log('[Submit] ✅ Created company:', newCompany);
-        if (!newCompany?._id) throw new Error('Company creation failed');  
+
+        if (!newCompany?._id) throw new Error('Company creation failed');
         compId = newCompany._id;
       }
 
@@ -153,25 +197,22 @@ const RateManager = () => {
       if (branchId) {
         branch = branchSuggestions.find(b => b._id === branchId);
         console.log('[Submit] 🔁 Using selected branch:', branch);
-      
+
         if (!branch) {
-          console.warn('[Submit] ⚠️ branchId provided but no matching branch found. Falling back to findOrCreateBranch.');
+          console.warn('[Submit] ⚠️ Branch not found. Falling back to findOrCreateBranch.');
+
           branch = await findOrCreateBranch(compId, branchCity, branchLocation);
           if (!branch?._id) throw new Error('Branch creation failed');
+
           setBranchId(branch._id);
         }
       } else {
         branch = await findOrCreateBranch(compId, branchCity, branchLocation);
         console.log('[Submit] ✅ Created branch:', branch);
+
         if (!branch?._id) throw new Error('Branch creation failed');
         setBranchId(branch._id);
       }
-      
-
-      //const branch = await findOrCreateBranch(compId, branchCity, branchLocation);
-      //setBranchId(branch._id);
-      
-
 
       const managerPayload: any = {
         name,
@@ -179,18 +220,17 @@ const RateManager = () => {
         branchId: branch._id,
         company: compId,
       };
-      
+
       if (deptId) {
         managerPayload.departmentId = deptId;
       }
-      console.log('[Submit] 📦 Manager payload:', managerPayload);
 
+      console.log('[Submit] 📦 Manager payload:', managerPayload);
 
       const manager = await createManager(managerPayload);
       console.log('[Submit] ✅ Created manager:', manager);
+
       if (!manager?._id) throw new Error('Manager creation failed');
-  
-      
 
       await submitManagerReview({
         managerId: manager._id,
@@ -203,9 +243,12 @@ const RateManager = () => {
         reviewText,
         reviewLeadership,
         reviewCommunicationText,
-        reviewSupport,      
+        reviewSupport,
         anonymous: true,
       });
+
+      // Remove the draft only after successful review submission.
+      sessionStorage.removeItem(RATE_MANAGER_DRAFT_KEY);
 
       setMessage('✅ Submitted successfully!');
 
@@ -214,15 +257,111 @@ const RateManager = () => {
         .trim()
         .replace(/\s+/g, '-')
         .replace(/[^\w-]/g, '');
-      
+
       navigate(`/management/managers/${slug}/${manager._id}`);
+
     } catch (err) {
       console.error(err);
       setMessage('❌ Submission failed. Try again.');
-    } finally {
+        } finally {
       setLoading(false);
     }
+  }, [
+    departmentId,
+    departmentName,
+    companyId,
+    companyName,
+    branchId,
+    branchSuggestions,
+    branchCity,
+    branchLocation,
+    name,
+    position,
+    rating,
+    leadership,
+    communication,
+    teamwork,
+    empathy,
+    fairness,
+    reviewText,
+    reviewLeadership,
+    reviewCommunicationText,
+    reviewSupport,
+    navigate,
+  ]);
+
+  // This handles a normal manual form submission.
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    if (!name || !position || !reviewText || rating < 1) {
+      setMessage('Please complete all required fields and provide a rating.');
+      return;
+    }
+
+    // If logged out, save the draft and redirect to sign in.
+    if (!isLoggedIn) {
+      const draft = {
+        branchCity,
+        branchLocation,
+        branchId,
+        name,
+        position,
+        departmentName,
+        departmentId,
+        rating,
+        leadership,
+        communication,
+        teamwork,
+        empathy,
+        fairness,
+        reviewLeadership,
+        reviewCommunicationText,
+        reviewSupport,
+        reviewText,
+        companyName,
+        companyId,
+      };
+
+      sessionStorage.setItem(
+        RATE_MANAGER_DRAFT_KEY,
+        JSON.stringify(draft)
+      );
+
+      navigate('/signin', {
+        state: {
+          from: {
+            pathname: '/rate-manager',
+          },
+        },
+      });
+
+      return;
+    }
+
+    await submitReview();
   };
+
+
+  // Automatically submit the restored draft after login.
+  useEffect(() => {
+    const savedDraft = sessionStorage.getItem(RATE_MANAGER_DRAFT_KEY);
+
+    if (
+      !draftRestored ||
+      !isReady ||
+      !isLoggedIn ||
+      !savedDraft ||
+      autoSubmitAttempted.current
+    ) {
+      return;
+    }
+
+    autoSubmitAttempted.current = true;
+    void submitReview();
+
+}, [draftRestored, isReady, isLoggedIn, submitReview]);
+
 
   const StarRating = () => (
     <div className="flex gap-2 text-3xl mt-2">

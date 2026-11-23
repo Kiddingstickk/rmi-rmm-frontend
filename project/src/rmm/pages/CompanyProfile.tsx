@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom';
 import ResponsiveNavbar from '../components/Navbar/navbar';
 import { useAuth } from '../../rmi/lib/useAuth';
 
-const { isLoggedIn, logout } = useAuth();
+
 
 
 interface Manager {
@@ -29,9 +29,11 @@ interface CompanyResponse {
 }
 
 export default function CompanyProfile() {
+  const { isLoggedIn, logout } = useAuth();
   const { id } = useParams();
   const [data, setData] = useState<CompanyResponse | null>(null);
   const navigate = useNavigate();
+  
 
   useEffect(() => {
     axios

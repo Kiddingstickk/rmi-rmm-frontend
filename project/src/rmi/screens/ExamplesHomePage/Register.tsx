@@ -1,9 +1,11 @@
 // /screens/Register.tsx
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation, Link } from 'react-router-dom';
 import api from '../../../lib/api';
 import ResponsiveNavbar from '../../../rmm/components/Navbar/navbar';
 import { useAuth } from '../../lib/useAuth';
+import { setAuthSession } from '../../lib/authSession';
+
 
 
 
@@ -16,44 +18,68 @@ const Register = () => {
   const [password, setPassword] = useState('');
   const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
+  const location = useLocation();
   const { isLoggedIn, logout } = useAuth();
   const [isLoading, setIsLoading] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
 
 
-  const handleRegister = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setError(null);
-    setIsLoading(true);
-    setIsSuccess(false);
-  
-  
-    // 🚀 Navigate immediately to OTP page
-    //localStorage.setItem('pendingEmail', email);
-    //navigate('/verifyotp');
-  
-    // 🔄 Fire OTP request in the background
-    try {
-      const response = await api.post('/auth/rmi/register', { name, email, password });
-      if (response.status === 201 || response.status === 200) {
-        setIsSuccess(true);
-        setIsLoading(false);
-  
-        // ⏳ Delay navigation by 2 seconds
-        setTimeout(() => {
-          navigate('/signin');
-        }, 2000);
-  
-      } else {
-        setError('Unexpected response. Please try again.');
-      }
-  
-     
-    } catch (err) {
-      console.error('Registration failed:', err);
-      // Optional: you could store a flag to retry, or show a toast later
+
+const handleRegister = async (e: React.FormEvent) => {
+  e.preventDefault();
+
+  setIsLoading(true);
+  setError('');
+
+  try {
+    // Step 1: Create the account
+    const response = await api.post('/auth/rmi/register', {
+      name,
+      email,
+      password,
+    });
+
+    if (response.status !== 200 && response.status !== 201) {
+      throw new Error('Registration failed. Please try again.');
     }
-  };
+
+    // Step 2: Automatically log in using the existing login endpoint
+    const loginResponse = await api.post('/auth/rmi/login', {
+      email,
+      password,
+    });
+
+    const token = loginResponse.data.token;
+    const userId = loginResponse.data.user?.id;
+
+    if (!token || !userId) {
+      throw new Error('Account created, but automatic login failed.');
+    }
+
+    // Step 3: Establish the authenticated session
+    setAuthSession(token, userId);
+
+    setIsSuccess(true);
+
+    // Step 4: Return to the page the user originally wanted
+    const redirectTo = location.state?.from?.pathname || '/';
+
+    navigate(redirectTo, { replace: true });
+
+  } catch (err: any) {
+    console.error('Registration/login error:', err);
+
+    // Registration may have succeeded even if automatic login failed.
+    setError(
+      err.response?.data?.message ||
+      err.message ||
+      'Registration failed. Please try again.'
+    );
+  } finally {
+    setIsLoading(false);
+  }
+};
+
 
   return (
     <div className="min-h-screen bg-gray-100 flex flex-col">
@@ -122,9 +148,13 @@ const Register = () => {
 
           <p className="text-center text-sm text-gray-600 mt-4">
             Already have an account?{' '}
-            <a href="/signin" className="text-blue-600 hover:underline font-medium">
+            <Link
+              to="/signin"
+              state={location.state}
+              className="text-blue-600 hover:underline font-medium"
+            >
               Sign in
-            </a>
+            </Link>
           </p>
         </form>
       </main>

@@ -166,3 +166,10 @@
   animation: shimmer 1.5s linear infinite;
 }
 
+@media (max-width: 767px) {
+  .footer-background {
+    background-size: 100% auto !important;
+    background-position: center center !important;
+  }
+}
+

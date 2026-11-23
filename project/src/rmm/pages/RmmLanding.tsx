@@ -65,7 +65,10 @@ const RmmLanding = () => {
           An Anonymous Way to Rate Your Manager
           </p>
           <div className="flex justify-center gap-6 flex-wrap">
-            <a href="/search-managers" className="bg-pastelBlue hover:bg-blue-600 text-white px-6 py-3 rounded-md font-semibold">
+            <a
+              href="/search-managers"
+              className="bg-[#213A6B] hover:bg-[#1b3b70] text-white px-6 py-3 rounded-md font-semibold transition-colors duration-200"
+            >
               Search Managers
             </a>
             <a href="/rate-manager" className="bg-black hover:bg-gray-800 text-white px-6 py-3 rounded-md font-semibold">
@@ -173,7 +176,7 @@ const RmmLanding = () => {
             <div className="text-center mt-10">
               <button
                 onClick={() => navigate('/search-managers')}
-                className="bg-black hover:bg-gray-800 text-white px-6 py-3 rounded-md font-semibold"
+                className="bg-[#213A6B] hover:bg-gray-800 text-white px-6 py-3 rounded-md font-semibold"
               >
                 Explore Managers
               </button>
@@ -240,7 +243,7 @@ const RmmLanding = () => {
           </div>
         </div>
         <div className="text-center mt-10">
-          <a href="/rate-manager" className="inline-block bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-3 rounded-md font-semibold">
+          <a href="/rate-manager" className="inline-block bg-[#213A6B] hover:bg-gray-800 text-white px-6 py-3 rounded-md font-semibold">
             Rate a Manager
           </a>
         </div>
@@ -268,7 +271,13 @@ const RmmLanding = () => {
 
 
 
-      <footer className="bg-gray-900 text-gray-300 py-12 px-6">
+      <footer
+  className="relative text-gray-300 py-12 px-6 bg-[#213A6B] bg-cover bg-center md:bg-center"
+style={{
+  backgroundImage: "url('/footer.png')",
+  backgroundPosition: "center center",
+}}
+>
   <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8">
 
     {/* About Section */}
@@ -283,7 +292,7 @@ const RmmLanding = () => {
     {/* Navigation Links */}
     <div>
       <h3 className="text-lg font-semibold text-white mb-4">Explore</h3>
-      <ul className="space-y-2 text-sm">
+      <ul className="space-y-2 text-sm font-medium">
         <li><a href="/search-managers" className="hover:underline">Search Managers</a></li>
         <li><a href="/rate-manager" className="hover:underline">Rate a Manager</a></li>
         <li><a href="/contact" className="hover:underline">Contact Us</a></li>

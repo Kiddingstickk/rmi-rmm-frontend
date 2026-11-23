@@ -9,7 +9,7 @@ interface TeamMember {
   bio: string;
 }
 
-const { isLoggedIn, logout } = useAuth();
+//const { isLoggedIn, logout } = useAuth();
 
 const team: TeamMember[] = [
   {
@@ -27,6 +27,7 @@ const team: TeamMember[] = [
 ];
 
 const OurTeam = () => {
+  const { isLoggedIn, logout } = useAuth();
   useEffect(() => {
     const jsonLd = document.createElement('script');
     jsonLd.setAttribute('type', 'application/ld+json');

@@ -1,0 +1,42 @@
+.mascot-loader-track {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.mascot-loader-track-base,
+.mascot-loader-track-runner {
+  fill: none;
+  stroke: white;
+  stroke-linejoin: round;
+  stroke-linecap: round;
+}
+
+.mascot-loader-track-base {
+  stroke-width: 7;
+  opacity: 0.2;
+}
+
+.mascot-loader-track-runner {
+  stroke-width: 13;
+  stroke-dasharray: 85 915;
+  stroke-dashoffset: 0;
+  filter: drop-shadow(0 0 5px white);
+  animation: mascot-track-race 2s linear infinite;
+}
+
+@keyframes mascot-track-race {
+  to {
+    stroke-dashoffset: -1000;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mascot-loader-track-runner {
+    animation: none;
+  }
+}
