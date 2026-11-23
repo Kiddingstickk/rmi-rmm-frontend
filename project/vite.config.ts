@@ -44,6 +44,7 @@ ssr: {
     "combined-stream",
     "delayed-stream",
     "mime-types",
+    "mime-db",
   ],
 },
 
