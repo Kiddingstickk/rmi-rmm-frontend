@@ -75,6 +75,7 @@ ssr: {
     "math-intrinsics",
     "dunder-proto",
     "es-define-property",
+    "ms",
   ],
 },
 

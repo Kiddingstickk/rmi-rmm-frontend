@@ -1,5 +1,5 @@
-
 import { readFile } from "node:fs/promises";
+import { render } from "../../dist/server/entry-server.mjs";
 
 const SITE_URL = "https://ratemymanagement.com";
 const DEFAULT_API_URL = "https://backend-p0ja.onrender.com";
@@ -200,9 +200,9 @@ export default async function handler(request) {
       "utf8"
     );
 
-    const { render } = await import(
-  new URL("dist/server/entry-server.mjs", projectUrl).href
-);
+    //const { render } = await import(
+  //new URL("dist/server/entry-server.mjs", projectUrl).href
+//);
 
     const appHtml = render(
       `${url.pathname}${url.search}`,
