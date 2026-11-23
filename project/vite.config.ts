@@ -37,6 +37,7 @@ export default defineConfig(({ isSsrBuild }) => ({
     "react",
     "react-dom",
     "react-router-dom",
+    "@remix-run/router",
   ],
 },
 
