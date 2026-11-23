@@ -39,6 +39,7 @@ ssr: {
     "react-router",
     "react-router-dom",
     "@remix-run/router",
+    "axios",
   ],
 },
 
