@@ -59,6 +59,13 @@ ssr: {
     "react-icons",
     "scheduler",
     "next",
+
+    "agent-base",
+    "debug",
+    "es-errors",
+    "function-bind",
+    "get-intrinsic",
+    "has-tostringtag",
   ],
 },
 
