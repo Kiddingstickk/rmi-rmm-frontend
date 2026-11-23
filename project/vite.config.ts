@@ -30,11 +30,14 @@ export default defineConfig(({ isSsrBuild }) => ({
     },
   },
 
+  // Bundle React into the SSR output instead of leaving
+  // unresolved external imports for Netlify.
+  ssr: {
+    noExternal: ["react", "react-dom"],
+  },
+
   build: {
     rollupOptions: {
-      external: isSsrBuild
-        ? ["react", "react-dom", "react-dom/server"]
-        : [],
       output: isSsrBuild
         ? {
             entryFileNames: "entry-server.mjs",
