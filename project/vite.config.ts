@@ -43,6 +43,7 @@ ssr: {
     "form-data",
     "combined-stream",
     "delayed-stream",
+    "mime-types",
   ],
 },
 
